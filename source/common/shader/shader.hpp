@@ -44,56 +44,63 @@ namespace our
         {
             // TODO: (Req 1) Return the location of the uniform with the given name
             // DONE
-            return glGetUniformLocation(program, name);
+            return glGetUniformLocation(program, name.c_str());
         }
 
         void set(const std::string &uniform, GLfloat value)
         {
             // TODO: (Req 1) Send the given float value to the given uniform
             // DONE
-            glUniform1f(uniform, value);
+            GLuint loc = getUniformLocation(uniform);
+            glUniform1f(loc, value);
         }
 
         void set(const std::string &uniform, GLuint value)
         {
             // TODO: (Req 1) Send the given unsigned integer value to the given uniform
             // DONE
-            glUniform1ui(uniform, value);
+            GLuint loc = getUniformLocation(uniform);
+            glUniform1ui(loc, value);
         }
 
         void set(const std::string &uniform, GLint value)
         {
             // TODO: (Req 1) Send the given integer value to the given uniform
             // DONE
-            glUniform1i(uniform, value);
+            GLuint loc = getUniformLocation(uniform);
+            glUniform1i(loc, value);
         }
 
         void set(const std::string &uniform, glm::vec2 value)
         {
             // TODO: (Req 1) Send the given 2D vector value to the given uniform
             // DONE
-            glUniform2dv(uniform, value);
+            GLuint loc = getUniformLocation(uniform);
+            glUniform2fv(loc, 1, &value.x);
         }
 
         void set(const std::string &uniform, glm::vec3 value)
         {
             // TODO: (Req 1) Send the given 3D vector value to the given uniform
             // DONE
-            glUniform3dv(uniform, value);
+            GLuint loc = getUniformLocation(uniform);
+            glUniform3fv(loc, 1, &value.x);
         }
 
         void set(const std::string &uniform, glm::vec4 value)
         {
             // TODO: (Req 1) Send the given 4D vector value to the given uniform
             // DONE
-            glUniform4dv(uniform, value);
+            GLuint loc = getUniformLocation(uniform);
+            glUniform4fv(loc, 1, &value.x);
         }
 
         void set(const std::string &uniform, glm::mat4 matrix)
         {
             // TODO: (Req 1) Send the given matrix 4x4 value to the given uniform
             // DONE
-            glUniformMatrix4fv(uniform, matrix);
+            GLuint loc = getUniformLocation(uniform);
+            glUniformMatrix4fv(loc, 1, false, &matrix[0][0]);
         }
 
         // TODO: (Req 1) Delete the copy constructor and assignment operator.
