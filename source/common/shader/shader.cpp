@@ -35,7 +35,7 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
 
     if (errorStr != std::string())
     {
-        std::cerr << errorStr << std::endl;
+        std::cerr << "Error in attach: " << errorStr << std::endl;
         return false;
     }
     glAttachShader(program, s);
@@ -52,13 +52,13 @@ bool our::ShaderProgram::link() const
     //  program. The returned string will be empty if there is no errors.
     glLinkProgram(program);
     std::string errorStr = checkForLinkingErrors(program);
-    
+
     // // glDeleteShader(s);
-    // //TODO: Delete the attached shader 
-    
+    // //TODO: Delete the attached shader
+
     if (errorStr != std::string())
     {
-        std::cerr << errorStr << std::endl;
+        std::cerr << "Error in link: " << errorStr << std::endl;
         return false;
     }
     return true;
