@@ -20,7 +20,7 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
     }
     std::string sourceString = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
     const char *sourceCStr = sourceString.c_str();
-    file.close();
+    // file.close();
 
     // TODO: Complete this function
     // Note: The function "checkForShaderCompilationErrors" checks if there is
@@ -39,7 +39,6 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
         return false;
     }
     glAttachShader(program, s);
-    // glDeleteShader(s);
 
     return true;
 }
@@ -53,7 +52,10 @@ bool our::ShaderProgram::link() const
     //  program. The returned string will be empty if there is no errors.
     glLinkProgram(program);
     std::string errorStr = checkForLinkingErrors(program);
-
+    
+    // // glDeleteShader(s);
+    // //TODO: Delete the attached shader 
+    
     if (errorStr != std::string())
     {
         std::cerr << errorStr << std::endl;

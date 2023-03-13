@@ -90,7 +90,7 @@
         "thread": "cpp",
         "cinttypes": "cpp"
     },
-    "C_Cpp.errorSquiggles": "Disabled",
+    "C_Cpp.errorSquiggles": "enabled",
     "cmake.configureOnOpen": true,
     "markdown-pdf.headerTemplate": "",
     "cmake.debugConfig": {
@@ -99,5 +99,8 @@
             "./config/app.jsonc"
         ],
         "cwd": "${workspaceFolder}"
-    }
+    },
+    "cmake.mingwSearchDirs": [
+        "C:/msys,64/ming,w64/bin",
+    ],
 }

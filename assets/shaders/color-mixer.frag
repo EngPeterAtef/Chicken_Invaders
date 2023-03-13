@@ -2,6 +2,9 @@
 
 // This shader is designed to work with "triangle.vert" and it receives an
 // interpolated varying which represents the vertex color.
+uniform vec4 red;//1,0,0,1
+uniform vec4 green;
+uniform vec4 blue;
 
 in Varyings {
     vec3 color;
@@ -22,4 +25,8 @@ out vec4 frag_color;
 
 void main(){
     frag_color = fs_in.color;
+    frag_color.r = dot(red, fs_in.color);
+    frag_color.b = dot(blue, fs_in.color);
+    frag_color.g = dot(green, fs_in.color);
+
 }

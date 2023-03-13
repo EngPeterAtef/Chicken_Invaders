@@ -2,7 +2,8 @@
 #define SHADER_HPP
 
 #include <string>
-
+// using namespace std;
+// #include <iostream>
 #include <glad/gl.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
