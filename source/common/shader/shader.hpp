@@ -111,6 +111,8 @@ namespace our
         Reason:
             We delete the copy constructor and assignment operator when we want to prevent copying of an object of a class
             This way, if someone tries to copy an object of that class, they will get a compile-time error.
+            we need to prevent copying of an object of a class to acheive RAII (Resource Acquisition Is Initialization) so that
+            the resource will be acquired and initialized in the constructor and released in the destructor.    
         */
     };
 
