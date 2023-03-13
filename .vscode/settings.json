@@ -103,4 +103,5 @@
     "cmake.mingwSearchDirs": [
         "C:/msys,64/ming,w64/bin",
     ],
+    "cmake.generator": "MinGW Makefiles",
 }

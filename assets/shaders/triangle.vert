@@ -21,9 +21,9 @@ uniform vec2 translation = vec2(0.0, 0.0);
 
 void main(){
     vec3 position[3]=vec3[3](
-        vec3(-0.5,-0.5,0.0),
-        vec3(0.5,-0.5,0.0),
-        vec3(0.0,0.5,0.0)
+        vec3(-0.5,-0.5,0.0),//0
+        vec3(0.5,-0.5,0.0),//1
+        vec3(0.0,0.5,0.0)//2
     );
     // Apply the transformation to each vertex
     vec3 transformed = vec3(scale,1.0) * position[gl_VertexID] + vec3(translation,0.0);

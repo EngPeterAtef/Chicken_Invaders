@@ -1,4 +1,4 @@
-    #version 330 core
+#version 330 core
 
 out vec4 frag_color;
 
@@ -8,9 +8,14 @@ out vec4 frag_color;
 
 //TODO: (Req 1) Finish this shader.
 
-uniform int size = 32;
+uniform int size=32;
 uniform vec3 colors[2];
 
 void main(){
-    frag_color = vec4(colors[0], 1.0);
+    if(int((gl_FragCoord.x/size))%2==int((gl_FragCoord.y/size))%2){
+        frag_color=vec4(colors[0],1.);
+    }
+    else{
+        frag_color=vec4(colors[1],1.);
+    }
 }
