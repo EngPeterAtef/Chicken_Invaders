@@ -14,7 +14,8 @@ namespace our {
 
         // This function computes and returns a matrix that represents this transform
         glm::mat4 toMat4() const;
-         // Deserializes the entity data and components from a json object
+        // Deserializes the entity data and components from a json object
+        //ya3i bt2ra al data mn file then we construct the object data from it
         void deserialize(const nlohmann::json&);
     };
 
