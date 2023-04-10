@@ -12,11 +12,21 @@ namespace our {
         // This constructor creates an OpenGL texture and saves its object name in the member variable "name" 
         Texture2D() {
             //TODO: (Req 5) Complete this function
+            //generate one texture related to the name object
             glGenTextures(1, &name);
+            //bind the texture to the GL_TEXTURE_2D
             glBindTexture(GL_TEXTURE_2D, name);
+            //set the texture parameters
+            // GL_TEXTURE_WRAP_S: set the texture wrap parameter for texture coordinate s(X-axis)
+            // GL_TEXTURE_WRAP_T: set the texture wrap parameter for texture coordinate t(Y-axis)
+            // GL_REPEAT: repeat the texture image
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            // GL_TEXTURE_MIN_FILTER: set texture minifying function
+            // GL_TEXTURE_MAG_FILTER: set texture magnification function
+            // GL_LINEAR: linear interpolation
+            //  GL_NEAREST_MIPMAP_LINEAR: choose the mipmap that most closely matches the size of the pixel being textured and use the GL_LINEAR criterion (the texture element closest to the center of the pixel) to produce a texture value
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         };
 

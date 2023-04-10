@@ -8,12 +8,14 @@
 our::Texture2D* our::texture_utils::empty(GLenum format, glm::ivec2 size){
     our::Texture2D* texture = new our::Texture2D();
     //TODO: (Req 11) Finish this function to create an empty texture with the given size and format
+    // we need to bind the texture to the GL_TEXTURE_2D to be able to send the empty texture to the gpu
     texture->bind();
+    // that last argument is the data that we want to send to the gpu which nullptr means that we want to send an empty texture
     glTexImage2D(GL_TEXTURE_2D, 0, format, size.x, size.y, 0, format, GL_UNSIGNED_BYTE, nullptr);
     return texture;
 }
 
-
+// To load a texture from an image file
 our::Texture2D* our::texture_utils::loadImage(const std::string& filename, bool generate_mipmap) {
     glm::ivec2 size;
     int channels;
@@ -39,9 +41,14 @@ our::Texture2D* our::texture_utils::loadImage(const std::string& filename, bool 
     //TODO: (Req 5) Finish this function to fill the texture with the data found in "pixels"
     texture->bind();
     //to send the the image to gpu
+    // GL_TEXTURE_2D: the target texture
+    // 0: the level-of-detail number. Level 0 is the base image level.
+    // GL_RGBA8: each texture constructed from three components: red, green, blue and Alpha. Each value is 8 bits.
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+    //Generate mipmap if requested
+    // the mipmap level is a smaller version of the texture
     if(generate_mipmap) glGenerateMipmap(GL_TEXTURE_2D);
-    stbi_image_free(pixels); //Free image data after uploading to GPU
+    stbi_image_free(pixels); //Free image data from the RAM after uploading to GPU
     return texture;
 }
 

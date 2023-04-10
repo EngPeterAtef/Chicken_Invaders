@@ -68,6 +68,13 @@ namespace our
             }
             if (blending.enabled)
             {
+                /*
+                blending is used in transparent materials
+                blending equation is used to combine the source and destination colors
+                blending source factor is the source transparency if it is GL_SRC_ALPHA
+                blending destination factor is (1 - source transparency) if it is GL_ONE_MINUS_SRC_ALPHA
+                the function is (source color * source transparency) + ((1 - source transparency) * destination color) if the function is GL_FUNC_ADD
+                */
                 glEnable(GL_BLEND);
                 glBlendEquation(blending.equation);
                 glBlendFunc(blending.sourceFactor, blending.destinationFactor);
