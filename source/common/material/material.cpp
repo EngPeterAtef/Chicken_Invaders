@@ -43,7 +43,7 @@ namespace our {
     // Then it should bind the texture and sampler to a texture unit and send the unit number to the uniform variable "tex" 
     void TexturedMaterial::setup() const{
         //TODO: (Req 7) Write this function
-        Material::setup();
+        TintedMaterial::setup();
         shader->set("alphaThreshold", alphaThreshold);
         glActiveTexture(GL_TEXTURE0);
         texture->bind();
@@ -58,5 +58,4 @@ namespace our {
         texture = AssetLoader<Texture2D>::get(data.value("texture", ""));
         sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
     }
-
 }
