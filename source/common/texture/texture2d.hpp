@@ -25,8 +25,8 @@ namespace our {
             // GL_TEXTURE_MIN_FILTER: set texture minifying function
             // GL_TEXTURE_MAG_FILTER: set texture magnification function
             // GL_LINEAR: linear interpolation
-            //  GL_NEAREST_MIPMAP_LINEAR: choose the mipmap that most closely matches the size of the pixel being textured and use the GL_LINEAR criterion (the texture element closest to the center of the pixel) to produce a texture value
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+            // GL_LINEAR_MIPMAP_NEAREST: PICK NEAREST MIP LEVEL THEN FILTER PIXELS LINEARLY
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);            
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         };
 
