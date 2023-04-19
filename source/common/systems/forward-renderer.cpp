@@ -135,21 +135,38 @@ namespace our {
 
         //TODO: (Req 9) Modify the following line such that "cameraForward" contains a vector pointing the camera forward direction
         // HINT: See how you wrote the CameraComponent::getViewMatrix, it should help you solve this one
-        glm::vec3 cameraForward = glm::vec3(0.0, 0.0, -1.0f);
+        // glm::vec3 cameraForward = glm::vec3(0.0, 0.0, -1.0f);
+        glm::vec3 cameraForward = camera->getOwner()->getLocalToWorldMatrix() * glm::vec4(0.0, 0.0, -1.0f, 0.0f);
         std::sort(transparentCommands.begin(), transparentCommands.end(), [cameraForward](const RenderCommand& first, const RenderCommand& second){
             //TODO: (Req 9) Finish this function
             // HINT: the following return should return true "first" should be drawn before "second". 
-            return false;
+            
+            // Get the projection of objects to find which object is further from the camera.
+            // The object with the higher value of projection is the one farthest and thus should be drawn first.
+            return glm::dot(cameraForward,first.center) > glm::dot(cameraForward , second.center); 
         });
 
+
         //TODO: (Req 9) Get the camera ViewProjection matrix and store it in VP
-        
+        // to get the VP matrix, we multiply the projection and view matrices in order
+        glm::mat4 VP = camera->getProjectionMatrix(windowSize) * camera->getViewMatrix();
+
+
         //TODO: (Req 9) Set the OpenGL viewport using viewportStart and viewportSize
-        
+        // This decides which part of the screen to draw in.
+        // The first two parameters set the location of the lower left corner of the window.
+        // The third and fourth parameters set the width and height of the rendering window in pixel.
+        glViewport(0,0,windowSize.x,windowSize.y);
+
+
         //TODO: (Req 9) Set the clear color to black and the clear depth to 1
-        
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearDepth(1.0f);
+
+
         //TODO: (Req 9) Set the color mask to true and the depth mask to true (to ensure the glClear will affect the framebuffer)
-        
+        glColorMask(true, true, true, true);
+        glDepthMask(true);
 
         // If there is a postprocess material, bind the framebuffer
         if(postprocessMaterial){
@@ -158,9 +175,19 @@ namespace our {
         }
 
         //TODO: (Req 9) Clear the color and depth buffers
-        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         //TODO: (Req 9) Draw all the opaque commands
         // Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render command
+        for (auto &command : opaqueCommands)
+        {
+            command.material->setup();
+            // Model matrix is the transformation matrix from local space to world space.
+            // To obtain MVP we need to multiply the model matrix from the left (from the right in code)
+            glm::mat4 transform = VP * command.localToWorld;
+            command.material->shader->set("transform", transform);
+            command.mesh->draw();
+        }
         
         // If there is a sky material, draw the sky
         if(this->skyMaterial){
@@ -185,7 +212,15 @@ namespace our {
         }
         //TODO: (Req 9) Draw all the transparent commands
         // Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render command
-        
+        for (auto &command : transparentCommands)
+        {
+            command.material->setup();
+            // Model matrix is the transformation matrix from local space to world space.
+            // To obtain MVP we need to multiply the model matrix from the left (from the right in code)
+            glm::mat4 transform = VP * command.localToWorld;
+            command.material->shader->set("transform", transform);
+            command.mesh->draw();
+        }
 
         // If there is a postprocess material, apply postprocessing
         if(postprocessMaterial){
