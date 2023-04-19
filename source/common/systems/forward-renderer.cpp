@@ -23,7 +23,14 @@ namespace our {
             // Hints: the sky will be draw after the opaque objects so we would need depth testing but which depth funtion should we pick?
             // We will draw the sphere from the inside, so what options should we pick for the face culling.
             PipelineState skyPipelineState{};
-            
+            skyPipelineState.depthTesting.enabled = true;       // Enabled depthTesting as sky would be drawn after opaque
+            skyPipelineState.depthTesting.function = GL_LEQUAL; // GL_LEQUAL because object would be drawn from near to far
+
+            skyPipelineState.faceCulling.enabled = true;        // Enabled faceCulling so we can draw the sphere from inside
+            skyPipelineState.faceCulling.culledFace = GL_FRONT; // GL_FRONT because culling the Front of sphere
+
+
+
             // Load the sky texture (note that we don't need mipmaps since we want to avoid any unnecessary blurring while rendering the sky)
             std::string skyTextureFile = config.value<std::string>("sky", "");
             Texture2D* skyTexture = texture_utils::loadImage(skyTextureFile, false);
@@ -192,22 +199,31 @@ namespace our {
         // If there is a sky material, draw the sky
         if(this->skyMaterial){
             //TODO: (Req 10) setup the sky material
-            
+            this->skyMaterial->setup();
+
             //TODO: (Req 10) Get the camera position
-            
-            //TODO: (Req 10) Create a model matrix for the sy such that it always follows the camera (sky sphere center = camera position)
-            
+            glm::vec3 cameraPosition = camera->getOwner()->getLocalToWorldMatrix() * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+            //TODO: (Req 10) Create a model matrix for the sky such that it always follows the camera (sky sphere center = camera position)
+            glm::mat4 identity(1.0f);
+            // translating shpere position to camera position
+            glm::mat4 M = glm::translate(identity, cameraPosition);
+
+
             //TODO: (Req 10) We want the sky to be drawn behind everything (in NDC space, z=1)
             // We can acheive the is by multiplying by an extra matrix after the projection but what values should we put in it?
             glm::mat4 alwaysBehindTransform = glm::mat4(
                 1.0f, 0.0f, 0.0f, 0.0f,
                 0.0f, 1.0f, 0.0f, 0.0f,
-                0.0f, 0.0f, 1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f, 1.0f
+                0.0f, 0.0f, 0.0f, 0.0f, // set z=0
+                0.0f, 0.0f, 1.0f, 1.0f  // set z=1
             );
             //TODO: (Req 10) set the "transform" uniform
-            
+            glm::mat4 transform = alwaysBehindTransform * VP * M;
+            skyMaterial->shader->set("transform", transform);
+
             //TODO: (Req 10) draw the sky sphere
+            skySphere->draw();
             
         }
         //TODO: (Req 9) Draw all the transparent commands
