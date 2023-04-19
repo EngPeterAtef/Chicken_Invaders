@@ -6,6 +6,7 @@
 #include <iterator>
 #include <string>
 #include <glm/glm.hpp>
+// #include <iostream>
 
 namespace our
 {
@@ -38,12 +39,13 @@ namespace our
             static_assert(std::is_base_of<Component, T>::value, "T must inherit from Component");
             // TODO: (Req 8) Create an component of type T, set its "owner" to be this entity, then push it into the component's list
             //  Don't forget to return a pointer to the new component
-            T *new_component = new T();
-            // Component* new_component = new T();
+            // T *new_component = new T();
+            Component* new_component = new T();
             new_component->owner = this;
             components.push_back(new_component);
-            return new_component;
-            // return dynamic_cast<T*>(new_component);
+            // std::cout << "Added component " << typeid(T).name() << " to entity " << name << std::endl;
+            // return new_component;
+            return dynamic_cast<T*>(new_component);
         }
 
         // This template method searches for a component of type T and returns a pointer to it
@@ -135,7 +137,7 @@ namespace our
             {
                 delete *it;
             }
-            // components.clear();
+            components.clear();
         }
 
         // Entities should not be copyable

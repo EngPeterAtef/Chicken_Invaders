@@ -25,6 +25,7 @@ namespace our
             localToWorld = currentEntity->localTransform.toMat4() * localToWorld;
             currentEntity = currentEntity->parent;
         }
+        // std::cout << "localToWorld: " << localToWorld.length << std::endl;
         return localToWorld;
     }
 

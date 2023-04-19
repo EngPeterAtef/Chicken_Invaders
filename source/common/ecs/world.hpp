@@ -2,9 +2,8 @@
 
 #include <unordered_set>
 #include "entity.hpp"
-
+// #include <iostream>
 namespace our {
-
     // This class holds a set of entities
     class World {
         std::unordered_set<Entity*> entities; // These are the entities held by this world
@@ -65,6 +64,7 @@ namespace our {
             }
             entities.clear();
             markedForRemoval.clear();
+            // cout<<"cleared"<<endl;
         }
 
         //Since the world owns all of its entities, they should be deleted alongside it.
