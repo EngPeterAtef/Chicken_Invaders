@@ -100,8 +100,10 @@
         ],
         "cwd": "${workspaceFolder}"
     },
-    "cmake.mingwSearchDirs": [
-        "C:/msys,64/ming,w64/bin",
-    ],
     "cmake.generator": "MinGW Makefiles",
+    "cmake.configureSettings": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "C:/MinGW/bin/g++.exe",
+        "CMAKE_C_COMPILER": "C:/MinGW/bin/gcc.exe"
+    },
 }
