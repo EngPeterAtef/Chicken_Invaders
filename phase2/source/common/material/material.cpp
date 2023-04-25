@@ -72,4 +72,46 @@ namespace our
         texture = AssetLoader<Texture2D>::get(data.value("texture", ""));
         sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
     }
+
+    void LightMaterial::setup() const
+    {
+        Material::setup();
+        glActiveTexture(GL_TEXTURE0);
+        albedo->bind();
+        sampler->bind(0);
+        shader->set("material.albedo", 0);
+
+        glActiveTexture(GL_TEXTURE1);
+        ambient_occlusion->bind();
+        sampler->bind(1);
+        shader->set("material.ambient_occlusion", 1);
+
+        glActiveTexture(GL_TEXTURE2);
+        roughness->bind();
+        sampler->bind(2);
+        shader->set("material.roughness", 2);
+
+        glActiveTexture(GL_TEXTURE3);
+        emissive->bind();
+        sampler->bind(3);
+        shader->set("material.emissive", 3);
+
+        glActiveTexture(GL_TEXTURE4);
+        specular->bind();
+        sampler->bind(4);
+        shader->set("material.specular", 4);
+    }
+
+    void LightMaterial::deserialize(const nlohmann::json &data)
+    {
+        Material::deserialize(data);
+        if (!data.is_object())
+            return;
+        albedo = AssetLoader<Texture2D>::get(data.value("albedo", "black"));
+        ambient_occlusion = AssetLoader<Texture2D>::get(data.value("ambient_occlusion", "black"));
+        roughness = AssetLoader<Texture2D>::get(data.value("roughness", "black"));
+        emissive = AssetLoader<Texture2D>::get(data.value("emissive", "black"));
+        specular = AssetLoader<Texture2D>::get(data.value("specular", "black"));
+        sampler = AssetLoader<Sampler>::get(data.value("sampler", "default"));
+    }
 }

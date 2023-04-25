@@ -66,7 +66,7 @@ namespace our
             //  The depth format can be (Depth component with 24 bits).
             colorTarget = new Texture2D();
             colorTarget->bind();
-    
+
             GLsizei levels = (GLsizei)glm::floor(glm::log2((float)glm::max(windowSize.x, windowSize.y))) + 1;
             glTexStorage2D(GL_TEXTURE_2D, levels, GL_RGBA8, windowSize.x, windowSize.y); // not sure of x & y
 
@@ -217,6 +217,45 @@ namespace our
             command.mesh->draw();
         }
 
+        //-------------------------------------------
+        //-----------Support for light---------------
+        //-------------------------------------------
+        int light_count = world->light_count;
+        Light *lights = world->lights;
+        for (auto &command : lightCommands)
+        {
+            command.material->setup();
+
+            glm::mat4 M = command.localToWorld;
+            glm::mat4 M_IT = glm::transpose(glm::inverse(M));
+            glm::vec3 eye = camera->getOwner()->localTransform.position;
+            glm::vec3 sky_top = glm::vec3(0.3f, 0.6f, 1.0f);
+            glm::vec3 sky_middle = glm::vec3(0.3f, 0.3f, 0.3f);
+            glm::vec3 sky_bottom = glm::vec3(0.1f, 0.1f, 0.0f);
+            command.material->shader->set("M", M);
+            command.material->shader->set("VP", VP);
+            command.material->shader->set("M_IT", M_IT);
+            command.material->shader->set("eye", eye);
+            command.material->shader->set("sky.top", sky_top);
+            command.material->shader->set("sky.middle", sky_middle);
+            command.material->shader->set("sky.bottom", sky_bottom);
+
+            for (int i = 0; i < light_count; i++)
+            {
+                command.material->shader->set("lights[" + std::to_string(i) + "].type", lights[i].kind);
+                command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i].position);
+                command.material->shader->set("lights[" + std::to_string(i) + "].diffuse", lights[i].diffuse);
+                command.material->shader->set("lights[" + std::to_string(i) + "].specular", lights[i].specular);
+                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation", lights[i].attenuation);
+                command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i].direction);
+                command.material->shader->set("lights[" + std::to_string(i) + "].cone_angles", lights[i].cone_angles);
+            }
+            command.material->shader->set("light_count", light_count);
+            command.mesh->draw();
+        }
+        //-------------------------------------------
+        //-------------------------------------------
+
         // If there is a sky material, draw the sky
         if (this->skyMaterial)
         {
@@ -266,7 +305,6 @@ namespace our
             // TODO: (Req 11) Setup the postprocess material and draw the fullscreen triangle
             postprocessMaterial->setup();
             skySphere->draw();
-            
         }
     }
 
