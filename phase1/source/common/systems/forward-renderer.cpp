@@ -66,7 +66,7 @@ namespace our
             //  The depth format can be (Depth component with 24 bits).
             colorTarget = new Texture2D();
             colorTarget->bind();
-    
+
             GLsizei levels = (GLsizei)glm::floor(glm::log2((float)glm::max(windowSize.x, windowSize.y))) + 1;
             glTexStorage2D(GL_TEXTURE_2D, levels, GL_RGBA8, windowSize.x, windowSize.y); // not sure of x & y
 
@@ -266,7 +266,6 @@ namespace our
             // TODO: (Req 11) Setup the postprocess material and draw the fullscreen triangle
             postprocessMaterial->setup();
             skySphere->draw();
-            
         }
     }
 

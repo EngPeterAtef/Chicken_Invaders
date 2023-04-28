@@ -54,11 +54,14 @@ namespace our
         // TODO: (Req 7) Write this function
         TintedMaterial::setup();
         shader->set("alphaThreshold", alphaThreshold);
+        // activate texture unit zero for subsequent texture-related commands to operate on it
         glActiveTexture(GL_TEXTURE0);
         if (sampler)
         {
+            // the sampler object should be bound to texture unit 0
             sampler->bind(0);
         }
+        // binding the texture object to texture unit  in the current OpenGL context for use in subsequent rendering operations.
         texture->bind();
         shader->set("tex", 0);
     }

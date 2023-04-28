@@ -14,14 +14,18 @@ namespace our
     glm::mat4 Entity::getLocalToWorldMatrix() const
     {
         // TODO: (Req 8) Write this function
+        // the line is creating a 4x4 transformation matrix that represents the transformation 
+        //from a local coordinate system to a world coordinate system
         glm::mat4 localToWorld = localTransform.toMat4();
         //  if(parent != nullptr){
         //      localToWorld = parent->getLocalToWorldMatrix() * localToWorld;
         //  }
         //  return localToWorld;
+        // currentEntity is initially set to the parent entity of the current entity.
         Entity *currentEntity = parent;
         while (currentEntity != nullptr)
         {
+            //transformation from local space to world space by multiplying 
             localToWorld = currentEntity->localTransform.toMat4() * localToWorld;
             currentEntity = currentEntity->parent;
         }

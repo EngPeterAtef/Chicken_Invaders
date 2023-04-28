@@ -42,6 +42,11 @@ namespace our
         ~Texture2D()
         {
             // TODO: (Req 5) Complete this function
+            /*
+            - The first parameter (`1`) specifies the number of texture objects to be deleted. In this case, only one texture object is being deleted.
+            - The second parameter (`&name`) is a pointer to an array of unsigned integer values representing the names of the texture objects to be deleted.
+             In this case, the array contains only one element (`name`) which represents the name of the texture object to be deleted.
+            */
             glDeleteTextures(1, &name);
         }
 
@@ -55,6 +60,10 @@ namespace our
         void bind() const
         {
             // TODO: (Req 5) Complete this function
+            /*
+             The first parameter specifies the texture target which is here GL_TEXTURE_2D to which the texture object should be bound .
+             The second parameter is an unsigned integer value that represents the name of the texture object to be bound
+            */
             glBindTexture(GL_TEXTURE_2D, name);
         }
 
@@ -62,6 +71,10 @@ namespace our
         static void unbind()
         {
             // TODO: (Req 5) Complete this function
+            /*
+            - The first parameter specifies the texture target which is here GL_TEXTURE_2D from which the texture object should be unbound .
+            - The second parameter (`0`) represents a special value that unbinds any texture object previously bound to the specified texture target.
+            */
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
