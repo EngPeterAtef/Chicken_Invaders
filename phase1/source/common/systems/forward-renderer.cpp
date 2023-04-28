@@ -64,15 +64,15 @@ namespace our
             // TODO: (Req 11) Create a color and a depth texture and attach them to the framebuffer
             //  Hints: The color format can be (Red, Green, Blue and Alpha components with 8 bits for each channel).
             //  The depth format can be (Depth component with 24 bits).
-            colorTarget = new Texture2D();
-            colorTarget->bind();
+            colorTarget = texture_utils::empty(GL_RGBA8, windowSize);
+            // colorTarget->bind();
 
-            GLsizei levels = (GLsizei)glm::floor(glm::log2((float)glm::max(windowSize.x, windowSize.y))) + 1;
-            glTexStorage2D(GL_TEXTURE_2D, levels, GL_RGBA8, windowSize.x, windowSize.y); // not sure of x & y
+            // GLsizei levels = (GLsizei)glm::floor(glm::log2((float)glm::max(windowSize.x, windowSize.y))) + 1;
+            // glTexStorage2D(GL_TEXTURE_2D, levels, GL_RGBA8, windowSize.x, windowSize.y); // not sure of x & y
 
-            depthTarget = new Texture2D();
-            depthTarget->bind();
-            glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT32, windowSize.x, windowSize.y);
+            depthTarget = texture_utils::empty(GL_DEPTH_COMPONENT24, windowSize);
+            // depthTarget->bind();
+            // glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT24, windowSize.x, windowSize.y);
 
             // TODO: (Req 11) Unbind the framebuffer just to be safe
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
@@ -265,7 +265,9 @@ namespace our
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             // TODO: (Req 11) Setup the postprocess material and draw the fullscreen triangle
             postprocessMaterial->setup();
-            skySphere->draw();
+            glBindVertexArray(this->postProcessVertexArray);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
+            // skySphere->draw();
         }
     }
 

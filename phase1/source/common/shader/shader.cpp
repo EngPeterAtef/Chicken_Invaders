@@ -53,9 +53,6 @@ bool our::ShaderProgram::link() const
     glLinkProgram(program);
     std::string errorStr = checkForLinkingErrors(program);
 
-    // // glDeleteShader(s);
-    // //TODO: Delete the attached shader
-
     if (errorStr != std::string())
     {
         std::cerr << "Error in link: " << errorStr << std::endl;

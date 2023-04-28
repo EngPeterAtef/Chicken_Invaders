@@ -1,5 +1,4 @@
 #include "material.hpp"
-#include <iostream>
 #include "../asset-loader.hpp"
 #include "deserialize-utils.hpp"
 
@@ -68,7 +67,6 @@ namespace our
     // This function read the material data from a json object
     void TexturedMaterial::deserialize(const nlohmann::json &data)
     {
-        std::cout << "TexturedMaterial::deserialize" << std::endl;
         TintedMaterial::deserialize(data);
         if (!data.is_object())
             return;

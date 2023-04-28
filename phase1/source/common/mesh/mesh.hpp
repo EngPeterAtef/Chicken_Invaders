@@ -33,7 +33,7 @@ namespace our
             // TODO: (Req 2) Write this function
             //  remember to store the number of elements in "elementCount" since you will need it for drawing
             //  For the attribute locations, use the constants defined above: ATTRIB_LOC_POSITION, ATTRIB_LOC_COLOR, etc
-            elementCount = elements.size();
+            elementCount = (GLsizei)elements.size();
 
             glGenVertexArrays(1, &VAO);
             glBindVertexArray(VAO);
