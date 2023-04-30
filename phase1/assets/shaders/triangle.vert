@@ -32,22 +32,22 @@ void main(){
     gl_Position = vec4(transformed, 1.0);
 
     // Assign a different color to each vertex based on its position
-    // if (position[gl_VertexID].x < 0.0) {
-    //     vs_out.color = vec3(1.0,0.0,0.0);
-    // } else if (position[gl_VertexID].y < 0.0) {
-    //     vs_out.color = vec3(0.0,1.0,0.0);
-    // } else {
-    //     vs_out.color = vec3(0.0,0.0,1.0);
-    // }
-
-    if(gl_VertexID==0){
+    if (position[gl_VertexID].x < 0.0) {
         vs_out.color = vec3(1.0,0.0,0.0);
-    }
-    else if(gl_VertexID==1){
+    } else if (position[gl_VertexID].y < 0.0) {
         vs_out.color = vec3(0.0,1.0,0.0);
-    }
-    else if(gl_VertexID==2){
+    } else {
         vs_out.color = vec3(0.0,0.0,1.0);
     }
+
+    // if(gl_VertexID==0){
+    //     vs_out.color = vec3(1.0,0.0,0.0);
+    // }
+    // else if(gl_VertexID==1){
+    //     vs_out.color = vec3(0.0,1.0,0.0);
+    // }
+    // else if(gl_VertexID==2){
+    //     vs_out.color = vec3(0.0,0.0,1.0);
+    // }
 
 }

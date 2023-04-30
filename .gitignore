@@ -21,5 +21,8 @@ CMakeSettings.json
 # Visual Studio Code specific files
 phase1/.vscode/settings.json
 phase2/.vscode/settings.json
-# Screenshots
-# screenshots/
+# Screenshots and errors
+phase1/screenshots/
+phase1/errors/
+phase2/errors/
+phase2/screenshots/
