@@ -65,15 +65,10 @@ namespace our
             //  Hints: The color format can be (Red, Green, Blue and Alpha components with 8 bits for each channel).
             //  The depth format can be (Depth component with 24 bits).
             colorTarget = texture_utils::empty(GL_RGBA8, windowSize);
-            // colorTarget->bind();
-
-            // GLsizei levels = (GLsizei)glm::floor(glm::log2((float)glm::max(windowSize.x, windowSize.y))) + 1;
-            // glTexStorage2D(GL_TEXTURE_2D, levels, GL_RGBA8, windowSize.x, windowSize.y); // not sure of x & y
-
             depthTarget = texture_utils::empty(GL_DEPTH_COMPONENT24, windowSize);
-            // depthTarget->bind();
-            // glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT24, windowSize.x, windowSize.y);
 
+            glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorTarget->getOpenGLName(), 0);
+            glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTarget->getOpenGLName(), 0);
             // TODO: (Req 11) Unbind the framebuffer just to be safe
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             // Create a vertex array to use for drawing the texture
@@ -227,12 +222,23 @@ namespace our
             glm::vec3 cameraPosition = camera->getOwner()->getLocalToWorldMatrix() * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
             // TODO: (Req 10) Create a model matrix for the sky such that it always follows the camera (sky sphere center = camera position)
+            // We need to translate the sky sphere center to the camera position
+            // Set the sky sphere center as a 4x4 matrix of ones
             glm::mat4 identity(1.0f);
             // translating shpere position to camera position
+            // Translate this center to the camera position such that it equals it & store
+            // the resulting transformed matrix in modelMatrix
             glm::mat4 M = glm::translate(identity, cameraPosition);
 
             // TODO: (Req 10) We want the sky to be drawn behind everything (in NDC space, z=1)
             //  We can acheive the is by multiplying by an extra matrix after the projection but what values should we put in it?
+            // We can acheive this by multiplying by an extra matrix after the projection but what values should we put in it?
+            // For the sky to be drawn behind, we need to modify the z-index. How?
+            // Simply the 3rd column of our generated alwaysBehindTransform matrix will set the z-coordinate as w.
+            // Then after normalization, when the values of the matrix are divided by w, we will obtain the z which was
+            // previously set to w as 1. Our goal is achieved.
+            // This will ensure that the sky is the very first thing drawn behind
+            // and set the 4th column to 0,0,0,1 to keep the w-coordinate unchanged
             glm::mat4 alwaysBehindTransform = glm::mat4(
                 1.0f, 0.0f, 0.0f, 0.0f,
                 0.0f, 1.0f, 0.0f, 0.0f,
@@ -240,6 +246,10 @@ namespace our
                 0.0f, 0.0f, 1.0f, 1.0f  // set z=1
             );
             // TODO: (Req 10) set the "transform" uniform
+            // We need to get the view Matrix and Projection Matrix
+            // Following TRS sequence of matrices, we will get the VP matrix as we did before from the projection and view matrices
+            // and multiply it by the model matrix to get the transformation matrix
+            // Finally we set it to the "transform" uniform variable in the shader
             glm::mat4 transform = alwaysBehindTransform * VP * M;
             skyMaterial->shader->set("transform", transform);
 
@@ -262,12 +272,18 @@ namespace our
         if (postprocessMaterial)
         {
             // TODO: (Req 11) Return to the default framebuffer
+            // Bind Frame buffer as default (0) using glBindFramebuffer openGL function
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             // TODO: (Req 11) Setup the postprocess material and draw the fullscreen triangle
+            // Bind the Vertex Array
+            glBindVertexArray(postProcessVertexArray);
+            // Setup the post process material
             postprocessMaterial->setup();
-            glBindVertexArray(this->postProcessVertexArray);
+            // Drawing the new triangles after postProcessing of the image
+            // By setting the mode as GL_TRIANGLES
+            // The first argument to 0 since we want to start from the beginning
+            // The count is set to 3
             glDrawArrays(GL_TRIANGLES, 0, 3);
-            // skySphere->draw();
         }
     }
 
