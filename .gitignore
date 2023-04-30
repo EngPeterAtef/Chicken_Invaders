@@ -19,7 +19,7 @@ CMakeSettings.json
 .idea/
 
 # Visual Studio Code specific files
-.vscode/settings.json
-
+phase1/.vscode/settings.json
+phase2/.vscode/settings.json
 # Screenshots
 # screenshots/
