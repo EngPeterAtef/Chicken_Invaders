@@ -9,7 +9,7 @@ out vec4 frag_color;
 
 // How far (in the texture space) is the distance (on the x-axis) between
 // the pixels from which the red/green (or green/blue) channels are sampled
-#define STRENGTH .005
+#define STRENGTH.005
 
 // Chromatic aberration mimics some old cameras where the lens disperses light
 // differently based on its wavelength. In this shader, we will implement a
@@ -20,11 +20,10 @@ void main(){
     // To apply this effect, we only read the green channel from the correct pixel (as defined by tex_coord)
     // To get the red channel, we move by amount STRENGTH to the left then sample another pixel from which we take the red channel
     // To get the blue channel, we move by amount STRENGTH to the right then sample another pixel from which we take the blue channel
-    // frag_color = texture(tex, tex_coord);
-    vec4 color=vec4(0);
-    color.r=texture(tex,tex_coord-vec2(STRENGTH,0)).r;
-    color.g=texture(tex,tex_coord).g;
-    color.b=texture(tex,tex_coord+vec2(STRENGTH,0)).b;
     
-    frag_color=color;
+    frag_color=texture(tex,tex_coord);
+    frag_color.r=texture(tex,vec2(tex_coord.x-STRENGTH,tex_coord.y)).r;
+    frag_color.g=texture(tex,vec2(tex_coord.x,tex_coord.y)).g;
+    frag_color.b=texture(tex,vec2(tex_coord.x+STRENGTH,tex_coord.y)).b;
+    
 }
