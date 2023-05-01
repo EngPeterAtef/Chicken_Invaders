@@ -57,12 +57,7 @@
               "enabled": true
             }
           },
-          "tint": [
-            0.45,
-            0.4,
-            0.5,
-            1
-          ]
+          "tint": [0.45, 0.4, 0.5, 1]
         },
         "glass": {
           "type": "textured",
@@ -82,12 +77,7 @@
             "depthMask": false
           },
           "transparent": true,
-          "tint": [
-            1,
-            1,
-            1,
-            1
-          ],
+          "tint": [1, 1, 1, 1],
           "texture": "glass",
           "sampler": "pixelated"
         },
@@ -102,12 +92,7 @@
               "enabled": true
             }
           },
-          "tint": [
-            1,
-            1,
-            1,
-            1
-          ],
+          "tint": [1, 1, 1, 1],
           "texture": "grass",
           "sampler": "default"
         },
@@ -122,12 +107,7 @@
               "enabled": true
             }
           },
-          "tint": [
-            1,
-            1,
-            1,
-            1
-          ],
+          "tint": [1, 1, 1, 1],
           "texture": "monkey",
           "sampler": "default"
         },
@@ -142,12 +122,7 @@
               "enabled": true
             }
           },
-          "tint": [
-            1,
-            1,
-            1,
-            1
-          ],
+          "tint": [1, 1, 1, 1],
           "texture": "rocket",
           "sampler": "default"
         },
@@ -162,12 +137,7 @@
               "enabled": true
             }
           },
-          "tint": [
-            1,
-            1,
-            1,
-            1
-          ],
+          "tint": [1, 1, 1, 1],
           "texture": "moon",
           "sampler": "default"
         }
@@ -175,60 +145,24 @@
     },
     "world": [
       {
-        "position": [
-          0,
-          0,
-          10
-        ],
+        "position": [0, 0, 10],
         "components": [
           {
             "type": "Camera"
           },
           {
             "type": "Free Camera Controller"
+          },
+          {
+            "type": "Movement",
+            "linearVelocity": [0, 0, -5]
           }
         ],
         "children": [
-          // {
-          //   "position": [
-          //     1,
-          //     -1,
-          //     -1
-          //   ],
-          //   "rotation": [
-          //     45,
-          //     45,
-          //     0
-          //   ],
-          //   "scale": [
-          //     0.1,
-          //     0.1,
-          //     1.0
-          //   ],
-          //   "components": [
-          //     {
-          //       "type": "Mesh Renderer",
-          //       "mesh": "cube",
-          //       "material": "metal"
-          //     }
-          //   ]
-          // },
           {
-            "rotation": [
-              0,
-              -90,
-              90
-            ],
-            "position": [
-              0,
-              -2,
-              -1.5
-            ],
-            "scale": [
-              0.005,
-              0.008,
-              0.005
-            ],
+            "rotation": [0, -90, 90],
+            "position": [0, -2, -3],
+            "scale": [0.005, 0.008, 0.005],
             "components": [
               {
                 "type": "Mesh Renderer",
@@ -237,34 +171,16 @@
               },
               {
                 "type": "Movement",
-                "linearVelocity": [
-                  0,
-                  0,
-                  0
-                ],
-                "angularVelocity": [
-                  90,
-                  0,
-                  0
-                ]
+                "linearVelocity": [0, 0, 0]
               }
-              // ,
-              // {
-              //   "type": "Camera"
-              // },
-              // {
-              //   "type": "Free Camera Controller"
-              // }
             ]
           }
         ]
       },
       {
-        "rotation": [
-          -45,
-          0,
-          0
-        ],
+        "rotation": [0, 0, 0],
+        "position": [0, -0.3, -10],
+        "scale": [0.4, 0.4, 0.4],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -273,203 +189,46 @@
           },
           {
             "type": "Movement",
-            "linearVelocity": [
-              0,
-              0.1,
-              0
-            ],
-            "angularVelocity": [
-              0,
-              45,
-              0
-            ]
+            "angularVelocity": [0, 100, 0]
           }
         ]
       },
-      // {
-      //   "rotation": [0, 0, 0],
-      //   "position": [-3, 1, 10],
-      //   "scale": [0.005, 0.008, 0.005],
-      //   "components": [
-      //     {
-      //       "type": "Mesh Renderer",
-      //       "mesh": "rocket",
-      //       "material": "rocket"
-      //     },
-      //     {
-      //       "type": "Movement",
-      //       "linearVelocity": [0, 0, 0],
-      //       "angularVelocity": [0, 45, 0]
-      //     }
-      //     // ,
-      //     // {
-      //     //   "type": "Camera"
-      //     // },
-      //     // {
-      //     //   "type": "Free Camera Controller"
-      //     // }
-      //   ]
-      // },
       {
-        "position": [
-          0,
-          -1,
-          0
-        ],
-        "rotation": [
-          -90,
-          0,
-          0
-        ],
-        "scale": [
-          10,
-          10,
-          1
-        ],
+        "rotation": [0, 0, 0],
+        "position": [1, -0.3, -10],
+        "scale": [0.4, 0.4, 0.4],
         "components": [
           {
             "type": "Mesh Renderer",
-            "mesh": "plane",
-            "material": "grass"
+            "mesh": "monkey",
+            "material": "monkey"
+          },
+          {
+            "type": "Movement",
+            "angularVelocity": [0, 100, 0]
           }
         ]
       },
       {
-        "position": [
-          0,
-          1,
-          2
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          2,
-          2,
-          2
-        ],
+        "rotation": [0, 0, 0],
+        "position": [1, -0.3, -15],
+        "scale": [0.4, 0.4, 0.4],
         "components": [
           {
             "type": "Mesh Renderer",
-            "mesh": "plane",
-            "material": "glass"
-          }
-        ]
-      },
-      {
-        "position": [
-          0,
-          1,
-          -2
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          2,
-          2,
-          2
-        ],
-        "components": [
+            "mesh": "monkey",
+            "material": "monkey"
+          },
           {
-            "type": "Mesh Renderer",
-            "mesh": "plane",
-            "material": "glass"
+            "type": "Movement",
+            "angularVelocity": [0, 100, 0]
           }
         ]
       },
       {
-        "position": [
-          2,
-          1,
-          0
-        ],
-        "rotation": [
-          0,
-          90,
-          0
-        ],
-        "scale": [
-          2,
-          2,
-          2
-        ],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "plane",
-            "material": "glass"
-          }
-        ]
-      },
-      {
-        "position": [
-          -2,
-          1,
-          0
-        ],
-        "rotation": [
-          0,
-          90,
-          0
-        ],
-        "scale": [
-          2,
-          2,
-          2
-        ],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "plane",
-            "material": "glass"
-          }
-        ]
-      },
-      {
-        "position": [
-          0,
-          3,
-          0
-        ],
-        "rotation": [
-          90,
-          0,
-          0
-        ],
-        "scale": [
-          2,
-          2,
-          2
-        ],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "plane",
-            "material": "glass"
-          }
-        ]
-      },
-      {
-        "position": [
-          0,
-          10,
-          0
-        ],
-        "rotation": [
-          45,
-          45,
-          0
-        ],
-        "scale": [
-          5,
-          5,
-          5
-        ],
+        "position": [0, 10, 0],
+        "rotation": [45, 45, 0],
+        "scale": [5, 5, 5],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -478,11 +237,7 @@
           },
           {
             "type": "Movement",
-            "angularVelocity": [
-              0,
-              90,
-              0
-            ]
+            "angularVelocity": [0, 90, 0]
           }
         ]
       }
