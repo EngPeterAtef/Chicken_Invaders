@@ -1,0 +1,24 @@
+tasks:
+1.construct map:
+a. 3d model for chicken "scaling"
+b. 3d model for dead chicken
+c. generate random chickens in spherical shape
+d. firing the chickens
+
+2. collision logic:
+a. rocket with chicken "reduce one life"
+b. bullet with chicken:
+	i. level one: 1 shot
+	ii. level 2: 2 shot
+	iii. level 3: 3 shot
+c. collision rocket with chicken wings : increase the score 
+
+
+
+3.Extra:
+Audio
+start menu
+end menu
+lives
+score "hitted chickens"
+health of the chicken doaa
