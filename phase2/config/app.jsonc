@@ -168,11 +168,8 @@
                 "type": "Mesh Renderer",
                 "mesh": "rocket",
                 "material": "rocket"
-              },
-              {
-                "type": "Movement",
-                "linearVelocity": [0, 0, 0]
               }
+         
             ]
           }
         ]
