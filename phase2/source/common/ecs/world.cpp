@@ -17,21 +17,21 @@ void World::deserialize(const nlohmann::json &data, Entity *parent)
         entity->parent = parent;
         entity->deserialize(entityData);
         // if the entity name is enemy repeat it many times in different positions
-        if (entity->name == "enemy")
-        {
-            for (int i = 0; i < 100; i++)
-            {
-                Entity *newEntity = add();
-                newEntity->parent = parent;
-                newEntity->deserialize({{"name", "enemy"},
-                                        {"rotation", {0, 0, 0}},
-                                        {"position", {((1 + i / 2) ^ 2) % 10, -0.3, -15 - i * 5}},
-                                        {"scale", {0.4, 0.4, 0.4}},
-                                        {"components",
-                                         {{{"type", "Mesh Renderer"}, {"mesh", "monkey"}, {"material", "monkey"}},
-                                          {{"type", "Movement"}, {"angularVelocity", {0, 100, 0}}}}}});
-            }
-        }
+        // if (entity->name == "enemy")
+        // {
+        //     for (int i = 0; i < 100; i++)
+        //     {
+        //         Entity *newEntity = add();
+        //         newEntity->parent = parent;
+        //         newEntity->deserialize({{"name", "enemy"},
+        //                                 {"rotation", {0, 0, 0}},
+        //                                 {"position", {((1 + i / 2) ^ 2) % 10, -0.3, -15 - i * 5}},
+        //                                 {"scale", {0.4, 0.4, 0.4}},
+        //                                 {"components",
+        //                                  {{{"type", "Mesh Renderer"}, {"mesh", "monkey"}, {"material", "monkey"}},
+        //                                   {{"type", "Movement"}, {"angularVelocity", {0, 100, 0}}}}}});
+        //     }
+        // }
         // data is map of maps
         // entityData is map
         // if there is a key called "children" in the map so it has children
@@ -41,6 +41,7 @@ void World::deserialize(const nlohmann::json &data, Entity *parent)
             //  and the current entity as the parent
             deserialize(entityData["children"], entity);
         }
+        std::cout<<"finish world deserialize\n"<<std::endl;
     }
 }
 
