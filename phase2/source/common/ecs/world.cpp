@@ -29,6 +29,7 @@ void World::deserialize(const nlohmann::json &data, Entity *parent)
                                         {"scale", {0.4, 0.4, 0.4}},
                                         {"components",
                                          {{{"type", "Mesh Renderer"}, {"mesh", "monkey"}, {"material", "monkey"}},
+                                          {{"type", "Collision"}, {"mesh", "monkey"}},
                                           {{"type", "Movement"}, {"angularVelocity", {0, 100, 0}}}}}});
             }
         }
