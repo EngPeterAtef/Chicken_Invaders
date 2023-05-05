@@ -29,12 +29,12 @@
         "grass": "assets/textures/grass_ground_d.jpg",
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
-        "monkey": "assets/textures/chicken1/chicken1.jpg",
+        "chicken": "assets/textures/chicken1/chicken1.jpg",
         "rocket": "assets/textures/rocket.jpg"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
-        "monkey": "assets/models/Chicken1.obj",
+        "chicken": "assets/models/Chicken1.obj",
         "plane": "assets/models/plane.obj",
         "sphere": "assets/models/sphere.obj",
         "rocket": "assets/models/rocket.obj"
@@ -111,6 +111,21 @@
           "texture": "monkey",
           "sampler": "default"
         },
+         "chicken": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "chicken",
+          "sampler": "default"
+        },
         "rocket": {
           "type": "textured",
           "shader": "textured",
@@ -160,7 +175,6 @@
         ],
         "children": [
           {
-            "name": "player",
             "rotation": [0, -90, 90],
             "position": [0, -2, -3],
             "scale": [0.005, 0.008, 0.005],
@@ -169,11 +183,8 @@
                 "type": "Mesh Renderer",
                 "mesh": "rocket",
                 "material": "rocket"
-              },
-              {
-                "type": "Collision",
-                "mesh": "rocket"
               }
+         
             ]
           }
         ]
@@ -186,16 +197,12 @@
         "components": [
           {
             "type": "Mesh Renderer",
-            "mesh": "monkey",
-            "material": "monkey"
+            "mesh": "chicken",
+            "material": "chicken"
           },
           {
             "type": "Movement",
             "angularVelocity": [0, 100, 0]
-          },
-          {
-            "type": "Collision",
-            "mesh": "monkey"
           }
         ]
       },
@@ -206,16 +213,12 @@
         "components": [
           {
             "type": "Mesh Renderer",
-            "mesh": "monkey",
-            "material": "monkey"
+            "mesh": "chicken",
+            "material": "chicken"
           },
           {
             "type": "Movement",
             "angularVelocity": [0, 100, 0]
-          },
-          {
-            "type": "Collision",
-            "mesh": "monkey"
           }
         ]
       },
@@ -226,16 +229,12 @@
         "components": [
           {
             "type": "Mesh Renderer",
-            "mesh": "monkey",
-            "material": "monkey"
+            "mesh": "chicken",
+            "material": "chicken"
           },
           {
             "type": "Movement",
             "angularVelocity": [0, 100, 0]
-          },
-          {
-            "type": "Collision",
-            "mesh": "monkey"
           }
         ]
       },
