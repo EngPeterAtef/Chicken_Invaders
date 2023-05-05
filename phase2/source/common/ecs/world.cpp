@@ -26,7 +26,7 @@ void World::deserialize(const nlohmann::json &data, Entity *parent)
                 newEntity->deserialize({{"name", "enemy"},
                                         {"rotation", {0, 0, 0}},
                                         {"position", {((1 + i / 2) ^ 2) % 10, -0.3, -15 - i * 5}},
-                                        {"scale", {0.4, 0.4, 0.4}},
+                                        {"scale", {0.2, 0.2, 0.2}},
                                         {"components",
                                          {{{"type", "Mesh Renderer"}, {"mesh", "monkey"}, {"material", "monkey"}},
                                           {{"type", "Collision"}, {"mesh", "monkey"}},
