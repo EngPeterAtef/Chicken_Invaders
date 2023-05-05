@@ -38,22 +38,9 @@ namespace our
             // if there is a key called "children" in the map so it has children
             if (entityData.contains("children"))
             {
-<<<<<<< HEAD
                 // TODO: (Req 8) Recursively call this world's "deserialize" using the children data
                 //  and the current entity as the parent
                 deserialize(entityData["children"], entity);
-=======
-                Entity *newEntity = add();
-                newEntity->parent = parent;
-                newEntity->deserialize({{"name", "enemy"},
-                                        {"rotation", {0, 0, 0}},
-                                        {"position", {((1 + i / 2) ^ 2) % 10, -0.3, -15 - i * 5}},
-                                        {"scale", {0.4, 0.4, 0.4}},
-                                        {"components",
-                                         {{{"type", "Mesh Renderer"}, {"mesh", "monkey"}, {"material", "monkey"}},
-                                          {{"type", "Collision"}, {"mesh", "monkey"}},
-                                          {{"type", "Movement"}, {"angularVelocity", {0, 100, 0}}}}}});
->>>>>>> c2235502f178af8811e710d7af67d8371e6f5f97
             }
             std::cout << "finish world deserialize\n"
                       << std::endl;
