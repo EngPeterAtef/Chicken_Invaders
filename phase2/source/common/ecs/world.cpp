@@ -42,6 +42,7 @@ void World::deserialize(const nlohmann::json &data, Entity *parent)
             //  and the current entity as the parent
             deserialize(entityData["children"], entity);
         }
+        std::cout << "finish world deserialize\n" << std::endl;
     }
 }
 

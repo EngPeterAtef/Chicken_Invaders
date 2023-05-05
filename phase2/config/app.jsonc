@@ -29,12 +29,12 @@
         "grass": "assets/textures/grass_ground_d.jpg",
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
-        "monkey": "assets/textures/monkey.png",
+        "monkey": "assets/textures/chicken1/chicken1.jpg",
         "rocket": "assets/textures/rocket.jpg"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
-        "monkey": "assets/models/monkey.obj",
+        "monkey": "assets/models/Chicken1.obj",
         "plane": "assets/models/plane.obj",
         "sphere": "assets/models/sphere.obj",
         "rocket": "assets/models/rocket.obj"
