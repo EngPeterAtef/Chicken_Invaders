@@ -111,7 +111,7 @@
           "texture": "monkey",
           "sampler": "default"
         },
-         "chicken": {
+        "chicken": {
           "type": "textured",
           "shader": "textured",
           "pipelineState": {
@@ -160,7 +160,7 @@
     },
     "world": [
       {
-        "position": [0, 0, 10],
+        "position": [0, 2, 15],
         "components": [
           {
             "type": "Camera"
@@ -175,8 +175,9 @@
         ],
         "children": [
           {
+            "name": "player",
             "rotation": [0, -90, 90],
-            "position": [0, -2, -3],
+            "position": [0, -2.5, -4],
             "scale": [0.005, 0.008, 0.005],
             "components": [
               {
@@ -184,7 +185,6 @@
                 "mesh": "rocket",
                 "material": "rocket"
               }
-         
             ]
           }
         ]
@@ -193,7 +193,7 @@
         "name": "enemy",
         "rotation": [0, 0, 0],
         "position": [0, -0.3, -10],
-        "scale": [0.4, 0.4, 0.4],
+        "scale": [0.2, 0.2, 0.2],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -207,9 +207,10 @@
         ]
       },
       {
+        "name": "enemy",
         "rotation": [0, 0, 0],
         "position": [1, -0.3, -10],
-        "scale": [0.4, 0.4, 0.4],
+        "scale": [0.2, 0.2, 0.2],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -223,9 +224,10 @@
         ]
       },
       {
+        "name": "enemy",
         "rotation": [0, 0, 0],
         "position": [1, -0.3, -15],
-        "scale": [0.4, 0.4, 0.4],
+        "scale": [0.2, 0.2, 0.2],
         "components": [
           {
             "type": "Mesh Renderer",
