@@ -160,21 +160,21 @@ namespace our
                     // Otherwise, we add it to the opaque command list
                     opaqueCommands.push_back(command);
                 }
-                if (entity->name == "enemy")
-                {
+                // if (entity->name == "enemy")
+                // {
 
-                    Entity *newEntity = world->add();
-                    newEntity->name = "enemy";
-                    newEntity->localTransform.position = glm::vec3(10, -0.3, -10);
-                    newEntity->localTransform.rotation = glm::vec3(0, 0, 0);
-                    newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
-                    MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
+                //     Entity *newEntity = world->add();
+                //     newEntity->name = "enemy";
+                //     newEntity->localTransform.position = glm::vec3(10, -0.3, -10);
+                //     newEntity->localTransform.rotation = glm::vec3(0, 0, 0);
+                //     newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
+                //     MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
 
-                    meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
-                    MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
-                    movementRendererComp->linearVelocity = glm::vec3(0, 0, 0.5);
-                    this->counter = 0;
-                }
+                //     meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
+                //     MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
+                //     movementRendererComp->linearVelocity = glm::vec3(0, 0, 0.5);
+                //     this->counter = 0;
+                // }
             }
         }
 
