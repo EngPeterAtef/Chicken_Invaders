@@ -80,7 +80,6 @@ class CollisionSystem
                 {
                     // i++;
                     std::cout << "collision detected" << '\n';
-                    break;
                     return enemy;
                 }
             }
