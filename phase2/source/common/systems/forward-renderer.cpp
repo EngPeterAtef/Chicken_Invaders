@@ -141,6 +141,7 @@ namespace our
     {
         counter++;
 
+        counter++;
         // First of all, we search for a camera and for all the mesh renderers
         CameraComponent *camera = nullptr;
         opaqueCommands.clear();
@@ -365,7 +366,6 @@ namespace our
             // The count is set to 3
             glDrawArrays(GL_TRIANGLES, 0, 3);
         }
-        this->counter++;
     }
 
 } // namespace our
