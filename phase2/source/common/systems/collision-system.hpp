@@ -35,6 +35,7 @@ class CollisionSystem
             if (entity1->name == "player")
             {
                 player = entity1;
+                break;
             }
         }
 

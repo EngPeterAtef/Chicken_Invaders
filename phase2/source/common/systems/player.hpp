@@ -41,6 +41,21 @@ class PlayerSystem
             enemy_collision->deleteComponent<CollisionComponent>();
             lives--;
             std::cout << "Lives: " << lives << " Score : " << score << std::endl;
+
+            for (auto entity1 : world->getEntities())
+            {
+                // Look for the lives
+                if (lives == 2 && entity1->name == "lives1")
+                {
+                    entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                    break;
+                }
+                else if (lives == 1 && entity1->name == "lives2")
+                {
+                    entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                    break;
+                }
+            }
             if (lives == 0)
             {
                 app->changeState("menu");
