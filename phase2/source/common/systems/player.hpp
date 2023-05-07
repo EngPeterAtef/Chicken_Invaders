@@ -58,7 +58,7 @@ class PlayerSystem
             }
             if (lives == 0)
             {
-                app->changeState("menu");
+                app->changeState("game-over");
             }
         }
     }
