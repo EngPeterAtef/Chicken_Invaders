@@ -149,6 +149,7 @@ class FreeCameraControllerSystem
         if (enemy_collision)
         {
             enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
+            enemy_collision->deleteComponent<CollisionComponent>();
         }
     }
 

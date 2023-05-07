@@ -48,32 +48,57 @@ class CollisionSystem
                 enemy = col2->getOwner();
                 std::string name = entity1->name;
 
-                // gets the min and max vertices using the mesh class
-                glm::vec3 minPlayerVertex = player->getComponent<CollisionComponent>()->mesh->minvertex;
-                glm::vec3 maxPlayerVertex = player->getComponent<CollisionComponent>()->mesh->maxvertex;
+                // // gets the min and max vertices using the mesh class
+                // glm::vec3 minPlayerVertex = player->getComponent<CollisionComponent>()->mesh->minvertex;
+                // glm::vec3 maxPlayerVertex = player->getComponent<CollisionComponent>()->mesh->maxvertex;
 
-                // transforms the min and max vertices to the wold space
-                minPlayerVertex *= player->localTransform.scale[0] * 5;
-                maxPlayerVertex *= player->localTransform.scale[0] * 5;
-                minPlayerVertex += player->parent->localTransform.position + player->localTransform.position;
-                maxPlayerVertex += player->parent->localTransform.position + player->localTransform.position;
+                // // transforms the min and max vertices to the wold space
+                // minPlayerVertex *= player->localTransform.scale[0];
+                // maxPlayerVertex *= player->localTransform.scale[0];
+                // minPlayerVertex += player->parent->localTransform.position + player->localTransform.position;
+                // maxPlayerVertex += player->parent->localTransform.position + player->localTransform.position;
 
-                // gets the min and max vertices using the mesh class
-                glm::vec3 minCollider = entity1->getComponent<CollisionComponent>()->mesh->minvertex;
-                glm::vec3 maxCollider = entity1->getComponent<CollisionComponent>()->mesh->maxvertex;
+                // // gets the min and max vertices using the mesh class
+                // glm::vec3 minCollider = entity1->getComponent<CollisionComponent>()->mesh->minvertex;
+                // glm::vec3 maxCollider = entity1->getComponent<CollisionComponent>()->mesh->maxvertex;
 
-                // transforms the min and max vertices to the wold space
-                minCollider *= entity1->localTransform.scale[0];
-                maxCollider *= entity1->localTransform.scale[0];
-                minCollider += entity1->localTransform.position;
-                maxCollider += entity1->localTransform.position;
+                // // transforms the min and max vertices to the wold space
+                // minCollider *= entity1->localTransform.scale[0];
+                // maxCollider *= entity1->localTransform.scale[0];
+                // minCollider += entity1->localTransform.position;
+                // maxCollider += entity1->localTransform.position;
 
                 // collision between AABBs check
-                if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
-                    (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
-                    (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
+                // if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
+                //     (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
+                //     (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
+
+                // calculates the distance between the player and the enemy
+                float distance =
+                    glm::distance(player->getLocalToWorldMatrix() * glm::vec4(player->localTransform.position, 1.0),
+                                  enemy->getLocalToWorldMatrix() * glm::vec4(enemy->localTransform.position, 1.0));
+                // calculates the distance between the player and the enemy in each direction seperately
+                float xDistance =
+                    glm::distance(player->getLocalToWorldMatrix() * glm::vec4(player->localTransform.position, 1.0),
+                                  enemy->getLocalToWorldMatrix() * glm::vec4(enemy->localTransform.position.x,
+                                                                             player->localTransform.position.y,
+                                                                             player->localTransform.position.z, 1.0));
+                float yDistance =
+                    glm::distance(player->getLocalToWorldMatrix() * glm::vec4(player->localTransform.position, 1.0),
+                                  enemy->getLocalToWorldMatrix() * glm::vec4(player->localTransform.position.x,
+                                                                             enemy->localTransform.position.y,
+                                                                             player->localTransform.position.z, 1.0));
+
+                float zDistance =
+                    glm::distance(player->getLocalToWorldMatrix() * glm::vec4(player->localTransform.position, 1.0),
+                                  enemy->getLocalToWorldMatrix() * glm::vec4(player->localTransform.position.x,
+                                                                             player->localTransform.position.y,
+                                                                             enemy->localTransform.position.z, 1.0));
+                if (zDistance < 4.0f && xDistance < 3.0) // 4.0 and 3.0 are calculated by trial and error
+
                 {
-                    // std::cout << "collision detected" << '\n';
+
+                    std::cout << "collision detected distance : (" << xDistance << "," << zDistance << ")" << '\n';
                     return enemy;
                 }
             }
