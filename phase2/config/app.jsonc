@@ -39,7 +39,8 @@
         "plane": "assets/models/plane.obj",
         "sphere": "assets/models/sphere.obj",
         "rocket": "assets/models/rocket.obj",
-        "heart": "assets/models/heart.obj"
+        "heart": "assets/models/heart.obj",
+        "laser": "assets/models/laser.obj"
       },
       "samplers": {
         "default": {},
@@ -111,6 +112,21 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "monkey",
+          "sampler": "default"
+        },
+        "laser": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "heart",
           "sampler": "default"
         },
         "chicken": {
@@ -201,6 +217,22 @@
                 "type": "Mesh Renderer",
                 "mesh": "rocket",
                 "material": "rocket"
+              },
+              {
+                "type": "Collision",
+                "mesh": "rocket"
+              }
+            ]
+          },
+          {
+            "rotation": [0, 0, 0],
+            "position": [0, -2.5, -4],
+            "scale": [1, 1, 500.0],
+            "components": [
+              {
+                "type": "Mesh Renderer",
+                "mesh": "laser",
+                "material": "laser"
               },
               {
                 "type": "Collision",
