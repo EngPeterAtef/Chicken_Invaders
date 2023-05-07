@@ -85,7 +85,7 @@ class GameOverState : public our::State
         // - The argument list () which is the arguments that the lambda should receive when it is called.
         //      We leave it empty since button actions receive no input.
         // - The body {} which contains the code to be executed.
-        buttons.position = {930.0f, 602.0f};
+        buttons.position = {930.0f, 603.0f};
         buttons.size = {300.0f, 43.0f};
         buttons.action = [this]() { this->getApp()->changeState("menu"); };
     }
