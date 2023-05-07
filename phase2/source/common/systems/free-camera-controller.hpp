@@ -136,16 +136,20 @@ class FreeCameraControllerSystem
             if (rocket_rotation.x > -1.0)
                 rocket_rotation.x -= 0.1f;
 
-            position += right * (5 * deltaTime * current_sensitivity.x);
+            position += right * (2 * deltaTime * current_sensitivity.x);
         }
         if (app->getKeyboard().isPressed(GLFW_KEY_A))
         {
             if (rocket_rotation.x < 1.0)
                 rocket_rotation.x += 0.1f;
-            position -= right * (5 * deltaTime * current_sensitivity.x);
+            position -= right * (2 * deltaTime * current_sensitivity.x);
         }
 
         Entity *enemy_collision = collisionSystem.detectCollision(world);
+        if (enemy_collision)
+        {
+            enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
+        }
     }
 
     // When the state exits, it should call this function to ensure the mouse is unlocked

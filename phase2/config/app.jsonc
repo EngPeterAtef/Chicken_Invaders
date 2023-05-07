@@ -184,6 +184,10 @@
                 "type": "Mesh Renderer",
                 "mesh": "rocket",
                 "material": "rocket"
+              },
+              {
+                "type": "Collision",
+                "mesh": "rocket"
               }
             ]
           }
@@ -203,6 +207,10 @@
           {
             "type": "Movement",
             "angularVelocity": [0, 100, 0]
+          },
+          {
+            "type": "Collision",
+            "mesh": "chicken"
           }
         ]
       },
@@ -220,6 +228,10 @@
           {
             "type": "Movement",
             "angularVelocity": [0, 100, 0]
+          },
+          {
+            "type": "Collision",
+            "mesh": "chicken"
           }
         ]
       },
@@ -237,6 +249,10 @@
           {
             "type": "Movement",
             "angularVelocity": [0, 100, 0]
+          },
+          {
+            "type": "Collision",
+            "mesh": "chicken"
           }
         ]
       },
