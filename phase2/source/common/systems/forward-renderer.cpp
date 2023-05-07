@@ -2,10 +2,10 @@
 #include "../mesh/mesh-utils.hpp"
 #include "../texture/texture-utils.hpp"
 #include "../common/components/movement.hpp"
-
+#include "../common/components/mesh-renderer.hpp"
 namespace our
 {
-
+    int counter = 0;
     void ForwardRenderer::initialize(glm::ivec2 windowSize, const nlohmann::json &config)
     {
         // First, we store the window size for later use
@@ -130,6 +130,7 @@ namespace our
     void ForwardRenderer::render(World *world)
     {
 
+        counter++;
         // First of all, we search for a camera and for all the mesh renderers
         CameraComponent *camera = nullptr;
         opaqueCommands.clear();
@@ -160,21 +161,23 @@ namespace our
                     // Otherwise, we add it to the opaque command list
                     opaqueCommands.push_back(command);
                 }
-                // if (entity->name == "enemy")
-                // {
+                if (counter > 120)
+                {
 
-                //     Entity *newEntity = world->add();
-                //     newEntity->name = "enemy";
-                //     newEntity->localTransform.position = glm::vec3(10, -0.3, -10);
-                //     newEntity->localTransform.rotation = glm::vec3(0, 0, 0);
-                //     newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
-                //     MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
+                    Entity *newEntity = world->add();
+                    newEntity->name = "enemy";
+                    newEntity->localTransform.position = glm::vec3(10, -0.3, -10);
+                    newEntity->localTransform.rotation = glm::vec3(0, 0, 0);
+                    newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
+                    // multiply localtransform by transformation matrix of the world
 
-                //     meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
-                //     MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
-                //     movementRendererComp->linearVelocity = glm::vec3(0, 0, 0.5);
-                //     this->counter = 0;
-                // }
+                    MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
+
+                    meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
+                    MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
+                    movementRendererComp->linearVelocity = glm::vec3(0, 0, 0.5);
+                    counter = 0;
+                }
             }
         }
 
@@ -349,7 +352,6 @@ namespace our
             // The count is set to 3
             glDrawArrays(GL_TRIANGLES, 0, 3);
         }
-        this->counter++;
     }
 
 } // namespace our
