@@ -84,7 +84,9 @@ set(COMMON_SOURCES
         source/common/systems/forward-renderer.hpp
         source/common/systems/forward-renderer.cpp
         source/common/systems/free-camera-controller.hpp
+        source/common/systems/collision-system.hpp
         source/common/systems/movement.hpp
+        source/common/systems/player.hpp
 )
 
 # Define the directories in which to search for the included headers

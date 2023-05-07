@@ -29,6 +29,7 @@
         "grass": "assets/textures/grass_ground_d.jpg",
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
+        "heart": "assets/textures/heart.png",
         "chicken": "assets/textures/chicken1/chicken1.jpg",
         "rocket": "assets/textures/rocket.jpg"
       },
@@ -37,7 +38,8 @@
         "chicken": "assets/models/Chicken1.obj",
         "plane": "assets/models/plane.obj",
         "sphere": "assets/models/sphere.obj",
-        "rocket": "assets/models/rocket.obj"
+        "rocket": "assets/models/rocket.obj",
+        "heart": "assets/models/heart.obj"
       },
       "samplers": {
         "default": {},
@@ -126,6 +128,21 @@
           "texture": "chicken",
           "sampler": "default"
         },
+        "heart": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "heart",
+          "sampler": "default"
+        },
         "rocket": {
           "type": "textured",
           "shader": "textured",
@@ -160,7 +177,7 @@
     },
     "world": [
       {
-        "position": [0, 2, 15],
+        "position": [-3, 2, 15],
         "components": [
           {
             "type": "Camera"
@@ -178,12 +195,67 @@
             "name": "player",
             "rotation": [0, -90, 90],
             "position": [0, -2.5, -4],
-            "scale": [0.005, 0.008, 0.005],
+            "scale": [0.005, 0.005, 0.005],
             "components": [
               {
                 "type": "Mesh Renderer",
                 "mesh": "rocket",
                 "material": "rocket"
+              },
+              {
+                "type": "Collision",
+                "mesh": "rocket"
+              }
+            ]
+          },
+          {
+            "name": "lives1",
+            "rotation": [-70, -10, 0],
+            "position": [-2.6, 1.5, -2],
+            "scale": [0.008, 0.008, 0.008],
+            "components": [
+              {
+                "type": "Mesh Renderer",
+                "mesh": "heart",
+                "material": "heart"
+              },
+              {
+                "type": "Movement",
+                "angularVelocity": [0, 50, 0]
+              }
+            ]
+          },
+          {
+            "name": "lives2",
+            "rotation": [-70, -10, 0],
+            "position": [-2.95, 1.5, -2],
+            "scale": [0.008, 0.008, 0.008],
+            "components": [
+              {
+                "type": "Mesh Renderer",
+                "mesh": "heart",
+                "material": "heart"
+              },
+              {
+                "type": "Movement",
+                "angularVelocity": [0, 50, 0]
+              }
+            ]
+          },
+          {
+            "name": "lives3",
+            "rotation": [-70, -10, 0],
+            "position": [-3.3, 1.5, -2],
+            "scale": [0.008, 0.008, 0.008],
+            "components": [
+              {
+                "type": "Mesh Renderer",
+                "mesh": "heart",
+                "material": "heart"
+              },
+              {
+                "type": "Movement",
+                "angularVelocity": [0, 50, 0]
               }
             ]
           }
@@ -192,7 +264,7 @@
       {
         "name": "enemy",
         "rotation": [0, 0, 0],
-        "position": [0, -0.3, -10],
+        "position": [-2, -0.3, -10],
         "scale": [0.2, 0.2, 0.2],
         "components": [
           {
@@ -203,13 +275,17 @@
           {
             "type": "Movement",
             "angularVelocity": [0, 100, 0]
+          },
+          {
+            "type": "Collision",
+            "mesh": "chicken"
           }
         ]
       },
       {
         "name": "enemy",
         "rotation": [0, 0, 0],
-        "position": [1, -0.3, -10],
+        "position": [2, -0.3, -10],
         "scale": [0.2, 0.2, 0.2],
         "components": [
           {
@@ -220,6 +296,10 @@
           {
             "type": "Movement",
             "angularVelocity": [0, 100, 0]
+          },
+          {
+            "type": "Collision",
+            "mesh": "chicken"
           }
         ]
       },
@@ -237,6 +317,10 @@
           {
             "type": "Movement",
             "angularVelocity": [0, 100, 0]
+          },
+          {
+            "type": "Collision",
+            "mesh": "chicken"
           }
         ]
       },

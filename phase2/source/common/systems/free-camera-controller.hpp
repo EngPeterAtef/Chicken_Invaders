@@ -13,6 +13,8 @@
 #include <glm/trigonometric.hpp>
 #include <iostream>
 
+#include "./collision-system.hpp"
+
 namespace our
 {
 
@@ -23,6 +25,7 @@ class FreeCameraControllerSystem
 {
     Application *app;          // The application in which the state runs
     bool mouse_locked = false; // Is the mouse locked
+    our::CollisionSystem collisionSystem;
 
   public:
     // When a state enters, it should call this function and give it the pointer to the application
@@ -52,6 +55,17 @@ class FreeCameraControllerSystem
         // Get the entity that we found via getOwner of camera (we could use controller->getOwner())
         Entity *entity = camera->getOwner();
 
+        Entity *rocket;
+        // get the rocket entity
+        for (auto e : world->getEntities())
+        {
+            if (e->name == "player")
+            {
+                rocket = e;
+                break;
+            }
+        }
+
         // If the left mouse button is pressed, we lock and hide the mouse. This common in First Person Games.
         if (app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1) && !mouse_locked)
         {
@@ -68,6 +82,7 @@ class FreeCameraControllerSystem
         // We get a reference to the entity's position and rotation
         glm::vec3 &position = entity->localTransform.position;
         glm::vec3 &rotation = entity->localTransform.rotation;
+        glm::vec3 &rocket_rotation = rocket->localTransform.rotation;
 
         // If the left mouse button is pressed, we get the change in the mouse location
         // and use it to update the camera rotation
@@ -117,68 +132,25 @@ class FreeCameraControllerSystem
             position -= up * (deltaTime * current_sensitivity.y);
         // A & D moves the player left or right
         if (app->getKeyboard().isPressed(GLFW_KEY_D))
-            position += right * (deltaTime * current_sensitivity.x);
+        {
+            if (rocket_rotation.x > -1.0)
+                rocket_rotation.x -= 0.1f;
+
+            position += right * (2 * deltaTime * current_sensitivity.x);
+        }
         if (app->getKeyboard().isPressed(GLFW_KEY_A))
-            position -= right * (deltaTime * current_sensitivity.x);
-
-        CollisionComponent *collider = nullptr;
-        Entity *player;
-        for (auto entity1 : world->getEntities())
         {
-            // Look for the player
-            collider = entity1->getComponent<CollisionComponent>();
-            if (collider != nullptr && entity1->name == "player")
-            {
-                player = collider->getOwner();
-                // std::cout << "player collider detected" << '\n';
-                break;
-            }
+            if (rocket_rotation.x < 1.0)
+                rocket_rotation.x += 0.1f;
+            position -= right * (2 * deltaTime * current_sensitivity.x);
         }
 
-        Entity *enemy;
-        CollisionComponent *col2 = nullptr;
-        for (auto entity1 : world->getEntities())
-        {
-            // Look for the player
-            col2 = entity1->getComponent<CollisionComponent>();
-            if (col2 != nullptr && entity1->name == "enemy")
-            {
-                enemy = col2->getOwner();
-                std::string name = entity1->name;
-
-                // gets the min and max vertices using the mesh class
-                glm::vec3 minPlayerVertex = player->getComponent<CollisionComponent>()->mesh->minvertex;
-                glm::vec3 maxPlayerVertex = player->getComponent<CollisionComponent>()->mesh->maxvertex;
-
-                // transforms the min and max vertices to the wold space
-                minPlayerVertex *= player->localTransform.scale[0];
-                maxPlayerVertex *= player->localTransform.scale[0];
-                minPlayerVertex += player->localTransform.position;
-                maxPlayerVertex += player->localTransform.position;
-
-                // gets the min and max vertices using the mesh class
-                glm::vec3 minCollider = entity1->getComponent<CollisionComponent>()->mesh->minvertex;
-                glm::vec3 maxCollider = entity1->getComponent<CollisionComponent>()->mesh->maxvertex;
-
-                // transforms the min and max vertices to the wold space
-                minCollider *= entity1->localTransform.scale[0];
-                maxCollider *= entity1->localTransform.scale[0];
-                minCollider += entity1->localTransform.position;
-                maxCollider += entity1->localTransform.position;
-
-                // std::cout << "X : " << maxCollider.x - minPlayerVertex.x
-                //           << "  Y:  " << maxCollider.y - minPlayerVertex.y << '\n';
-                // collision between AABBs check
-                if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
-                    (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
-                    (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
-                {
-                    // i++;
-                    std::cout << "collision detected" << '\n';
-                    break;
-                }
-            }
-        }
+        // Entity *enemy_collision = collisionSystem.detectCollision(world);
+        // if (enemy_collision)
+        // {
+        //     enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
+        //     enemy_collision->deleteComponent<CollisionComponent>();
+        // }
     }
 
     // When the state exits, it should call this function to ensure the mouse is unlocked
