@@ -187,7 +187,7 @@
           },
           {
             "type": "Movement",
-            "linearVelocity": [0, 0, -5]
+            "linearVelocity": [0, 0, -10]
           }
         ],
         "children": [
@@ -261,69 +261,69 @@
           }
         ]
       },
-      {
-        "name": "enemy",
-        "rotation": [0, 0, 0],
-        "position": [-2, -0.3, -10],
-        "scale": [0.2, 0.2, 0.2],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "chicken",
-            "material": "chicken"
-          },
-          {
-            "type": "Movement",
-            "angularVelocity": [0, 100, 0]
-          },
-          {
-            "type": "Collision",
-            "mesh": "chicken"
-          }
-        ]
-      },
-      {
-        "name": "enemy",
-        "rotation": [0, 0, 0],
-        "position": [2, -0.3, -10],
-        "scale": [0.2, 0.2, 0.2],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "chicken",
-            "material": "chicken"
-          },
-          {
-            "type": "Movement",
-            "angularVelocity": [0, 100, 0]
-          },
-          {
-            "type": "Collision",
-            "mesh": "chicken"
-          }
-        ]
-      },
-      {
-        "name": "enemy",
-        "rotation": [0, 0, 0],
-        "position": [1, -0.3, -15],
-        "scale": [0.2, 0.2, 0.2],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "chicken",
-            "material": "chicken"
-          },
-          {
-            "type": "Movement",
-            "angularVelocity": [0, 100, 0]
-          },
-          {
-            "type": "Collision",
-            "mesh": "chicken"
-          }
-        ]
-      },
+      // {
+      //   "name": "enemy",
+      //   "rotation": [0, 0, 0],
+      //   "position": [-2, -0.3, -10],
+      //   "scale": [0.2, 0.2, 0.2],
+      //   "components": [
+      //     {
+      //       "type": "Mesh Renderer",
+      //       "mesh": "chicken",
+      //       "material": "chicken"
+      //     },
+      //     {
+      //       "type": "Movement",
+      //       "angularVelocity": [0, 100, 0]
+      //     },
+      //     {
+      //       "type": "Collision",
+      //       "mesh": "chicken"
+      //     }
+      //   ]
+      // },
+      // {
+      //   "name": "enemy",
+      //   "rotation": [0, 0, 0],
+      //   "position": [2, -0.3, -10],
+      //   "scale": [0.2, 0.2, 0.2],
+      //   "components": [
+      //     {
+      //       "type": "Mesh Renderer",
+      //       "mesh": "chicken",
+      //       "material": "chicken"
+      //     },
+      //     {
+      //       "type": "Movement",
+      //       "angularVelocity": [0, 100, 0]
+      //     },
+      //     {
+      //       "type": "Collision",
+      //       "mesh": "chicken"
+      //     }
+      //   ]
+      // },
+      // {
+      //   "name": "enemy",
+      //   "rotation": [0, 0, 0],
+      //   "position": [1, -0.3, -15],
+      //   "scale": [0.2, 0.2, 0.2],
+      //   "components": [
+      //     {
+      //       "type": "Mesh Renderer",
+      //       "mesh": "chicken",
+      //       "material": "chicken"
+      //     },
+      //     {
+      //       "type": "Movement",
+      //       "angularVelocity": [0, 100, 0]
+      //     },
+      //     {
+      //       "type": "Collision",
+      //       "mesh": "chicken"
+      //     }
+      //   ]
+      // },
       {
         "position": [0, 10, 0],
         "rotation": [45, 45, 0],

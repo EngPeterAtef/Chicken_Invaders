@@ -2,10 +2,20 @@
 #include "../mesh/mesh-utils.hpp"
 #include "../texture/texture-utils.hpp"
 #include "../common/components/movement.hpp"
-
+#include "../common/components/mesh-renderer.hpp"
+#include <random>
 namespace our
 {
-
+    int counter = 0;
+    int multiples = 0;
+    int zCounter = 0;
+    double generateRandomNumber(double minX, double maxX)
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(minX, maxX);
+        return dis(gen);
+    }
     void ForwardRenderer::initialize(glm::ivec2 windowSize, const nlohmann::json &config)
     {
         // First, we store the window size for later use
@@ -129,6 +139,7 @@ namespace our
 
     void ForwardRenderer::render(World *world)
     {
+        counter++;
 
         // First of all, we search for a camera and for all the mesh renderers
         CameraComponent *camera = nullptr;
@@ -160,21 +171,26 @@ namespace our
                     // Otherwise, we add it to the opaque command list
                     opaqueCommands.push_back(command);
                 }
-                // if (entity->name == "enemy")
-                // {
+                if (counter >= 60)
+                {
+                    multiples++;
 
-                //     Entity *newEntity = world->add();
-                //     newEntity->name = "enemy";
-                //     newEntity->localTransform.position = glm::vec3(10, -0.3, -10);
-                //     newEntity->localTransform.rotation = glm::vec3(0, 0, 0);
-                //     newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
-                //     MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
+                    zCounter -= 5;
 
-                //     meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
-                //     MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
-                //     movementRendererComp->linearVelocity = glm::vec3(0, 0, 0.5);
-                //     this->counter = 0;
-                // }
+                    Entity *newEntity = world->add();
+                    newEntity->name = "enemy";
+
+                    newEntity->localTransform.position = glm::vec3(generateRandomNumber(-20, 20), -0.3, zCounter);
+                    newEntity->localTransform.rotation = glm::vec3(0, 0, 0);
+                    newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
+
+                    MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
+
+                    meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
+                    MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
+                    movementRendererComp->linearVelocity = glm::vec3(0, 0, 0.5);
+                    counter = 0;
+                }
             }
         }
 
