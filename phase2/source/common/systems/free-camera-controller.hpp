@@ -13,7 +13,7 @@
 #include <glm/trigonometric.hpp>
 #include <iostream>
 
-#include "./collision-system.hpp"
+// #include "./collision-system.hpp"
 
 namespace our
 {
@@ -25,7 +25,7 @@ namespace our
     {
         Application *app;          // The application in which the state runs
         bool mouse_locked = false; // Is the mouse locked
-        our::CollisionSystem collisionSystem;
+        // our::CollisionSystem collisionSystem;
 
     public:
         // When a state enters, it should call this function and give it the pointer to the application

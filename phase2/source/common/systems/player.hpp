@@ -16,57 +16,65 @@
 
 namespace our
 {
-class PlayerSystem
-{
-    Application *app;
-    our::CollisionSystem collisionSystem;
-
-  public:
-    int lives = 3;
-    int score = 0;
-    void enter(Application *app)
+    class PlayerSystem
     {
-        lives = 3;
-        this->app = app;
-    }
+        Application *app;
+        our::CollisionSystem collisionSystem;
 
-    // This should be called every frame to update player
-    void update(World *world, float deltaTime)
-    {
-        score += 1;
-        Entity *enemy_collision = collisionSystem.detectCollision(world);
-        if (enemy_collision)
+    public:
+        int lives = 3;
+        int score = 0;
+        void enter(Application *app)
         {
-            enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
-            enemy_collision->deleteComponent<CollisionComponent>();
-            lives--;
-            std::cout << "Lives: " << lives << " Score : " << score << std::endl;
-
-            for (auto entity1 : world->getEntities())
-            {
-                // Look for the lives
-                if (lives == 2 && entity1->name == "lives1")
-                {
-                    entity1->localTransform.scale = glm::vec3(0, 0, 0);
-                    break;
-                }
-                else if (lives == 1 && entity1->name == "lives2")
-                {
-                    entity1->localTransform.scale = glm::vec3(0, 0, 0);
-                    break;
-                }
-            }
-            if (lives == 0)
-            {
-                app->changeState("game-over");
-            }
+            lives = 3;
+            this->app = app;
         }
-    }
 
-    // When the state exits, it should call this function to ensure the mouse is unlocked
-    void exit()
-    {
-    }
-};
+        // This should be called every frame to update player
+        void update(World *world, float deltaTime)
+        {
+            score += 1;
+            Entity *enemy_collision = collisionSystem.detectCollision(world);
+            if (enemy_collision)
+            {
+                enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
+                enemy_collision->deleteComponent<CollisionComponent>();
+                lives--;
+                std::cout << "Lives: " << lives << " Score : " << score << std::endl;
+
+                for (auto entity1 : world->getEntities())
+                {
+                    // Look for the lives
+                    if (lives == 2 && entity1->name == "lives1")
+                    {
+                        entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                        break;
+                    }
+                    else if (lives == 1 && entity1->name == "lives2")
+                    {
+                        entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                        break;
+                    }
+                }
+                if (lives == 0)
+                {
+                    app->changeState("game-over");
+                }
+            }
+            // Entity *fireEnemy = collisionSystem.detectFiring(world);
+            // if (fireEnemy)
+            // {
+            //     fireEnemy->localTransform.scale = glm::vec3(0, 0, 0);
+            //     fireEnemy->deleteComponent<CollisionComponent>();
+            //     score += 10;
+                
+            // }
+        }
+
+        // When the state exits, it should call this function to ensure the mouse is unlocked
+        void exit()
+        {
+        }
+    };
 
 } // namespace our
