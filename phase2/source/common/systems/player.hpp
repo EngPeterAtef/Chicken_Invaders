@@ -60,7 +60,7 @@ class PlayerSystem
         {
             laser->localTransform.scale = glm::vec3(0, 0, 0);
         }
-        score += 1;
+        // score += 1;
         Entity *enemy_collision = collisionSystem.detectCollision(world);
         if (enemy_collision)
         {
@@ -89,6 +89,27 @@ class PlayerSystem
             {
                 app->changeState("game-over");
             }
+        }
+    }
+
+    void imgui()
+    {
+        ImGuiWindowFlags window_flags = 0;
+        window_flags |= ImGuiWindowFlags_NoBackground;
+        window_flags |= ImGuiWindowFlags_NoTitleBar;
+        window_flags |= ImGuiWindowFlags_NoResize;
+        window_flags |= ImGuiWindowFlags_NoMove;
+        window_flags |= ImGuiWindowFlags_NoScrollbar;
+        bool *open_ptr = (bool *)true;
+        if (ImGui::Begin("Chicken", open_ptr, window_flags))
+        {
+            ImGui::SetWindowPos(ImVec2(app->getWindowSize().x - 200.0f, 0.0f)); // Set position to top right
+            std::string player_score = "score: " + std::to_string((int)score);  // Set score
+            // std::string hearts = "Lives: " + std::to_string(lives);            // Set lives
+            ImGui::SetWindowFontScale(2.0f);
+            ImGui::TextUnformatted(player_score.c_str());
+            // ImGui::TextUnformatted(hearts.c_str());
+            ImGui::End();
         }
     }
 

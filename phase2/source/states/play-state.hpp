@@ -1,14 +1,14 @@
 #pragma once
 
 #include <application.hpp>
-
 #include <asset-loader.hpp>
 #include <ecs/world.hpp>
+#include <imgui-utils/utils.hpp>
 #include <systems/forward-renderer.hpp>
 #include <systems/free-camera-controller.hpp>
+#include <systems/light.hpp>
 #include <systems/movement.hpp>
 #include <systems/player.hpp>
-#include <systems/light.hpp>
 
 // This state shows how to use the ECS framework and deserialization.
 class Playstate : public our::State
@@ -75,5 +75,10 @@ class Playstate : public our::State
         world.clear();
         // and we delete all the loaded assets to free memory on the RAM and the VRAM
         our::clearAllAssets();
+    }
+    void onImmediateGui() override
+    { //= gets called in application.cpp every frame
+        //= Here, we just draw the camera controller system's gui
+        playerSystem.imgui();
     }
 };

@@ -37,6 +37,8 @@ set(COMMON_SOURCES
         source/common/input/keyboard.hpp
         source/common/input/mouse.hpp
 
+        source/common/imgui-utils/utils.hpp
+
         source/common/asset-loader.cpp
         source/common/asset-loader.hpp
         source/common/deserialize-utils.hpp
