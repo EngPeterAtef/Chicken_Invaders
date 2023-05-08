@@ -7,6 +7,7 @@
 
 #include <glm/vec4.hpp>
 #include <json/json.hpp>
+// #include <iostream>
 
 namespace our
 {
@@ -82,6 +83,7 @@ namespace our
         }
         else if (type == "light")
         {
+            // std::cout<<"light material created"<<std::endl;
             return new LightMaterial();
         }
         else

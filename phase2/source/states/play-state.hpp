@@ -51,7 +51,7 @@ class Playstate : public our::State
         cameraController.update(&world, (float)deltaTime);
         playerSystem.update(&world, (float)deltaTime);
 
-        // lightSystem.update(&world);
+        lightSystem.update(&world);
         // And finally we use the renderer system to draw the scene
         renderer.render(&world);
 

@@ -16,7 +16,7 @@ struct Light{
 };
 
 uniform Light lights[MAX_LIGHTS];
-uniform int light_count=0;
+uniform int light_count;
 
 struct Sky{
     vec3 top,horizon,bottom;
@@ -123,7 +123,7 @@ void main(){
         vec3 computed_diffuse=light.color*material_diffuse*lambert(normal,world_to_light_dir);
         
         vec3 reflected=reflect(-world_to_light_dir,normal);
-        vec3 computed_specular=light.color*material_specular*phong(reflected,view,shininess);
+        vec3 computed_specular=light.color*material_specular*phong(reflected,view,material_shininess);
         
         color+=(computed_diffuse+computed_specular)*attenuation;
         // vec3 direction_to_light = -light.direction;

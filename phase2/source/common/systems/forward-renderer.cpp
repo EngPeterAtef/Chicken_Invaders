@@ -3,7 +3,9 @@
 #include "../texture/texture-utils.hpp"
 #include "../common/components/movement.hpp"
 #include "../common/components/mesh-renderer.hpp"
+#include "../components/collision.hpp"
 #include <random>
+#include <iostream>
 namespace our
 {
     int counter = 0;
@@ -140,12 +142,11 @@ namespace our
     void ForwardRenderer::render(World *world)
     {
         counter++;
-
-        counter++;
         // First of all, we search for a camera and for all the mesh renderers
         CameraComponent *camera = nullptr;
         opaqueCommands.clear();
         transparentCommands.clear();
+        lightCommands.clear();
         for (auto entity : world->getEntities())
         {
 
@@ -185,15 +186,19 @@ namespace our
                     Entity *newEntity = world->add();
                     newEntity->name = "enemy";
 
-                    newEntity->localTransform.position = glm::vec3(generateRandomNumber(-20, 20), -0.3, zCounter);
+                    newEntity->localTransform.position = glm::vec3(generateRandomNumber(-20, 20), 0, zCounter);
                     newEntity->localTransform.rotation = glm::vec3(0, 0, 0);
-                    newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
+                    newEntity->localTransform.scale = glm::vec3(0.2, 0.2, 0.2);
 
                     MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
 
                     meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
+                     CollisionComponent *collisionComponent = newEntity->addComponent<CollisionComponent>();
+
+                    collisionComponent->deserialize({{"type", "Collsion"}, {"mesh", "chicken"}});
+                    
                     MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
-                    movementRendererComp->linearVelocity = glm::vec3(0, 0, 0.5);
+                    movementRendererComp->linearVelocity = glm::vec3(0, 0, 10);
                     counter = 0;
                 }
             }
@@ -265,9 +270,9 @@ namespace our
         //-------------------------------------------
         int light_count = world->light_count;
         Light *lights = world->lights;
+        // std::cout << "light objects" << lightCommands.size() << std::endl;
         for (auto &command : lightCommands)
         {
-            // std::cout << "light command" << std::endl;
             command.material->setup();
 
             glm::mat4 M = command.localToWorld;
@@ -283,9 +288,9 @@ namespace our
             command.material->shader->set("sky.top", sky_top);
             command.material->shader->set("sky.horizon", sky_horizon);
             command.material->shader->set("sky.bottom", sky_bottom);
+            command.material->shader->set("light_count", light_count);
             for (int i = 0; i < light_count; i++)
             {
-                // std::cout << "light to shader" << i << std::endl;
                 command.material->shader->set("lights[" + std::to_string(i) + "].type", lights[i].kind);
                 command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i].position);
                 command.material->shader->set("lights[" + std::to_string(i) + "].color", lights[i].color);
@@ -293,8 +298,8 @@ namespace our
                 command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i].direction);
                 command.material->shader->set("lights[" + std::to_string(i) + "].cone_angles", lights[i].cone_angles);
             }
-            command.material->shader->set("light_count", light_count);
             command.mesh->draw();
+            // std::cout<<"light command end"<<std::endl;
         }
         //-------------------------------------------
         //-------------------------------------------

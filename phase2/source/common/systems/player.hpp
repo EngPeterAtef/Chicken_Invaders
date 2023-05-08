@@ -33,12 +33,23 @@ namespace our
         // This should be called every frame to update player
         void update(World *world, float deltaTime)
         {
+            Entity *fireEnemy = collisionSystem.detectFiring(world);
+            if (fireEnemy)
+            {
+                fireEnemy->localTransform.scale = glm::vec3(0, 0, 0);
+                fireEnemy->deleteComponent<CollisionComponent>();
+                world->markForRemoval(fireEnemy);
+                world->deleteMarkedEntities();
+                score += 10;
+            }
             score += 1;
             Entity *enemy_collision = collisionSystem.detectCollision(world);
             if (enemy_collision)
             {
                 enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
                 enemy_collision->deleteComponent<CollisionComponent>();
+                world->markForRemoval(enemy_collision);
+                world->deleteMarkedEntities();
                 lives--;
                 std::cout << "Lives: " << lives << " Score : " << score << std::endl;
 
@@ -61,14 +72,6 @@ namespace our
                     app->changeState("game-over");
                 }
             }
-            // Entity *fireEnemy = collisionSystem.detectFiring(world);
-            // if (fireEnemy)
-            // {
-            //     fireEnemy->localTransform.scale = glm::vec3(0, 0, 0);
-            //     fireEnemy->deleteComponent<CollisionComponent>();
-            //     score += 10;
-                
-            // }
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
