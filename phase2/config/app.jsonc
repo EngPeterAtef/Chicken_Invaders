@@ -42,8 +42,7 @@
         "rocky_monkey_emissive": "assets/textures/monkey/rocky_monkey_emissive.jpg",
         "rocky_monkey_roughness": "assets/textures/monkey/rocky_monkey_roughness.jpg",
         "rocky_monkey_specular": "assets/textures/monkey/rocky_monkey_specular.jpg",
-        "black": "assets/textures/black.jpg",
-        "cube":"assets/models/cube.obj"
+        "black": "assets/textures/black.jpg"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -139,7 +138,7 @@
             }
           },
           "tint": [1, 1, 1, 1],
-          "texture": "glass",
+          "texture": "heart",
           "sampler": "default"
         },
         "chicken": {
@@ -224,7 +223,7 @@
     },
     "world": [
       {
-        "position": [0,2,50],
+        "position": [0, 2, 50],
         "components": [
           {
             "type": "Camera"
@@ -258,9 +257,9 @@
           },
           {
             "name": "laser",
-            "rotation": [0, 0, 0],
-            "position": [0, -3, -12],
-            "scale": [0.1, 0.1, 5],
+            "rotation": [0, 0.5, 0],
+            "position": [0, -3, -20],
+            "scale": [0.15, 0.15, 10],
             "components": [
               {
                 "type": "Mesh Renderer",
@@ -352,7 +351,7 @@
           },
           {
             "type": "Movement",
-            "linearVelocity": [0, 0, 0 ],
+            "linearVelocity": [0, 0, 0],
             "angularVelocity": [0, 0, 0]
           }
         ]

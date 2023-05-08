@@ -16,23 +16,36 @@
 
 namespace our
 {
-    class PlayerSystem
+class PlayerSystem
+{
+    Application *app;
+    our::CollisionSystem collisionSystem;
+    Entity *laser;
+
+  public:
+    int lives = 3;
+    int score = 0;
+    void enter(Application *app)
     {
-        Application *app;
-        our::CollisionSystem collisionSystem;
+        lives = 3;
+        this->app = app;
+    }
 
-    public:
-        int lives = 3;
-        int score = 0;
-        void enter(Application *app)
+    // This should be called every frame to update player
+    void update(World *world, float deltaTime)
+    {
+        for (auto entity1 : world->getEntities())
         {
-            lives = 3;
-            this->app = app;
+            // Look for the player
+            if (entity1->name == "laser")
+            {
+                laser = entity1;
+                break;
+            }
         }
-
-        // This should be called every frame to update player
-        void update(World *world, float deltaTime)
+        if (app->getKeyboard().isPressed(GLFW_KEY_SPACE))
         {
+            laser->localTransform.scale = glm::vec3(0.2, 0.2, 10);
             Entity *fireEnemy = collisionSystem.detectFiring(world);
             if (fireEnemy)
             {
@@ -42,42 +55,47 @@ namespace our
                 world->deleteMarkedEntities();
                 score += 10;
             }
-            score += 1;
-            Entity *enemy_collision = collisionSystem.detectCollision(world);
-            if (enemy_collision)
-            {
-                enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
-                enemy_collision->deleteComponent<CollisionComponent>();
-                world->markForRemoval(enemy_collision);
-                world->deleteMarkedEntities();
-                lives--;
-                std::cout << "Lives: " << lives << " Score : " << score << std::endl;
+        }
+        else
+        {
+            laser->localTransform.scale = glm::vec3(0, 0, 0);
+        }
+        score += 1;
+        Entity *enemy_collision = collisionSystem.detectCollision(world);
+        if (enemy_collision)
+        {
+            enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
+            enemy_collision->deleteComponent<CollisionComponent>();
+            world->markForRemoval(enemy_collision);
+            world->deleteMarkedEntities();
+            lives--;
+            std::cout << "Lives: " << lives << " Score : " << score << std::endl;
 
-                for (auto entity1 : world->getEntities())
+            for (auto entity1 : world->getEntities())
+            {
+                // Look for the lives
+                if (lives == 2 && entity1->name == "lives1")
                 {
-                    // Look for the lives
-                    if (lives == 2 && entity1->name == "lives1")
-                    {
-                        entity1->localTransform.scale = glm::vec3(0, 0, 0);
-                        break;
-                    }
-                    else if (lives == 1 && entity1->name == "lives2")
-                    {
-                        entity1->localTransform.scale = glm::vec3(0, 0, 0);
-                        break;
-                    }
+                    entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                    break;
                 }
-                if (lives == 0)
+                else if (lives == 1 && entity1->name == "lives2")
                 {
-                    app->changeState("game-over");
+                    entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                    break;
                 }
             }
+            if (lives == 0)
+            {
+                app->changeState("game-over");
+            }
         }
+    }
 
-        // When the state exits, it should call this function to ensure the mouse is unlocked
-        void exit()
-        {
-        }
-    };
+    // When the state exits, it should call this function to ensure the mouse is unlocked
+    void exit()
+    {
+    }
+};
 
 } // namespace our
