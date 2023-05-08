@@ -6,6 +6,7 @@
 
 #include "../application.hpp"
 
+#include <fstream>
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
@@ -88,6 +89,35 @@ class PlayerSystem
             if (lives == 0)
             {
                 app->changeState("game-over");
+                std::ifstream file_in("score.txt");
+                // std::ifstream file_in("source/states/endgame.jsonc");
+                if (!file_in)
+                {
+                    std::cerr << "Couldn't open file: "
+                              << "score.txt" << std::endl;
+                }
+                // Read the file into a json object then close the file
+                std::string str;
+                getline(file_in, str);
+                file_in.close();
+                // std::ifstream ifs("source/states/endgame.jsonc"); // Read the score json (has last score and high
+                // score) auto json = nlohmann::json::parse(ifs); ifs.close();
+                //
+                // int highScore = json.value("highscore", 0);
+                int highScore = std::stoi(str);
+
+                if (score > highScore)
+                    highScore = score; // Compare json highscore with current score
+
+                std::ofstream outfile;
+                outfile.open("score.txt");
+                outfile << highScore << '\n' << score;
+                outfile.close();
+                // std::ofstream ofs("source/states/endgame.jsonc");
+                // nlohmann::json j = {{"highscore", highScore},
+                //                     {"score", score}}; // Write the new highscore and score to JSON
+                // ofs << j;
+                // ofs.close();
             }
         }
     }
