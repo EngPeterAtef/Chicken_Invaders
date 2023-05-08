@@ -8,6 +8,7 @@
 #include <systems/free-camera-controller.hpp>
 #include <systems/movement.hpp>
 #include <systems/player.hpp>
+#include <systems/light.hpp>
 
 // This state shows how to use the ECS framework and deserialization.
 class Playstate : public our::State
@@ -18,6 +19,7 @@ class Playstate : public our::State
     our::FreeCameraControllerSystem cameraController;
     our::MovementSystem movementSystem;
     our::PlayerSystem playerSystem;
+    our::LightSystem lightSystem;
 
     void onInitialize() override
     {
@@ -48,6 +50,8 @@ class Playstate : public our::State
         movementSystem.update(&world, (float)deltaTime);
         cameraController.update(&world, (float)deltaTime);
         playerSystem.update(&world, (float)deltaTime);
+
+        // lightSystem.update(&world);
         // And finally we use the renderer system to draw the scene
         renderer.render(&world);
 

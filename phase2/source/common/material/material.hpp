@@ -23,6 +23,7 @@ namespace our
         PipelineState pipelineState;
         ShaderProgram *shader;
         bool transparent;
+        bool affectedByLight;
 
         // This function does 2 things: setup the pipeline state and set the shader program to be used
         virtual void setup() const;

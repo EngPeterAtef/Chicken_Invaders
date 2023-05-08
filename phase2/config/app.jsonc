@@ -22,6 +22,10 @@
         "textured": {
           "vs": "assets/shaders/textured.vert",
           "fs": "assets/shaders/textured.frag"
+        },
+        "lightened": {
+          "vs": "assets/shaders/light.vert",
+          "fs": "assets/shaders/light.frag"
         }
       },
       "textures": {
@@ -31,7 +35,13 @@
         "glass": "assets/textures/glass-panels.png",
         "heart": "assets/textures/heart.png",
         "chicken": "assets/textures/chicken1/chicken1.jpg",
-        "rocket": "assets/textures/rocket.jpg"
+        "rocket": "assets/textures/rocket.jpg",
+        "monkey": "assets/textures/monkey/monkey.png",
+        "rocky_monkey_albedo": "assets/textures/monkey/rocky_monkey_albedo.jpg",
+        "rocky_monkey_ambient_occlusion": "assets/textures/monkey/rocky_monkey_ambient_occlusion.jpg",
+        "rocky_monkey_emissive": "assets/textures/monkey/rocky_monkey_emissive.jpg",
+        "rocky_monkey_roughness": "assets/textures/monkey/rocky_monkey_roughness.jpg",
+        "rocky_monkey_specular": "assets/textures/monkey/rocky_monkey_specular.jpg"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -40,7 +50,8 @@
         "sphere": "assets/models/sphere.obj",
         "rocket": "assets/models/rocket.obj",
         "heart": "assets/models/heart.obj",
-        "laser": "assets/models/laser.obj"
+        "laser": "assets/models/laser.obj",
+        "monkey": "assets/models/monkey.obj"
       },
       "samplers": {
         "default": {},
@@ -188,6 +199,23 @@
           "tint": [1, 1, 1, 1],
           "texture": "moon",
           "sampler": "default"
+        },
+        "rocky_monkey": {
+          "type": "light",
+          "shader": "lightened",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "albedo": "rocky_monkey_albedo",
+          "ambient_occlusion": "rocky_monkey_ambient_occlusion",
+          "emissive": "rocky_monkey_emissive",
+          "roughness": "rocky_monkey_roughness",
+          "specular": "rocky_monkey_specular"
         }
       }
     },
@@ -290,6 +318,37 @@
                 "angularVelocity": [0, 50, 0]
               }
             ]
+          },
+          {
+            "position": [0, 0, -1],
+            "rotation": [0, 0, -1],
+            "components": [
+              {
+                "type": "Light",
+                "kind": 2,
+                "color": [1, 1, 1],
+                "cone_angles": [40, 0],
+                "attenuation": [0.1, 0, 0]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "monkey",
+        "rotation": [0, 0, 0],
+        "position": [2, -0.3, -10],
+        "scale": [0.2, 0.2, 0.2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "monkey",
+            "material": "rocky_monkey"
+          },
+          {
+            "type": "Movement",
+            "linearVelocity": [0, 0.1, 0],
+            "angularVelocity": [0, 45, 0]
           }
         ]
       },

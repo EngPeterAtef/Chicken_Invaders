@@ -167,6 +167,10 @@ namespace our
                 {
                     transparentCommands.push_back(command);
                 }
+                else if (command.material->affectedByLight)
+                {
+                    lightCommands.push_back(command);
+                }
                 else
                 {
                     // Otherwise, we add it to the opaque command list
@@ -263,28 +267,28 @@ namespace our
         Light *lights = world->lights;
         for (auto &command : lightCommands)
         {
+            // std::cout << "light command" << std::endl;
             command.material->setup();
 
             glm::mat4 M = command.localToWorld;
             glm::mat4 M_IT = glm::transpose(glm::inverse(M));
             glm::vec3 eye = camera->getOwner()->localTransform.position;
             glm::vec3 sky_top = glm::vec3(0.3f, 0.6f, 1.0f);
-            glm::vec3 sky_middle = glm::vec3(0.3f, 0.3f, 0.3f);
+            glm::vec3 sky_horizon = glm::vec3(0.3f, 0.3f, 0.3f);
             glm::vec3 sky_bottom = glm::vec3(0.1f, 0.1f, 0.0f);
             command.material->shader->set("M", M);
             command.material->shader->set("VP", VP);
             command.material->shader->set("M_IT", M_IT);
             command.material->shader->set("eye", eye);
             command.material->shader->set("sky.top", sky_top);
-            command.material->shader->set("sky.middle", sky_middle);
+            command.material->shader->set("sky.horizon", sky_horizon);
             command.material->shader->set("sky.bottom", sky_bottom);
-
             for (int i = 0; i < light_count; i++)
             {
+                // std::cout << "light to shader" << i << std::endl;
                 command.material->shader->set("lights[" + std::to_string(i) + "].type", lights[i].kind);
                 command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i].position);
-                command.material->shader->set("lights[" + std::to_string(i) + "].diffuse", lights[i].diffuse);
-                command.material->shader->set("lights[" + std::to_string(i) + "].specular", lights[i].specular);
+                command.material->shader->set("lights[" + std::to_string(i) + "].color", lights[i].color);
                 command.material->shader->set("lights[" + std::to_string(i) + "].attenuation", lights[i].attenuation);
                 command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i].direction);
                 command.material->shader->set("lights[" + std::to_string(i) + "].cone_angles", lights[i].cone_angles);

@@ -9,9 +9,8 @@ namespace our
     class LightComponent : public Component
     {
     public:
-        int kind;
-        glm::vec3 diffuse;
-        glm::vec3 specular;
+        int kind;//the kind of the light
+        glm::vec3 color;//the light color
         glm::vec3 attenuation;
         glm::vec2 cone_angles;
         static std::string getID() { return "Light"; }
