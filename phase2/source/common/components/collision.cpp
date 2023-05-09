@@ -13,7 +13,7 @@ void CollisionComponent::deserialize(const nlohmann::json &data)
     if (!data.is_object())
         return;
     mesh = AssetLoader<Mesh>::get(data["mesh"].get<std::string>());
-    health = data.value("health", bonus);
+    health = data.value("health", health);
     minCollider = mesh->minvertex;
     maxCollider = mesh->maxvertex;
 }
