@@ -121,8 +121,8 @@ class FreeCameraControllerSystem
         bool is_rotating = false;
         // We change the camera position based on the keys WASD/QE
         // S & W moves the player back and forth
-        if (app->getKeyboard().isPressed(GLFW_KEY_W))
-            position += front * (5 * deltaTime * current_sensitivity.z);
+        // if (app->getKeyboard().isPressed(GLFW_KEY_W))
+        //     position += front * (5 * deltaTime * current_sensitivity.z);
         // if (app->getKeyboard().isPressed(GLFW_KEY_S))
         //     position -= front * (deltaTime * current_sensitivity.z);
         // Q & E moves the player up and down
@@ -130,23 +130,27 @@ class FreeCameraControllerSystem
         //     position += up * (deltaTime * current_sensitivity.y);
         // if (app->getKeyboard().isPressed(GLFW_KEY_E))
         //     position -= up * (deltaTime * current_sensitivity.y);
+        if (app->getKeyboard().isPressed(GLFW_KEY_UP))
+            position += up * (deltaTime * current_sensitivity.y);
+        if (app->getKeyboard().isPressed(GLFW_KEY_DOWN))
+            position -= up * (deltaTime * current_sensitivity.y);
         // A & D moves the player left or right
-        if (app->getKeyboard().isPressed(GLFW_KEY_D))
+        if (app->getKeyboard().isPressed(GLFW_KEY_RIGHT))
         {
             is_rotating = true;
             if (rocket_rotation.x > -1.0)
                 rocket_rotation.x -= 0.1f;
-            if (position.x < 20)
+            if (position.x < 15)
             {
                 position += right * (8 * deltaTime * current_sensitivity.x);
             }
         }
-        if (app->getKeyboard().isPressed(GLFW_KEY_A))
+        if (app->getKeyboard().isPressed(GLFW_KEY_LEFT))
         {
             is_rotating = true;
             if (rocket_rotation.x < 1.0)
                 rocket_rotation.x += 0.1f;
-            if (position.x > -20)
+            if (position.x > -15)
             {
                 position -= right * (8 * deltaTime * current_sensitivity.x);
             }

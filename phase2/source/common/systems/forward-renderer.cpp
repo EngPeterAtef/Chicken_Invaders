@@ -4,16 +4,18 @@
 #include "../common/components/movement.hpp"
 #include "../common/components/mesh-renderer.hpp"
 #include "./chicken-renderer.hpp"
+#include "./monkeys-renderer.hpp"
 #include "../components/collision.hpp"
 #include <random>
 #include <iostream>
 namespace our
 {
     int counter = 0;
-    int multiples = 0;
+    int monkeysFrames = 0;
     int zCounter = 0;
-    bool done = false;
+    int zCounterMonkeys = 0;
     ChickenRenderer *chicken_renderer = new ChickenRenderer();
+    MonkeyRenderer *monkey_renderer = new MonkeyRenderer();
     // double generateRandomNumber(double minX, double maxX)
     // {
     //     std::random_device rd;
@@ -146,8 +148,8 @@ namespace our
     void ForwardRenderer::render(World *world)
     {
         counter++;
-
-        if (counter >= 60)
+        monkeysFrames++;
+        if (counter >= 20)
         {
 
             zCounter = 5;
@@ -157,7 +159,14 @@ namespace our
             // chicken_renderer->printing();
         }
         // chicken_renderer->delete_chickens(world);
-
+        if (monkeysFrames >= 500)
+        { 
+            zCounterMonkeys = 5;
+            monkey_renderer->rendering(world, zCounter);
+            // monkey_renderer->printing();
+            monkeysFrames = 0;
+        }
+    
         // First of all, we search for a camera and for all the mesh renderers
         CameraComponent *camera = nullptr;
         opaqueCommands.clear();
@@ -271,9 +280,9 @@ namespace our
             glm::mat4 M = command.localToWorld;
             glm::mat4 M_IT = glm::transpose(glm::inverse(M));
             glm::vec3 eye = camera->getOwner()->localTransform.position;
-            glm::vec3 sky_top = glm::vec3(0.3f, 0.6f, 1.0f);
+            glm::vec3 sky_top = glm::vec3(0.0f, 0.0f, 1.0f);
             glm::vec3 sky_horizon = glm::vec3(0.3f, 0.3f, 0.3f);
-            glm::vec3 sky_bottom = glm::vec3(0.1f, 0.1f, 0.0f);
+            glm::vec3 sky_bottom = glm::vec3(1.0f, 0.0f, 0.0f);
             command.material->shader->set("M", M);
             command.material->shader->set("VP", VP);
             command.material->shader->set("M_IT", M_IT);
