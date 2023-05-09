@@ -19,29 +19,17 @@ namespace our
 {
 class CollisionSystem
 {
-    // the player we will be checking for collisions
-    Entity *player;
-    // Laser entity
-    Entity *laser;
+
     // will store the entities that we will be checking for collisions
     Entity *enemy;
 
   public:
-    Entity *detectFiring(World *world)
+    Entity *detectFiring(World *world, Entity *laser)
     {
         for (auto entity1 : world->getEntities())
         {
             // Look for the player
-            if (entity1->name == "laser")
-            {
-                laser = entity1;
-                break;
-            }
-        }
-        for (auto entity1 : world->getEntities())
-        {
-            // Look for the player
-            if (entity1->name == "enemy")
+            if (entity1->name == "enemy" && entity1->getComponent<CollisionComponent>())
             {
                 enemy = entity1;
                 // gets the min and max vertices using the mesh class
@@ -92,22 +80,13 @@ class CollisionSystem
         return nullptr;
     }
     // This should be called every frame to detect if the player and any other entity collide.
-    Entity *detectCollision(World *world)
+    Entity *detectCollision(World *world, Entity *player)
     {
-        for (auto entity1 : world->getEntities())
-        {
-            // Look for the player
-            if (entity1->name == "player")
-            {
-                player = entity1;
-                break;
-            }
-        }
 
         for (auto entity1 : world->getEntities())
         {
             // Look for the player
-            if (entity1->name == "enemy")
+            if (entity1->name == "enemy" && entity1->getComponent<CollisionComponent>())
             {
                 enemy = entity1;
                 // gets the min and max vertices using the mesh class
@@ -136,6 +115,47 @@ class CollisionSystem
                     (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
                 {
                     std::cout << "collision detected distance : (" << '\n';
+                    return enemy;
+                }
+            }
+        }
+        return nullptr;
+    }
+    Entity *detectChickenLeg(World *world, Entity *player)
+    {
+
+        for (auto entity1 : world->getEntities())
+        {
+            // Look for the player
+            if (entity1->name == "chicken_leg" && entity1->getComponent<CollisionComponent>())
+            {
+                enemy = entity1;
+                // gets the min and max vertices using the mesh class
+                glm::vec3 minPlayerVertex = player->getComponent<CollisionComponent>()->mesh->minvertex;
+                glm::vec3 maxPlayerVertex = player->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+                // transforms the min and max vertices to the wold space
+                minPlayerVertex *= player->localTransform.scale[0];
+                maxPlayerVertex *= player->localTransform.scale[0];
+                minPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
+                maxPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
+
+                // gets the min and max vertices using the mesh class
+                glm::vec3 minCollider = enemy->getComponent<CollisionComponent>()->mesh->minvertex;
+                glm::vec3 maxCollider = enemy->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+                // transforms the min and max vertices to the wold space
+                minCollider *= enemy->localTransform.scale[0];
+                maxCollider *= enemy->localTransform.scale[0];
+                minCollider += enemy->localTransform.position;
+                maxCollider += enemy->localTransform.position;
+
+                // collision between AABBs check
+                if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
+                    (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
+                    (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
+                {
+                    std::cout << "collision  with chicken legs detected - bonus +100" << '\n';
                     return enemy;
                 }
             }

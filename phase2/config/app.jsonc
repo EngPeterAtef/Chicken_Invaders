@@ -37,6 +37,7 @@
         "chicken": "assets/textures/chicken1/chicken1.jpg",
         "rocket": "assets/textures/rocket.jpg",
         "monkey": "assets/textures/monkey/monkey.png",
+        "chicken_leg": "assets/textures/chicken_leg.jpg",
         "rocky_monkey_albedo": "assets/textures/monkey/rocky_monkey_albedo.jpg",
         "rocky_monkey_ambient_occlusion": "assets/textures/monkey/rocky_monkey_ambient_occlusion.jpg",
         "rocky_monkey_emissive": "assets/textures/monkey/rocky_monkey_emissive.jpg",
@@ -52,6 +53,7 @@
         "rocket": "assets/models/rocket.obj",
         "heart": "assets/models/heart.obj",
         "laser": "assets/models/laser.obj",
+        "chicken_leg": "assets/models/chicken_leg.obj",
         "monkey": "assets/models/monkey.obj"
       },
       "samplers": {
@@ -154,6 +156,21 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "chicken",
+          "sampler": "default"
+        },
+        "chicken_leg": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "chicken_leg",
           "sampler": "default"
         },
         "heart": {
