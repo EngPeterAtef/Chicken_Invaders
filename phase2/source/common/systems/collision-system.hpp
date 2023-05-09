@@ -14,6 +14,7 @@
 
 #include "../asset-loader.hpp"
 
+#include "../systems/sound.hpp"
 #include <iostream>
 namespace our
 {
@@ -22,6 +23,7 @@ class CollisionSystem
 
     // will store the entities that we will be checking for collisions
     Entity *enemy;
+    Sound s = Sound("assets/sounds/collect.mp3", false);
 
   public:
     Entity *detectFiring(World *world, Entity *laser)
@@ -79,48 +81,8 @@ class CollisionSystem
         }
         return nullptr;
     }
-    // This should be called every frame to detect if the player and any other entity collide.
-    Entity *detectCollision(World *world, Entity *player)
-    {
+    // return nullptr;
 
-        for (auto entity1 : world->getEntities())
-        {
-            // Look for the player
-            if (entity1->name == "enemy" && entity1->getComponent<CollisionComponent>())
-            {
-                enemy = entity1;
-                // gets the min and max vertices using the mesh class
-                glm::vec3 minPlayerVertex = player->getComponent<CollisionComponent>()->mesh->minvertex;
-                glm::vec3 maxPlayerVertex = player->getComponent<CollisionComponent>()->mesh->maxvertex;
-
-                // transforms the min and max vertices to the wold space
-                minPlayerVertex *= player->localTransform.scale[0];
-                maxPlayerVertex *= player->localTransform.scale[0];
-                minPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
-                maxPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
-
-                // gets the min and max vertices using the mesh class
-                glm::vec3 minCollider = enemy->getComponent<CollisionComponent>()->mesh->minvertex;
-                glm::vec3 maxCollider = enemy->getComponent<CollisionComponent>()->mesh->maxvertex;
-
-                // transforms the min and max vertices to the wold space
-                minCollider *= enemy->localTransform.scale[0];
-                maxCollider *= enemy->localTransform.scale[0];
-                minCollider += enemy->localTransform.position;
-                maxCollider += enemy->localTransform.position;
-
-                // collision between AABBs check
-                if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
-                    (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
-                    (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
-                {
-                    std::cout << "collision detected distance : (" << '\n';
-                    return enemy;
-                }
-            }
-        }
-        return nullptr;
-    }
     Entity *detectMonkeyCollision(World *world, Entity *player)
     {
 
@@ -156,6 +118,48 @@ class CollisionSystem
                 {
                     std::cout << "Monkey collision" << '\n';
                     return entity;
+                }
+            }
+        }
+        return nullptr;
+    }
+    Entity *detectCollision(World *world, Entity *player)
+    {
+
+        for (auto entity1 : world->getEntities())
+        {
+            // Look for the player
+            if (entity1->name == "enemy" && entity1->getComponent<CollisionComponent>())
+            {
+                enemy = entity1;
+                // gets the min and max vertices using the mesh class
+                glm::vec3 minPlayerVertex = player->getComponent<CollisionComponent>()->mesh->minvertex;
+                glm::vec3 maxPlayerVertex = player->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+                // transforms the min and max vertices to the wold space
+                minPlayerVertex *= player->localTransform.scale[0];
+                maxPlayerVertex *= player->localTransform.scale[0];
+                minPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
+                maxPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
+
+                // gets the min and max vertices using the mesh class
+                glm::vec3 minCollider = enemy->getComponent<CollisionComponent>()->mesh->minvertex;
+                glm::vec3 maxCollider = enemy->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+                // transforms the min and max vertices to the wold space
+                minCollider *= enemy->localTransform.scale[0];
+                maxCollider *= enemy->localTransform.scale[0];
+                minCollider += enemy->localTransform.position;
+                maxCollider += enemy->localTransform.position;
+
+                // collision between AABBs check
+                if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
+                    (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
+                    (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
+                {
+                    s.play();
+                    std::cout << "collision detected distance : (" << '\n';
+                    return enemy;
                 }
             }
         }

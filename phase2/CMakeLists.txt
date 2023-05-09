@@ -94,6 +94,8 @@ set(COMMON_SOURCES
         source/common/systems/movement.hpp
         source/common/systems/player.hpp
         source/common/systems/chicken-renderer.hpp
+        source/common/systems/sound.hpp
+        source/common/systems/sound.cpp
         
 )
 
@@ -105,6 +107,7 @@ include_directories(
         vendor/glm
         vendor/imgui
         vendor/utils
+        vendor/bass
 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
@@ -126,8 +129,11 @@ set(STATES_SOURCES
         source/states/renderer-test-state.hpp
 )
 
+# add_library(BASS STATIC vendor/bass/bass.lib)
+# set_target_properties(BASS PROPERTIES LINKER_LANGUAGE CXX)
 # For each example, we add an executable target
 # Each target compiles one example source file and the common & vendor source files
 # Then we link GLFW with each target
 add_executable(GAME_APPLICATION source/main.cpp ${STATES_SOURCES} ${COMMON_SOURCES} ${VENDOR_SOURCES})
-target_link_libraries(GAME_APPLICATION glfw)
+target_link_directories(GAME_APPLICATION PUBLIC vendor/bass/x64)
+target_link_libraries(GAME_APPLICATION glfw bass)
