@@ -86,6 +86,7 @@ class FreeCameraControllerSystem
 
         // If the left mouse button is pressed, we get the change in the mouse location
         // and use it to update the camera rotation
+        // uncomment this to give controll to all directions rotation
         if (app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1))
         {
             glm::vec2 delta = app->getMouse().getMouseDelta();
@@ -153,6 +154,10 @@ class FreeCameraControllerSystem
         }
         if (!is_rotating)
         {
+            if (rocket_rotation.x < 0.1 && rocket_rotation.x > -0.1)
+            {
+                rocket_rotation.x = 0;
+            }
             if (rocket_rotation.x > 0)
             {
                 rocket_rotation.x -= 0.1f;
@@ -162,12 +167,6 @@ class FreeCameraControllerSystem
                 rocket_rotation.x += 0.1f;
             }
         }
-        // Entity *enemy_collision = collisionSystem.detectCollision(world);
-        // if (enemy_collision)
-        // {
-        //     enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
-        //     enemy_collision->deleteComponent<CollisionComponent>();
-        // }
     }
 
     // When the state exits, it should call this function to ensure the mouse is unlocked
