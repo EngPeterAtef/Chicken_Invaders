@@ -14,7 +14,6 @@
 
 #include "../asset-loader.hpp"
 
-#include "../systems/sound.hpp"
 #include <iostream>
 namespace our
 {
@@ -23,7 +22,6 @@ class CollisionSystem
 
     // will store the entities that we will be checking for collisions
     Entity *enemy;
-    Sound s = Sound("assets/sounds/collect.mp3", false);
 
   public:
     Entity *detectFiring(World *world, Entity *laser)
@@ -157,7 +155,7 @@ class CollisionSystem
                     (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
                     (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
                 {
-                    s.play();
+
                     std::cout << "collision detected distance : (" << '\n';
                     return enemy;
                 }

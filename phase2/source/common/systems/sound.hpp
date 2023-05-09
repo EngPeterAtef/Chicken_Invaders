@@ -1,13 +1,17 @@
+#pragma once
+
 class Sound
 {
-private:
+  private:
     unsigned int channel;
     static bool isInit;
 
-public:
+  public:
     Sound(const char *path, bool loop);
     ~Sound();
     void play();
     void stop();
+    // Volume is an integer value ranges from 0 to 100
+    void changeVolume(int volume);
     void pause();
 };

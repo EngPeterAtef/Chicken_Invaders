@@ -1,47 +1,28 @@
 #pragma once
 #include <application.hpp>
+#include <array>
+#include <functional>
 #include <imgui-utils/utils.hpp>
 #include <material/material.hpp>
 #include <mesh/mesh.hpp>
 #include <shader/shader.hpp>
 #include <texture/texture-utils.hpp>
 #include <texture/texture2d.hpp>
-
-#include <array>
-#include <functional>
-
-// This struct is used to store the location and size of a button and the code it should execute when clicked
-struct Button
-{
-    // The position (of the top-left corner) of the button and its size in pixels
-    glm::vec2 position, size;
-    // The function that should be excuted when the button is clicked. It takes no arguments and returns nothing.
-    std::function<void()> action;
-
-    // This function returns true if the given vector v is inside the button. Otherwise, false is returned.
-    // This is used to check if the mouse is hovering over the button.
-    bool isInside(const glm::vec2 &v) const
-    {
-        return position.x <= v.x && position.y <= v.y && v.x <= position.x + size.x && v.y <= position.y + size.y;
-    }
-
-    // This function returns the local to world matrix to transform a rectangle of size 1x1
-    // (and whose top-left corner is at the origin) to be the button.
-    glm::mat4 getLocalToWorld() const
-    {
-        return glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 0.0f)) *
-               glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 1.0f));
-    }
-};
-
+// include sound inside systems
+#include "systems/sound.hpp"
 // This state shows how to use some of the abstractions we created to make a menu.
 class Menustate : public our::State
 {
     bool fontLoaded = false;
-
+    bool isMute = false;
+    Sound background_sound = Sound("assets/sounds/intro.mp3", true);
     void onInitialize() override
     {
         // Theme Source: https://github.com/ocornut/imgui/issues/707
+        // ---------------INIT SOUND----------------
+
+        background_sound.changeVolume(30);
+        background_sound.play();
         if (!fontLoaded)
         {
             ImGui::GetIO().Fonts->AddFontFromFileTTF("assets/fonts/Ruda-Bold.ttf", 14.0f);
@@ -135,14 +116,35 @@ class Menustate : public our::State
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("New Game").x - 30) / 2.0f);
         if (ImGui::Button("New Game"))
         {
+            background_sound.stop();
             getApp()->changeState("play");
         }
+        if (isMute)
+        {
+            ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Unmute").x - 30) / 2.0f);
+            if (ImGui::Button("Unmute"))
+            {
+                background_sound.changeVolume(30);
+                isMute = false;
+            }
+        }
+        else
+        {
+            ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Mute").x - 30) / 2.0f);
+            if (ImGui::Button("Mute"))
+            {
+                background_sound.changeVolume(0);
+                isMute = true;
+            }
+        }
+
         // set Exit button
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Exit").x - 30) / 2.0f);
         if (ImGui::Button("Exit"))
         {
             glfwSetWindowShouldClose(getApp()->getWindow(), GLFW_TRUE);
         }
+
         ImGui::End();
     }
 };

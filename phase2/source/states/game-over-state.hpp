@@ -17,16 +17,11 @@ class GameOverState : public our::State
     int highScore = 0;
     int score = 0;
 
+    Sound game_over_sound = Sound("assets/sounds/game_over.mp3", false);
     void onInitialize() override
     {
-        // std::ifstream ifs("source/states/endgame.jsonc");
-        // auto json = nlohmann::json::parse(ifs);
-        // ifs.close();
-        // highScore = json.value("highScore", 0);
-        // score = json.value("score", 0);
-
+        game_over_sound.play();
         std::ifstream file_in("score.txt");
-        // std::ifstream file_in("source/states/endgame.jsonc");
         if (!file_in)
         {
             std::cerr << "Couldn't open file: "
@@ -134,6 +129,7 @@ class GameOverState : public our::State
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Restart").x - 30) / 2.0f);
         if (ImGui::Button("Restart"))
         {
+            game_over_sound.stop();
             getApp()->changeState("play");
         }
         // set Back to main menu
@@ -141,12 +137,14 @@ class GameOverState : public our::State
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Main Menu").x - 30) / 2.0f);
         if (ImGui::Button("Main Menu"))
         {
+            game_over_sound.stop();
             getApp()->changeState("menu");
         }
         // set Exit button
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Exit").x - 30) / 2.0f);
         if (ImGui::Button("Exit"))
         {
+            game_over_sound.stop();
             glfwSetWindowShouldClose(getApp()->getWindow(), GLFW_TRUE);
         }
         ImGui::End();

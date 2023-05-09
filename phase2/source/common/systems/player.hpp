@@ -6,14 +6,14 @@
 
 #include "../application.hpp"
 
+#include "../systems/sound.hpp"
+#include "./collision-system.hpp"
 #include <fstream>
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
 #include <glm/trigonometric.hpp>
 #include <iostream>
-
-#include "./collision-system.hpp"
 
 namespace our
 {
@@ -23,12 +23,18 @@ class PlayerSystem
     our::CollisionSystem collisionSystem;
     Entity *laser;
     Entity *player;
+    Sound chicken_kaaaak_sound = Sound("assets/sounds/chicken_kill.mp3", false);
+    Sound laser_sound = Sound("assets/sounds/laser.mp3", false);
+    Sound chicken_leg_sound = Sound("assets/sounds/chicken_leg.mp3", false);
+    Sound monkey_sound = Sound("assets/sounds/monkey.mp3", false);
+    Sound background_sound = Sound("assets/sounds/in_game.mp3", false);
 
   public:
     int lives = 3;
     int score = 0;
     void enter(World *world, Application *app)
     {
+        background_sound.play();
         score = 0;
         lives = 3;
         this->app = app;
@@ -58,6 +64,7 @@ class PlayerSystem
 
         if (app->getKeyboard().isPressed(GLFW_KEY_SPACE))
         {
+            laser_sound.play();
             laser->localTransform.scale = glm::vec3(0.2, 0.2, 10);
             Entity *fireEnemy = collisionSystem.detectFiring(world, laser);
             if (fireEnemy)
@@ -66,8 +73,8 @@ class PlayerSystem
                 fireEnemy->localTransform.scale = glm::vec3(0, 0, 0);
                 fireEnemy->deleteComponent<CollisionComponent>();
                 world->markForRemoval(fireEnemy);
-
                 score += 10;
+                chicken_kaaaak_sound.play();
             }
         }
         else
@@ -78,6 +85,7 @@ class PlayerSystem
         Entity *enemy_collision = collisionSystem.detectCollision(world, player);
         if (enemy_collision)
         {
+            chicken_kaaaak_sound.play();
             enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
             enemy_collision->deleteComponent<CollisionComponent>();
             world->markForRemoval(enemy_collision);
@@ -102,6 +110,7 @@ class PlayerSystem
             if (lives == 0)
             {
                 app->changeState("game-over");
+                background_sound.stop();
                 std::ifstream file_in("score.txt");
                 if (!file_in)
                 {
@@ -129,7 +138,7 @@ class PlayerSystem
             monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
             monkey_collision->deleteComponent<CollisionComponent>();
             world->markForRemoval(monkey_collision);
-
+            monkey_sound.play();
             lives++;
             std::cout << "Lives: " << lives << " Score : " << score << std::endl;
             if (lives > 3)
@@ -163,9 +172,10 @@ class PlayerSystem
         Entity *chicken_leg = collisionSystem.detectChickenLeg(world, player);
         if (chicken_leg)
         {
+
             chicken_leg->deleteComponent<CollisionComponent>();
             world->markForRemoval(chicken_leg);
-
+            chicken_leg_sound.play();
             score += 50;
         }
         world->deleteMarkedEntities();

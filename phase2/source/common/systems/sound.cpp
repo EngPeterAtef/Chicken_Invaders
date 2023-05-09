@@ -31,6 +31,11 @@ Sound::Sound(const char *path, bool loop)
         std::cout << "Can't load sample" << std::endl;
     }
 }
+void Sound::changeVolume(int volume)
+{
+
+    BASS_SetConfig(BASS_CONFIG_GVOL_STREAM, volume * 100);
+}
 void Sound::play()
 {
     BASS_ChannelPlay(channel, FALSE);
