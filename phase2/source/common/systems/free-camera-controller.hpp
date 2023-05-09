@@ -140,7 +140,7 @@ class FreeCameraControllerSystem
             is_rotating = true;
             if (rocket_rotation.x > -1.0)
                 rocket_rotation.x -= 0.1f;
-            if (position.x < 20)
+            if (position.x < 15)
             {
                 position += right * (8 * deltaTime * current_sensitivity.x);
             }
@@ -150,7 +150,7 @@ class FreeCameraControllerSystem
             is_rotating = true;
             if (rocket_rotation.x < 1.0)
                 rocket_rotation.x += 0.1f;
-            if (position.x > -20)
+            if (position.x > -15)
             {
                 position -= right * (8 * deltaTime * current_sensitivity.x);
             }
