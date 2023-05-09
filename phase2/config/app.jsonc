@@ -342,37 +342,54 @@
           },
           {
             "position": [0, 0, -1],
-            "rotation": [0, 0, -1],
+            "rotation": [0, 0, 0],
             "components": [
               {
                 "type": "LightComponent",
                 "kind": 2,
-                "color": [1, 1, 1],
-                "cone_angles": [40, -40],
-                "attenuation": [0.01, 0.01, 0]
+                "color": [0, 0.5,0.5],
+                "cone_angles": [40, 0],
+                "attenuation": [0.01, 0, 0]
+              }
+            ]
+          },
+          {
+            "position": [0, 0, -1],
+            "rotation": [0, 0, -1],
+            "components": [
+              {
+                "type": "LightComponent",
+                "kind": 0,
+                "color": [1, 1,1],
+                "cone_angles": [40, 0],
+                "attenuation": [0, 0, 0]
               }
             ]
           }
         ]
       },
-      {
-        "name": "monkey",
-        "rotation": [0, 0, 0],
-        "position": [2, 0, -15],
-        "scale": [1, 1, 1],
-        "components": [
-          {
-            "type": "Mesh Renderer",
-            "mesh": "monkey",
-            "material": "rocky_monkey"
-          },
-          {
-            "type": "Movement",
-            "linearVelocity": [0, 0, 0],
-            "angularVelocity": [0, 0, 0]
-          }
-        ]
-      },
+      // {
+      //   "name": "monkey",
+      //   "rotation": [0, 0, 0],
+      //   "position": [2, 0, -15],
+      //   "scale": [1, 1, 1],
+      //   "components": [
+      //     {
+      //       "type": "Mesh Renderer",
+      //       "mesh": "monkey",
+      //       "material": "rocky_monkey"
+      //     },
+      //     {
+      //       "type": "Movement",
+      //       "linearVelocity": [0, 0, 0],
+      //       "angularVelocity": [0, 0, 0]
+      //     },
+      //     {
+      //       "type": "Collision",
+      //       "mesh": "monkey"
+      //     }
+      //   ]
+      // },
       // {
       //   "name": "enemy",
       //   "rotation": [0, 0, 0],

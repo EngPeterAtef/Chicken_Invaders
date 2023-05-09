@@ -34,7 +34,7 @@ class ChickenRenderer
         Entity *newEntity = world->add();
         newEntity->name = "enemy";
 
-        newEntity->localTransform.position = glm::vec3(generateRandomNumber(-15, 15), 0, zCounter);
+        newEntity->localTransform.position = glm::vec3(generateRandomNumber(-15, 15), generateRandomNumber(-3, 3), zCounter);
         newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
 
         MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();

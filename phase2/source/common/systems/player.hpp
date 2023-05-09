@@ -123,6 +123,42 @@ class PlayerSystem
                 outfile.close();
             }
         }
+        Entity *monkey_collision = collisionSystem.detectMonkeyCollision(world, player);
+        if (monkey_collision)
+        {
+            monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
+            monkey_collision->deleteComponent<CollisionComponent>();
+            world->markForRemoval(monkey_collision);
+
+            lives++;
+            std::cout << "Lives: " << lives << " Score : " << score << std::endl;
+            if (lives > 3)
+            {
+                std::cout << "Lives are more than 3" << std::endl;
+                lives = 3;
+                score += 100;
+            }
+            else
+            {
+                std::cout << "Lives are less than 3" << std::endl;
+                for (auto entity1 : world->getEntities())
+                {
+                    // Look for the lives
+                    if (lives == 3 && entity1->name == "lives3")
+                    {
+                        std::cout << "Lives are 3" << std::endl;
+                        entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
+                        break;
+                    }
+                    if (lives == 2 && entity1->name == "lives2")
+                    {
+                        std::cout << "Lives are 2" << std::endl;
+                        entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
+                        break;
+                    }
+                }
+            }
+        }
 
         Entity *chicken_leg = collisionSystem.detectChickenLeg(world, player);
         if (chicken_leg)
@@ -130,7 +166,7 @@ class PlayerSystem
             chicken_leg->deleteComponent<CollisionComponent>();
             world->markForRemoval(chicken_leg);
 
-            score += 30;
+            score += 50;
         }
         world->deleteMarkedEntities();
     }
