@@ -130,12 +130,12 @@ class FreeCameraControllerSystem
         //     position += up * (deltaTime * current_sensitivity.y);
         // if (app->getKeyboard().isPressed(GLFW_KEY_E))
         //     position -= up * (deltaTime * current_sensitivity.y);
-        if (app->getKeyboard().isPressed(GLFW_KEY_W))
+        if (app->getKeyboard().isPressed(GLFW_KEY_UP))
             position += up * (deltaTime * current_sensitivity.y);
         if (app->getKeyboard().isPressed(GLFW_KEY_S))
             position -= up * (deltaTime * current_sensitivity.y);
         // A & D moves the player left or right
-        if (app->getKeyboard().isPressed(GLFW_KEY_D))
+        if (app->getKeyboard().isPressed(GLFW_KEY_DOWN))
         {
             is_rotating = true;
             if (rocket_rotation.x > -1.0)
@@ -145,7 +145,7 @@ class FreeCameraControllerSystem
                 position += right * (8 * deltaTime * current_sensitivity.x);
             }
         }
-        if (app->getKeyboard().isPressed(GLFW_KEY_A))
+        if (app->getKeyboard().isPressed(GLFW_KEY_RIGHT))
         {
             is_rotating = true;
             if (rocket_rotation.x < 1.0)
