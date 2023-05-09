@@ -147,16 +147,16 @@ namespace our
     {
         counter++;
 
-        if (counter >= 60 && done == false)
+        if (counter >= 60)
         {
-            done = true;
+
             zCounter = 5;
             counter = 0;
             chicken_renderer->rendering(world, zCounter);
-            chicken_renderer->delete_chickens(world);
+            // chicken_renderer->delete_chickens(world);
             // chicken_renderer->printing();
         }
-        chicken_renderer->delete_chickens(world);
+        // chicken_renderer->delete_chickens(world);
 
         // First of all, we search for a camera and for all the mesh renderers
         CameraComponent *camera = nullptr;
