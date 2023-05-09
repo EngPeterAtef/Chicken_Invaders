@@ -130,7 +130,7 @@ class PlayerSystem
             chicken_leg->deleteComponent<CollisionComponent>();
             world->markForRemoval(chicken_leg);
 
-            score += 50;
+            score += 30;
         }
         world->deleteMarkedEntities();
     }
