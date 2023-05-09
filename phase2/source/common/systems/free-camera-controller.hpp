@@ -132,9 +132,22 @@ class FreeCameraControllerSystem
         // if (app->getKeyboard().isPressed(GLFW_KEY_E))
         //     position -= up * (deltaTime * current_sensitivity.y);
         if (app->getKeyboard().isPressed(GLFW_KEY_UP))
-            position += up * (deltaTime * current_sensitivity.y);
+        {
+            if (position.x < 15)
+            {
+
+                position += up * (8 * deltaTime * current_sensitivity.y);
+            }
+        }
         if (app->getKeyboard().isPressed(GLFW_KEY_DOWN))
-            position -= up * (deltaTime * current_sensitivity.y);
+        {
+
+            if (position.x > -15)
+            {
+
+                position -= up * (8 * deltaTime * current_sensitivity.y);
+            }
+        }
         // A & D moves the player left or right
         if (app->getKeyboard().isPressed(GLFW_KEY_RIGHT))
         {
