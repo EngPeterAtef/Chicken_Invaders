@@ -25,14 +25,10 @@ Sound::Sound(const char *path, bool loop)
     //     HCHANNEL channel = BASS_SampleGetChannel(sample, FALSE);
     //     BASS_ChannelPlay(channel, FALSE);
     // }
-    unsigned int channel = BASS_StreamCreateFile(false, path, 0, 0, loop ? BASS_SAMPLE_LOOP : BASS_SAMPLE_MONO);
+    channel = BASS_StreamCreateFile(false, path, 0, 0, loop ? BASS_SAMPLE_LOOP : BASS_SAMPLE_FLOAT);
     if (!channel)
     {
         std::cout << "Can't load sample" << std::endl;
-    }
-    else
-    {
-        BASS_ChannelPlay(channel, FALSE);
     }
 }
 void Sound::play()
