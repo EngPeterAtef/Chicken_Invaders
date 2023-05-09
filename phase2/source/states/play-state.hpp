@@ -8,6 +8,7 @@
 #include <systems/free-camera-controller.hpp>
 #include <systems/movement.hpp>
 #include <systems/player.hpp>
+// #include <systems/chicken-renderer.hpp>
 
 // This state shows how to use the ECS framework and deserialization.
 class Playstate : public our::State
@@ -18,6 +19,7 @@ class Playstate : public our::State
     our::FreeCameraControllerSystem cameraController;
     our::MovementSystem movementSystem;
     our::PlayerSystem playerSystem;
+    // our::ChickenRenderer chickenRenderer;
 
     void onInitialize() override
     {
@@ -49,6 +51,7 @@ class Playstate : public our::State
         cameraController.update(&world, (float)deltaTime);
         playerSystem.update(&world, (float)deltaTime);
         // And finally we use the renderer system to draw the scene
+        // chickenRenderer.delete_chickens(&world);
         renderer.render(&world);
 
         // Get a reference to the keyboard object

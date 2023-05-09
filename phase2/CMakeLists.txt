@@ -87,6 +87,8 @@ set(COMMON_SOURCES
         source/common/systems/collision-system.hpp
         source/common/systems/movement.hpp
         source/common/systems/player.hpp
+        source/common/systems/chicken-renderer.hpp
+        
 )
 
 # Define the directories in which to search for the included headers

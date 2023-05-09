@@ -177,7 +177,7 @@
     },
     "world": [
       {
-        "position": [-3, 2, 15],
+        "position": [-3, 0, 15],
         "components": [
           {
             "type": "Camera"
@@ -187,7 +187,7 @@
           },
           {
             "type": "Movement",
-            "linearVelocity": [0, 0, -10]
+            "linearVelocity": [0, 0, -5]
           }
         ],
         "children": [
