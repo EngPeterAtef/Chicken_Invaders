@@ -28,6 +28,7 @@ class PlayerSystem
     int score = 0;
     void enter(Application *app)
     {
+        score = 0;
         lives = 3;
         this->app = app;
     }

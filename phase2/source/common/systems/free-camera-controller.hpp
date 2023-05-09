@@ -123,13 +123,13 @@ class FreeCameraControllerSystem
         // S & W moves the player back and forth
         if (app->getKeyboard().isPressed(GLFW_KEY_W))
             position += front * (5 * deltaTime * current_sensitivity.z);
-        if (app->getKeyboard().isPressed(GLFW_KEY_S))
-            position -= front * (deltaTime * current_sensitivity.z);
+        // if (app->getKeyboard().isPressed(GLFW_KEY_S))
+        //     position -= front * (deltaTime * current_sensitivity.z);
         // Q & E moves the player up and down
-        if (app->getKeyboard().isPressed(GLFW_KEY_Q))
-            position += up * (deltaTime * current_sensitivity.y);
-        if (app->getKeyboard().isPressed(GLFW_KEY_E))
-            position -= up * (deltaTime * current_sensitivity.y);
+        // if (app->getKeyboard().isPressed(GLFW_KEY_Q))
+        //     position += up * (deltaTime * current_sensitivity.y);
+        // if (app->getKeyboard().isPressed(GLFW_KEY_E))
+        //     position -= up * (deltaTime * current_sensitivity.y);
         // A & D moves the player left or right
         if (app->getKeyboard().isPressed(GLFW_KEY_D))
         {
@@ -138,7 +138,7 @@ class FreeCameraControllerSystem
                 rocket_rotation.x -= 0.1f;
             if (position.x < 20)
             {
-                position += right * (5 * deltaTime * current_sensitivity.x);
+                position += right * (8 * deltaTime * current_sensitivity.x);
             }
         }
         if (app->getKeyboard().isPressed(GLFW_KEY_A))
@@ -148,7 +148,7 @@ class FreeCameraControllerSystem
                 rocket_rotation.x += 0.1f;
             if (position.x > -20)
             {
-                position -= right * (5 * deltaTime * current_sensitivity.x);
+                position -= right * (8 * deltaTime * current_sensitivity.x);
             }
         }
         if (!is_rotating)

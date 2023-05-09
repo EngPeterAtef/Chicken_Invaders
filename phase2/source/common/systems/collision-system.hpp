@@ -51,8 +51,8 @@ class CollisionSystem
                 // transforms the min and max vertices to the wold space
                 minLaserVertex *= laser->localTransform.scale[2];
                 maxLaserVertex *= laser->localTransform.scale[2];
-                minLaserVertex.x *= laser->localTransform.scale[0];
-                maxLaserVertex.x *= laser->localTransform.scale[0];
+                minLaserVertex.x *= laser->localTransform.scale[0] * 0.005;
+                maxLaserVertex.x *= laser->localTransform.scale[0] * 0.005;
                 minLaserVertex.y *= laser->localTransform.scale[0];
                 maxLaserVertex.y *= laser->localTransform.scale[0];
                 minLaserVertex += laser->localTransform.position + laser->parent->localTransform.position;
