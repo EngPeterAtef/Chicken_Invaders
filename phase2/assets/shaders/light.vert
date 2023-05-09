@@ -1,6 +1,6 @@
 #version 330
 
-uniform vec3 eye;
+uniform vec3 eye;//camera position
 uniform mat4 VP;
 uniform mat4 M;
 uniform mat4 M_IT;

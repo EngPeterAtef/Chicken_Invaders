@@ -6,6 +6,7 @@
 #include "free-camera-controller.hpp"
 #include "mesh-renderer.hpp"
 #include "movement.hpp"
+#include "light.hpp"
 
 namespace our
 {
@@ -36,6 +37,10 @@ inline void deserializeComponent(const nlohmann::json &data, Entity *entity)
     else if (type == CollisionComponent::getID())
     {
         component = entity->addComponent<CollisionComponent>();
+    } 
+    else if (type == LightComponent::getID())
+    {
+        component = entity->addComponent<LightComponent>();
     }
     if (component)
         component->deserialize(data);

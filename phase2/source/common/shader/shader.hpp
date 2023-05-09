@@ -85,7 +85,8 @@ namespace our
             // TODO: (Req 1) Send the given 3D vector value to the given uniform
             // DONE
             GLuint loc = getUniformLocation(uniform);
-            glUniform3fv(loc, 1, &value.x);
+            // glUniform3fv(loc, 1, &value.x);
+            glUniform3f(loc, value.x, value.y, value.z);
         }
 
         void set(const std::string &uniform, glm::vec4 value)
@@ -94,7 +95,8 @@ namespace our
             // DONE
 
             GLuint loc = getUniformLocation(uniform);
-            glUniform4fv(loc, 1, &value.x);
+            // glUniform4fv(loc, 1, &value.x);
+            glUniform4f(loc, value.x, value.y, value.z, value.w);
         }
 
         void set(const std::string &uniform, glm::mat4 matrix)

@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.0.0)   # Selects the minimum version of CMake required to run this file
-project(GFX-LAB VERSION 0.1.0)          # Here we select the project name and version
+cmake_minimum_required(VERSION 3.0.0) # Selects the minimum version of CMake required to run this file
+project(GFX-LAB VERSION 0.1.0) # Here we select the project name and version
 
 # Here we select C++17 with all the standards required and all compiler-specific extensions disabled
 set(CMAKE_CXX_STANDARD 17)
@@ -7,15 +7,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # These are the options we select for building GLFW as a library
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)        # Don't build Documentation
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)       # Don't build Tests
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)    # Don't build Examples
-set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)           # Don't build Installation Information
-set(GLFW_USE_HYBRID_HPG ON CACHE BOOL "" FORCE)     # Add variables to use High Performance Graphics Card if available
-add_subdirectory(vendor/glfw)                       # Build the GLFW project to use later as a library
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE) # Don't build Documentation
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE) # Don't build Tests
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE) # Don't build Examples
+set(GLFW_INSTALL OFF CACHE BOOL "" FORCE) # Don't build Installation Information
+set(GLFW_USE_HYBRID_HPG ON CACHE BOOL "" FORCE) # Add variables to use High Performance Graphics Card if available
+add_subdirectory(vendor/glfw) # Build the GLFW project to use later as a library
 
 # A variable with all the source files of GLAD
 set(GLAD_SOURCE vendor/glad/src/gl.c)
+
 # A variables with all the source files of Dear ImGui
 set(IMGUI_SOURCES
         vendor/imgui/imgui.cpp
@@ -24,7 +25,7 @@ set(IMGUI_SOURCES
         vendor/imgui/imgui_widgets.cpp
         vendor/imgui/imgui_impl/imgui_impl_glfw.cpp
         vendor/imgui/imgui_impl/imgui_impl_opengl3.cpp
-        )
+)
 
 # Combine all vendor source files together into a single variable
 set(VENDOR_SOURCES ${GLAD_SOURCE} ${IMGUI_SOURCES})
@@ -36,10 +37,12 @@ set(COMMON_SOURCES
         source/common/input/keyboard.hpp
         source/common/input/mouse.hpp
 
+        source/common/imgui-utils/utils.hpp
+
         source/common/asset-loader.cpp
         source/common/asset-loader.hpp
         source/common/deserialize-utils.hpp
-        
+
         source/common/shader/shader.hpp
         source/common/shader/shader.cpp
 
@@ -80,7 +83,10 @@ set(COMMON_SOURCES
         source/common/components/Collision.hpp
         source/common/components/Collision.cpp
         source/common/components/component-deserializer.hpp
+        source/common/components/light.hpp
+        source/common/components/light.cpp
 
+        source/common/systems/light.hpp
         source/common/systems/forward-renderer.hpp
         source/common/systems/forward-renderer.cpp
         source/common/systems/free-camera-controller.hpp
@@ -101,7 +107,6 @@ include_directories(
         vendor/utils
 )
 
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/bin)
@@ -109,6 +114,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/bin)
 set(STATES_SOURCES
         source/states/play-state.hpp
         source/states/menu-state.hpp
+        source/states/game-over-state.hpp
         source/states/shader-test-state.hpp
         source/states/mesh-test-state.hpp
         source/states/transform-test-state.hpp

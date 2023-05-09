@@ -4,7 +4,9 @@
 #include "../common/components/movement.hpp"
 #include "../common/components/mesh-renderer.hpp"
 #include "./chicken-renderer.hpp"
+#include "../components/collision.hpp"
 #include <random>
+#include <iostream>
 namespace our
 {
     int counter = 0;
@@ -161,6 +163,7 @@ namespace our
         opaqueCommands.clear();
         transparentCommands.clear();
 
+        lightCommands.clear();
         for (auto entity : world->getEntities())
         {
 
@@ -181,6 +184,10 @@ namespace our
                 if (command.material->transparent)
                 {
                     transparentCommands.push_back(command);
+                }
+                else if (command.material->affectedByLight)
+                {
+                    lightCommands.push_back(command);
                 }
                 else
                 {
@@ -256,6 +263,7 @@ namespace our
         //-------------------------------------------
         int light_count = world->light_count;
         Light *lights = world->lights;
+        // std::cout << "light objects" << lightCommands.size() << std::endl;
         for (auto &command : lightCommands)
         {
             command.material->setup();
@@ -264,28 +272,27 @@ namespace our
             glm::mat4 M_IT = glm::transpose(glm::inverse(M));
             glm::vec3 eye = camera->getOwner()->localTransform.position;
             glm::vec3 sky_top = glm::vec3(0.3f, 0.6f, 1.0f);
-            glm::vec3 sky_middle = glm::vec3(0.3f, 0.3f, 0.3f);
+            glm::vec3 sky_horizon = glm::vec3(0.3f, 0.3f, 0.3f);
             glm::vec3 sky_bottom = glm::vec3(0.1f, 0.1f, 0.0f);
             command.material->shader->set("M", M);
             command.material->shader->set("VP", VP);
             command.material->shader->set("M_IT", M_IT);
             command.material->shader->set("eye", eye);
             command.material->shader->set("sky.top", sky_top);
-            command.material->shader->set("sky.middle", sky_middle);
+            command.material->shader->set("sky.horizon", sky_horizon);
             command.material->shader->set("sky.bottom", sky_bottom);
-
+            command.material->shader->set("light_count", light_count);
             for (int i = 0; i < light_count; i++)
             {
                 command.material->shader->set("lights[" + std::to_string(i) + "].type", lights[i].kind);
                 command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i].position);
-                command.material->shader->set("lights[" + std::to_string(i) + "].diffuse", lights[i].diffuse);
-                command.material->shader->set("lights[" + std::to_string(i) + "].specular", lights[i].specular);
+                command.material->shader->set("lights[" + std::to_string(i) + "].color", lights[i].color);
                 command.material->shader->set("lights[" + std::to_string(i) + "].attenuation", lights[i].attenuation);
                 command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i].direction);
                 command.material->shader->set("lights[" + std::to_string(i) + "].cone_angles", lights[i].cone_angles);
             }
-            command.material->shader->set("light_count", light_count);
             command.mesh->draw();
+            // std::cout<<"light command end"<<std::endl;
         }
         //-------------------------------------------
         //-------------------------------------------

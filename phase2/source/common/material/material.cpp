@@ -26,6 +26,15 @@ namespace our
         }
         shader = AssetLoader<ShaderProgram>::get(data["shader"].get<std::string>());
         transparent = data.value("transparent", false);
+        std::string type = data.value("type", "");
+        if (type == "light")
+        {
+            affectedByLight = true;
+        }
+        else
+        {
+            affectedByLight = false;
+        }
     }
 
     // This function should call the setup of its parent and

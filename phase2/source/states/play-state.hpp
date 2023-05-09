@@ -1,11 +1,12 @@
 #pragma once
 
 #include <application.hpp>
-
 #include <asset-loader.hpp>
 #include <ecs/world.hpp>
+#include <imgui-utils/utils.hpp>
 #include <systems/forward-renderer.hpp>
 #include <systems/free-camera-controller.hpp>
+#include <systems/light.hpp>
 #include <systems/movement.hpp>
 #include <systems/player.hpp>
 // #include <systems/chicken-renderer.hpp>
@@ -19,7 +20,7 @@ class Playstate : public our::State
     our::FreeCameraControllerSystem cameraController;
     our::MovementSystem movementSystem;
     our::PlayerSystem playerSystem;
-    // our::ChickenRenderer chickenRenderer;
+    our::LightSystem lightSystem;
 
     void onInitialize() override
     {
@@ -50,6 +51,8 @@ class Playstate : public our::State
         movementSystem.update(&world, (float)deltaTime);
         cameraController.update(&world, (float)deltaTime);
         playerSystem.update(&world, (float)deltaTime);
+
+        lightSystem.update(&world);
         // And finally we use the renderer system to draw the scene
         // chickenRenderer.delete_chickens(&world);
         renderer.render(&world);
@@ -74,5 +77,10 @@ class Playstate : public our::State
         world.clear();
         // and we delete all the loaded assets to free memory on the RAM and the VRAM
         our::clearAllAssets();
+    }
+    void onImmediateGui() override
+    { //= gets called in application.cpp every frame
+        //= Here, we just draw the camera controller system's gui
+        playerSystem.imgui();
     }
 };
