@@ -49,7 +49,7 @@ class ShaderTestState: public our::State {
         glClearColor(0.0, 0.0, 0.0, 1.0);
     }
 
-    void onDraw(double deltaTime) override {
+    void onDraw(double deltaTime,int speed) override {
         // Clear the screen color
         glClear(GL_COLOR_BUFFER_BIT);
         // Use the shader then draw the mesh

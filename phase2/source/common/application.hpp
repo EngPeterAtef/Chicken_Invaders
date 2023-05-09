@@ -33,7 +33,7 @@ namespace our {
     public:
         virtual void onInitialize(){}                   // Called once before the game loop.
         virtual void onImmediateGui(){}                 // Called every frame to draw the Immediate GUI (if any).
-        virtual void onDraw(double deltaTime){}         // Called every frame in the game loop passing the time taken to draw the frame "Delta time".
+        virtual void onDraw(double deltaTime,int speed){}         // Called every frame in the game loop passing the time taken to draw the frame "Delta time".
         virtual void onDestroy(){}                      // Called once after the game loop ends for house cleaning.
 
 

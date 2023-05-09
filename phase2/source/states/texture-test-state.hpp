@@ -40,7 +40,7 @@ class TextureTestState: public our::State {
         texture = our::texture_utils::loadImage(config.value("texture", ""));
     }
 
-    void onDraw(double deltaTime) override {
+    void onDraw(double deltaTime,int speed) override {
         glClear(GL_COLOR_BUFFER_BIT);
         shader->use();
         // Here we set the active texture unit to 0 then bind the texture to it

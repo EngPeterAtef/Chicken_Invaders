@@ -10,9 +10,9 @@
 namespace our
 {
     int counter = 0;
-    int multiples = 0;
+    int timeToIncrease = 0;
     int zCounter = 0;
-    bool done = false;
+
     ChickenRenderer *chicken_renderer = new ChickenRenderer();
     // double generateRandomNumber(double minX, double maxX)
     // {
@@ -143,17 +143,17 @@ namespace our
         }
     }
 
-    void ForwardRenderer::render(World *world)
+    void ForwardRenderer::render(World *world, int speed)
     {
         counter++;
 
         if (counter >= 60)
         {
 
-            zCounter = 5;
+            timeToIncrease++;
             counter = 0;
-            chicken_renderer->rendering(world, zCounter);
-            // chicken_renderer->delete_chickens(world);
+            chicken_renderer->rendering(world, speed);
+            chicken_renderer->delete_chickens(world);
             // chicken_renderer->printing();
         }
         // chicken_renderer->delete_chickens(world);

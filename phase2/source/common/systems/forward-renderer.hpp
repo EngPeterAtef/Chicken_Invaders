@@ -54,7 +54,7 @@ namespace our
         // Clean up the renderer
         void destroy();
         // This function should be called every frame to draw the given world
-        void render(World *world);
+        void render(World *world,int speed);
     };
 
 }
