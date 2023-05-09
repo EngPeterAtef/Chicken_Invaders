@@ -183,23 +183,7 @@ our::WindowConfiguration our::Application::getWindowConfiguration()
 // if run_for_frames == 0, the application runs indefinitely till manually closed.
 int our::Application::run(int run_for_frames)
 {
-    // ---------------SOUND TEST----------------
-    // if (!BASS_Init(-1, 44100, 0, 0, NULL))
-    // {
-    //     std::cout << "Can't initialize device" << std::endl;
-    // }
-    // else
-    // {
-    //     unsigned int channel = BASS_StreamCreateFile(false, "assets/sounds/car.mp3", 0, 0, BASS_SAMPLE_LOOP);
-    //     if (!channel)
-    //     {
-    //         std::cout << "Can't load sample" << std::endl;
-    //     }
-    //     else
-    //     {
-    //         BASS_ChannelPlay(channel, FALSE);
-    //     }
-    // }
+    // ---------------INIT SOUND----------------
     Sound s = Sound("assets/sounds/car.mp3", true);
     s.play();
     // -----------------------------------------
