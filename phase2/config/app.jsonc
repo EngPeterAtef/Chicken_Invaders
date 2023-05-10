@@ -34,6 +34,7 @@
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
         "heart": "assets/textures/heart.png",
+        "green": "assets/textures/green.png",
         "chicken": "assets/textures/chicken1/chicken1.jpg",
         "rocket": "assets/textures/rocket.jpg",
         "monkey": "assets/textures/monkey/monkey.png",
@@ -141,6 +142,22 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "heart",
+          "sampler": "default"
+        },
+        "laser1": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "green",
+          // "texture": "heart",
           "sampler": "default"
         },
         "chicken": {
@@ -289,6 +306,61 @@
               }
             ]
           },
+          // testing new weapon start
+          {
+            "name": "laser_green",
+            "rotation": [1, 0.5, 0],
+            "position": [0, -3, -20],
+            "scale": [0.15, 0.15, 10],
+            "components": [
+              {
+                "type": "Mesh Renderer",
+                "mesh": "cube",
+                "material": "laser1"
+              },
+              {
+                "type": "Collision",
+                "mesh": "cube"
+              }
+            ],
+            "children": [
+              {
+                "name": "laser_right",
+                "rotation": [0, 0, 0],
+                "position": [5, 7, 0.3],
+                "scale": [1, 1, 1],
+                "components": [
+                  {
+                    "type": "Mesh Renderer",
+                    "mesh": "cube",
+                    "material": "laser1"
+                  },
+                  {
+                    "type": "Collision",
+                    "mesh": "cube"
+                  }
+                ]
+              },
+              {
+                "name": "laser_left",
+                "rotation": [0, 0, 0],
+                "position": [-7, 3, 0.3],
+                "scale": [1, 1, 1],
+                "components": [
+                  {
+                    "type": "Mesh Renderer",
+                    "mesh": "cube",
+                    "material": "laser1"
+                  },
+                  {
+                    "type": "Collision",
+                    "mesh": "cube"
+                  }
+                ]
+              }
+            ]
+          },
+          // testing end
           {
             "name": "lives1",
             "rotation": [-80, -10, 0],
@@ -347,7 +419,7 @@
               {
                 "type": "LightComponent",
                 "kind": 2,
-                "color": [0, 0.5,0.5],
+                "color": [0, 0.5, 0.5],
                 "cone_angles": [40, 0],
                 "attenuation": [0.01, 0, 0]
               }
@@ -360,7 +432,7 @@
               {
                 "type": "LightComponent",
                 "kind": 0,
-                "color": [1, 1,1],
+                "color": [1, 1, 1],
                 "cone_angles": [40, 0],
                 "attenuation": [0, 0, 0]
               }

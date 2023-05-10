@@ -22,19 +22,25 @@ class PlayerSystem
     Application *app;
     our::CollisionSystem collisionSystem;
     Entity *laser;
+    Entity *laser_green;
+    Entity *laser_left;
+    Entity *laser_right;
     Entity *player;
     Sound chicken_kaaaak_sound = Sound("assets/sounds/chicken_kill.mp3", false);
     Sound laser_sound = Sound("assets/sounds/laser.mp3", false);
     Sound chicken_leg_sound = Sound("assets/sounds/chicken_leg.mp3", false);
     Sound monkey_sound = Sound("assets/sounds/monkey.mp3", false);
     Sound background_sound = Sound("assets/sounds/in_game.mp3", false);
+    bool is_rotating = false;
 
   public:
     int lives = 3;
     int score = 0;
+    int weapon_level = 0;
     void enter(World *world, Application *app)
     {
         background_sound.play();
+        weapon_level = 0;
         score = 0;
         lives = 3;
         this->app = app;
@@ -44,6 +50,7 @@ class PlayerSystem
             if (entity1->name == "laser")
             {
                 laser = entity1;
+
                 break;
             }
         }
@@ -56,30 +63,99 @@ class PlayerSystem
                 break;
             }
         }
+        for (auto entity1 : world->getEntities())
+        {
+            // Look for the right laser
+            if (entity1->name == "laser_green")
+            {
+                laser_green = entity1;
+                break;
+            }
+        }
+        for (auto entity1 : world->getEntities())
+        {
+            // Look for the right laser
+            if (entity1->name == "laser_right")
+            {
+                laser_right = entity1;
+                break;
+            }
+        }
+        for (auto entity1 : world->getEntities())
+        {
+            // Look for the left laser
+            if (entity1->name == "laser_left")
+            {
+                laser_left = entity1;
+                break;
+            }
+        }
     }
 
     // This should be called every frame to update player
     void update(World *world, float deltaTime)
     {
-
+        if (weapon_level == 1)
+            weapon_level1_controll();
         if (app->getKeyboard().isPressed(GLFW_KEY_SPACE))
         {
             laser_sound.play();
-            laser->localTransform.scale = glm::vec3(0.2, 0.2, 10);
-            Entity *fireEnemy = collisionSystem.detectFiring(world, laser);
-            if (fireEnemy)
+            if (weapon_level == 1)
             {
-                generate_chicken_leg(world, fireEnemy->localTransform.position);
-                fireEnemy->localTransform.scale = glm::vec3(0, 0, 0);
-                fireEnemy->deleteComponent<CollisionComponent>();
-                world->markForRemoval(fireEnemy);
-                score += 10;
-                chicken_kaaaak_sound.play();
+
+                laser_green->localTransform.scale = glm::vec3(0.2, 0.2, 10);
+                laser_left->localTransform.scale = glm::vec3(1, 1, 1);
+                laser_right->localTransform.scale = glm::vec3(1, 1, 1);
+                Entity *fireEnemy1 = collisionSystem.detectFiring(world, laser_green);
+                Entity *fireEnemy2 = collisionSystem.detectFiring(world, laser_left);
+                Entity *fireEnemy3 = collisionSystem.detectFiring(world, laser_right);
+                if (fireEnemy1)
+                {
+                    generate_chicken_leg(world, fireEnemy1->localTransform.position);
+                    fireEnemy1->deleteComponent<CollisionComponent>();
+                    world->markForRemoval(fireEnemy1);
+                    score += 10;
+                    chicken_kaaaak_sound.play();
+                }
+                if (fireEnemy2)
+                {
+                    generate_chicken_leg(world, fireEnemy2->localTransform.position);
+                    fireEnemy2->deleteComponent<CollisionComponent>();
+                    world->markForRemoval(fireEnemy2);
+                    score += 10;
+                    chicken_kaaaak_sound.play();
+                }
+                if (fireEnemy3)
+                {
+                    generate_chicken_leg(world, fireEnemy3->localTransform.position);
+                    fireEnemy3->deleteComponent<CollisionComponent>();
+                    world->markForRemoval(fireEnemy3);
+                    score += 10;
+                    chicken_kaaaak_sound.play();
+                }
+            }
+            else
+            {
+
+                laser->localTransform.scale = glm::vec3(0.2, 0.2, 10);
+                Entity *fireEnemy = collisionSystem.detectFiring(world, laser);
+                if (fireEnemy)
+                {
+                    generate_chicken_leg(world, fireEnemy->localTransform.position);
+                    fireEnemy->localTransform.scale = glm::vec3(0, 0, 0);
+                    fireEnemy->deleteComponent<CollisionComponent>();
+                    world->markForRemoval(fireEnemy);
+                    score += 10;
+                    chicken_kaaaak_sound.play();
+                }
             }
         }
         else
         {
             laser->localTransform.scale = glm::vec3(0, 0, 0);
+            laser_green->localTransform.scale = glm::vec3(0, 0, 0);
+            laser_left->localTransform.scale = glm::vec3(0, 0, 0);
+            laser_right->localTransform.scale = glm::vec3(0, 0, 0);
         }
         // score += 1;
         Entity *enemy_collision = collisionSystem.detectCollision(world, player);
@@ -153,7 +229,7 @@ class PlayerSystem
                 for (auto entity1 : world->getEntities())
                 {
                     // Look for the lives
-                    if (lives == 3 && entity1->name == "lives3")
+                    if (lives == 3 && entity1->name == "lives1")
                     {
                         std::cout << "Lives are 3" << std::endl;
                         entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
@@ -178,7 +254,18 @@ class PlayerSystem
             chicken_leg_sound.play();
             score += 50;
         }
+        if (score > 500 && weapon_level != 1)
+        {
+            weapon_level = 1;
+            laser->localTransform.scale = glm::vec3(0, 0, 0);
+        }
         world->deleteMarkedEntities();
+    }
+
+    void weapon_level1_controll()
+    {
+        glm::vec3 &rocket_rotation = player->localTransform.rotation;
+        laser_green->localTransform.rotation.z = rocket_rotation.x;
     }
 
     void generate_chicken_leg(World *world, glm::vec3 position)

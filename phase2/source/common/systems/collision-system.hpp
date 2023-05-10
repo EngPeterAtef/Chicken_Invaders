@@ -43,6 +43,13 @@ class CollisionSystem
                 maxLaserVertex.x *= laser->localTransform.scale[0] * 0.005;
                 minLaserVertex.y *= laser->localTransform.scale[0];
                 maxLaserVertex.y *= laser->localTransform.scale[0];
+                if (laser->parent->parent)
+                {
+                    minLaserVertex.x *= laser->localTransform.scale[0] * 1000;
+                    maxLaserVertex.x *= laser->localTransform.scale[0] * 1000;
+                    minLaserVertex += laser->parent->parent->localTransform.position;
+                    maxLaserVertex += laser->parent->parent->localTransform.position;
+                }
                 minLaserVertex += laser->localTransform.position + laser->parent->localTransform.position;
                 maxLaserVertex += laser->localTransform.position + laser->parent->localTransform.position;
 
@@ -121,6 +128,46 @@ class CollisionSystem
         }
         return nullptr;
     }
+    Entity *detectWeaponCollision(World *world, Entity *player)
+    {
+
+        for (auto entity : world->getEntities())
+        {
+            // Look for the player
+            if (entity->name == "weapon" && entity->getComponent<CollisionComponent>())
+            {
+                // gets the min and max vertices using the mesh class
+                glm::vec3 minPlayerVertex = player->getComponent<CollisionComponent>()->mesh->minvertex;
+                glm::vec3 maxPlayerVertex = player->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+                // transforms the min and max vertices to the wold space
+                minPlayerVertex *= player->localTransform.scale[0];
+                maxPlayerVertex *= player->localTransform.scale[0];
+                minPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
+                maxPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
+
+                // gets the min and max vertices using the mesh class
+                glm::vec3 minCollider = entity->getComponent<CollisionComponent>()->mesh->minvertex;
+                glm::vec3 maxCollider = entity->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+                // transforms the min and max vertices to the wold space
+                minCollider *= entity->localTransform.scale[0];
+                maxCollider *= entity->localTransform.scale[0];
+                minCollider += entity->localTransform.position;
+                maxCollider += entity->localTransform.position;
+
+                // collision between AABBs check
+                if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
+                    (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
+                    (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
+                {
+                    std::cout << "Change weapon" << '\n';
+                    return entity;
+                }
+            }
+        }
+        return nullptr;
+    }
     Entity *detectCollision(World *world, Entity *player)
     {
 
@@ -137,6 +184,8 @@ class CollisionSystem
                 // transforms the min and max vertices to the wold space
                 minPlayerVertex *= player->localTransform.scale[0];
                 maxPlayerVertex *= player->localTransform.scale[0];
+                minPlayerVertex.y *= 0.1;
+                maxPlayerVertex.y *= 0.1;
                 minPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
                 maxPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
 
