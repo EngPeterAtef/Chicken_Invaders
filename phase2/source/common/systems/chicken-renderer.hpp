@@ -35,7 +35,7 @@ namespace our
             Entity *newEntity = world->add();
             newEntity->name = "enemy";
             // cout <<world->
-            newEntity->localTransform.position = glm::vec3(generateRandomNumber(-15, 15), 0, -20);
+            newEntity->localTransform.position = glm::vec3(generateRandomNumber(-30, 30), 0, -20);
             newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
 
             MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();

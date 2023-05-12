@@ -275,8 +275,8 @@ int our::Application::run(int run_for_frames)
     double last_frame_time = glfwGetTime();
     int current_frame = 0;
 
-    int chicken_speed = 0;                ////////////////////////////////////////////
-    int level_start_time = glfwGetTime(); ////////////////////////////////
+    int chicken_speed = 0;                   ////////////////////////////////////////////
+    double level_start_time = glfwGetTime(); ////////////////////////////////
     int current_level = 1;
     int level_counter = 0;
 
@@ -408,9 +408,13 @@ int our::Application::run(int run_for_frames)
 
     // Destroy the window
     glfwDestroyWindow(window);
-
+    chicken_speed = 0;
+    current_level = 1;
+    level_counter = 0;
+    last_frame_time = 0;
     // And finally terminate GLFW
     glfwTerminate();
+
     return 0; // Good bye
 }
 
