@@ -11,10 +11,7 @@
 #include <tuple>
 
 #include <flags/flags.h>
-// #include <bass.h>
-
-// #pragma comment(lib, "bass.lib")
-
+using namespace std;
 // Include the Dear ImGui implementation headers
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD2
 #include <imgui_impl/imgui_impl_glfw.h>
@@ -183,7 +180,6 @@ our::WindowConfiguration our::Application::getWindowConfiguration()
 // if run_for_frames == 0, the application runs indefinitely till manually closed.
 int our::Application::run(int run_for_frames)
 {
-    // -----------------------------------------
     // Set the function to call when an error occurs.
     glfwSetErrorCallback(glfw_error_callback);
 
@@ -199,8 +195,7 @@ int our::Application::run(int run_for_frames)
     auto win_config = getWindowConfiguration(); // Returns the WindowConfiguration current struct instance.
 
     // Create a window with the given "WindowConfiguration" attributes.
-    // If it should be fullscreen, monitor should point to one of the monitors (e.g. primary monitor), otherwise it
-    // should be null
+    // If it should be fullscreen, monitor should point to one of the monitors (e.g. primary monitor), otherwise it should be null
     GLFWmonitor *monitor = win_config.isFullscreen ? glfwGetPrimaryMonitor() : nullptr;
     // The last parameter "share" can be used to share the resources (OpenGL objects) between multiple windows.
     window = glfwCreateWindow(win_config.size.x, win_config.size.y, win_config.title.c_str(), monitor, nullptr);
@@ -270,8 +265,7 @@ int our::Application::run(int run_for_frames)
         currentState = nextState;
         nextState = nullptr;
     }
-    // Call onInitialize if the scene needs to do some custom initialization (such as file loading, object creation,
-    // etc).
+    // Call onInitialize if the scene needs to do some custom initialization (such as file loading, object creation, etc).
     if (currentState)
         currentState->onInitialize();
 
@@ -279,9 +273,15 @@ int our::Application::run(int run_for_frames)
     double last_frame_time = glfwGetTime();
     int current_frame = 0;
 
+    int chicken_speed = 0;                   ////////////////////////////////////////////
+    double level_start_time = glfwGetTime(); ////////////////////////////////
+    int current_level = 1;
+    int level_counter = 0;
+
     // Game loop
     while (!glfwWindowShouldClose(window))
     {
+        // cout << "inheremmmmmmmmmmmm" << endl;
         if (run_for_frames != 0 && current_frame >= run_for_frames)
             break;
         glfwPollEvents(); // Read all the user events and call relevant callbacks.
@@ -310,13 +310,23 @@ int our::Application::run(int run_for_frames)
 
         // Get the current time (the time at which we are starting the current frame).
         double current_frame_time = glfwGetTime();
+        if (current_frame_time - level_start_time >= 5)
+        {
+            level_counter++;
+            if (level_counter == 3)
+            {
+                current_level++;
+                level_counter = 0;
+                cout << current_level << endl;
+            }
+            chicken_speed += 4;
+            level_start_time = current_frame_time;
+        }
 
-        // Call onDraw, in which we will draw the current frame, and send to it the time difference between the last and
-        // current frame
+        // Call onDraw, in which we will draw the current frame, and send to it the time difference between the last and current frame
         if (currentState)
-            currentState->onDraw(current_frame_time - last_frame_time);
-        last_frame_time =
-            current_frame_time; // Then update the last frame start time (this frame is now the last frame)
+            currentState->onDraw(current_frame_time - last_frame_time, chicken_speed); ///////////!!!!!//////////
+        last_frame_time = current_frame_time;                                          // Then update the last frame start time (this frame is now the last frame)
 
 #if defined(ENABLE_OPENGL_DEBUG_MESSAGES)
         // Since ImGui causes many messages to be thrown, we are temporarily disabling the debug messages till we render
@@ -398,9 +408,13 @@ int our::Application::run(int run_for_frames)
 
     // Destroy the window
     glfwDestroyWindow(window);
-
+    chicken_speed = 0;
+    current_level = 1;
+    level_counter = 0;
+    last_frame_time = 0;
     // And finally terminate GLFW
     glfwTerminate();
+
     return 0; // Good bye
 }
 
@@ -418,56 +432,56 @@ void our::Application::setupCallbacks()
     // In the inline function we retrieve the window instance and use it to set our (Mouse/Keyboard) classes values.
 
     // Keyboard callbacks
-    glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
+    glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods)
+                       {
         auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
         if (app)
         {
             app->getKeyboard().keyEvent(key, scancode, action, mods);
             if (app->currentState)
                 app->currentState->onKeyEvent(key, scancode, action, mods);
-        }
-    });
+        } });
 
     // mouse position callbacks
-    glfwSetCursorPosCallback(window, [](GLFWwindow *window, double x_position, double y_position) {
+    glfwSetCursorPosCallback(window, [](GLFWwindow *window, double x_position, double y_position)
+                             {
         auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
         if (app)
         {
             app->getMouse().CursorMoveEvent(x_position, y_position);
             if (app->currentState)
                 app->currentState->onCursorMoveEvent(x_position, y_position);
-        }
-    });
+        } });
 
     // mouse position callbacks
-    glfwSetCursorEnterCallback(window, [](GLFWwindow *window, int entered) {
+    glfwSetCursorEnterCallback(window, [](GLFWwindow *window, int entered)
+                               {
         auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
         if (app)
         {
             if (app->currentState)
                 app->currentState->onCursorEnterEvent(entered);
-        }
-    });
+        } });
 
     // mouse button position callbacks
-    glfwSetMouseButtonCallback(window, [](GLFWwindow *window, int button, int action, int mods) {
+    glfwSetMouseButtonCallback(window, [](GLFWwindow *window, int button, int action, int mods)
+                               {
         auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
         if (app)
         {
             app->getMouse().MouseButtonEvent(button, action, mods);
             if (app->currentState)
                 app->currentState->onMouseButtonEvent(button, action, mods);
-        }
-    });
+        } });
 
     // mouse scroll callbacks
-    glfwSetScrollCallback(window, [](GLFWwindow *window, double x_offset, double y_offset) {
+    glfwSetScrollCallback(window, [](GLFWwindow *window, double x_offset, double y_offset)
+                          {
         auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
         if (app)
         {
             app->getMouse().ScrollEvent(x_offset, y_offset);
             if (app->currentState)
                 app->currentState->onScrollEvent(x_offset, y_offset);
-        }
-    });
+        } });
 }

@@ -62,7 +62,7 @@ class TransformTestState: public our::State {
         }
     }
 
-    void onDraw(double deltaTime) override {
+    void onDraw(double deltaTime,int speed) override {
         glClear(GL_COLOR_BUFFER_BIT);
         shader->use();
         for(auto& transform : transforms){

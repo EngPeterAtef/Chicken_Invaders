@@ -85,7 +85,7 @@ class GameOverState : public our::State
         colors[ImGuiCol_ResizeGripActive] = ImVec4(0.51f, 0.87f, 1.00f, 0.66f);
     }
 
-    void onDraw(double deltaTime) override
+    void onDraw(double deltaTime,int speed) override
     {
         glClearColor(0.1, 0.1, 0.1, 1);
         glClear(GL_COLOR_BUFFER_BIT);
