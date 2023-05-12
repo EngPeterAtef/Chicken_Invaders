@@ -35,7 +35,7 @@ namespace our
             collisionComp->deserialize({{"type", "Collision"}, {"mesh", "suzanne"}});
 
             MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
-            movementRendererComp->linearVelocity = glm::vec3(0, 0, 20);
+            movementRendererComp->linearVelocity = glm::vec3(0, 0, 35);
             movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
         }
 

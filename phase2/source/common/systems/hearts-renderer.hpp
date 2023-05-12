@@ -37,7 +37,7 @@ namespace our
 
             MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
             movementRendererComp->linearVelocity = glm::vec3(0, 0, 30);
-            movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
+            movementRendererComp->angularVelocity = glm::vec3(0, 50, 0);
         }
 
         void delete_Heart(World *world)
