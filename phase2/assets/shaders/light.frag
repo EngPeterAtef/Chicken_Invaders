@@ -27,10 +27,10 @@ uniform Sky sky;
 //texture maps for each property check the slides for more info
 struct Material{
     sampler2D albedo;
-    sampler2D specular;
     sampler2D ambient_occlusion;
     sampler2D roughness;
     sampler2D emissive;    //the light ali 5arg mn al object nfso han3mlo bel texture da
+    sampler2D specular;
 
 };
 /*

@@ -9,7 +9,6 @@
 #include <glm/trigonometric.hpp>
 #include <iostream>
 #include <random>
-using namespace std;
 namespace our
 {
 

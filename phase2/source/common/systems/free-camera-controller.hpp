@@ -132,8 +132,10 @@ class FreeCameraControllerSystem
         // if (app->getKeyboard().isPressed(GLFW_KEY_E))
         //     position -= up * (deltaTime * current_sensitivity.y);
         if (app->getKeyboard().isPressed(GLFW_KEY_UP))
-        {
-            if (position.x < 15)
+        {//the diffreence between the up and down range must be 6 because we generate the chicken and monkeys in the range of 6
+        //but it's not 3 and -3 because the y-coordinate of the rocket wrt the camera is -4 
+        //3+4 = 7 but it's 6 to avoid false collisoin and -3+4 = 1
+            if (position.y < 6)
             {
 
                 position += up * (8 * deltaTime * current_sensitivity.y);
@@ -142,7 +144,7 @@ class FreeCameraControllerSystem
         if (app->getKeyboard().isPressed(GLFW_KEY_DOWN))
         {
 
-            if (position.x > -15)
+            if (position.y > 1)
             {
 
                 position -= up * (8 * deltaTime * current_sensitivity.y);

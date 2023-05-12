@@ -55,7 +55,8 @@
         "heart": "assets/models/heart.obj",
         "laser": "assets/models/laser.obj",
         "chicken_leg": "assets/models/chicken_leg.obj",
-        "monkey": "assets/models/monkey.obj"
+        "monkey": "assets/models/monkey.obj",
+        "suzanne": "assets/models/Suzanne.obj"
       },
       "samplers": {
         "default": {},
@@ -240,13 +241,13 @@
           "shader": "lightened",
           "pipelineState": {
             "faceCulling": {
-              "enabled": false
+              "enabled": true
             },
             "depthTesting": {
               "enabled": true
             }
           },
-          "albedo": "rocky_monkey_albedo",
+          "albedo": "black",
           "ambient_occlusion": "rocky_monkey_ambient_occlusion",
           "emissive": "rocky_monkey_emissive",
           "roughness": "rocky_monkey_roughness",
@@ -257,7 +258,7 @@
     },
     "world": [
       {
-        "position": [0, 4, 50],
+        "position": [0, 0, 50],
         "components": [
           {
             "type": "Camera"
@@ -363,7 +364,7 @@
           // testing end
           {
             "name": "lives1",
-            "rotation": [-80, -10, 0],
+            "rotation": [-70, -10, 0],
             "position": [-2.6, 1.5, -2],
             "scale": [0.008, 0.008, 0.008],
             "components": [
@@ -414,12 +415,12 @@
           },
           {
             "position": [0, 0, -1],
-            "rotation": [0, 0, 0],
+            "rotation": [0, 0, -1], //rotation in the light component represents the direction of the light
             "components": [
               {
                 "type": "LightComponent",
-                "kind": 2,
-                "color": [0, 0.5, 0.5],
+                "kind": 2, //spot
+                "color": [0, 1, 1],
                 "cone_angles": [40, 0],
                 "attenuation": [0.01, 0, 0]
               }
@@ -427,14 +428,24 @@
           },
           {
             "position": [0, 0, -1],
-            "rotation": [0, 0, -1],
+            "rotation": [0, 0, 0],
             "components": [
               {
                 "type": "LightComponent",
-                "kind": 0,
-                "color": [1, 1, 1],
-                "cone_angles": [40, 0],
-                "attenuation": [0, 0, 0]
+                "kind": 1, //point
+                "color": [1, 0.0, 0.0], //red
+                "attenuation": [0.01, 0, 0]
+              }
+            ]
+          },
+          {
+            "position": [0, 0, 0],
+            "rotation": [0, 0, 1], //light direction
+            "components": [
+              {
+                "type": "LightComponent",
+                "kind": 0, //directional
+                "color": [0, 0, 1] //blue
               }
             ]
           }

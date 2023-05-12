@@ -5,17 +5,23 @@
 #include "../common/components/mesh-renderer.hpp"
 #include "./chicken-renderer.hpp"
 #include "./monkeys-renderer.hpp"
+#include "./hearts-renderer.hpp"
 #include "../components/collision.hpp"
 #include <random>
 #include <iostream>
+#include <GLFW/glfw3.h>
+
 namespace our
 {
     int counter = 0;
     int monkeysFrames = 0;
+    int heartsFrames = 0;
     int zCounter = 0;
     int zCounterMonkeys = 0;
+    int zCounterHearts = 0;
     ChickenRenderer *chicken_renderer = new ChickenRenderer();
     MonkeyRenderer *monkey_renderer = new MonkeyRenderer();
+    HeartRenderer *heart_renderer = new HeartRenderer();
     // double generateRandomNumber(double minX, double maxX)
     // {
     //     std::random_device rd;
@@ -149,6 +155,7 @@ namespace our
     {
         counter++;
         monkeysFrames++;
+        heartsFrames++;
         if (counter >= 20)
         {
 
@@ -159,14 +166,21 @@ namespace our
             // chicken_renderer->printing();
         }
         // chicken_renderer->delete_chickens(world);
-        if (monkeysFrames >= 500)
-        { 
+        if (monkeysFrames >= 700)
+        {
             zCounterMonkeys = 5;
-            monkey_renderer->rendering(world, zCounter);
+            monkey_renderer->rendering(world, zCounterMonkeys);
             // monkey_renderer->printing();
             monkeysFrames = 0;
         }
-    
+        if (heartsFrames >= 500)
+        {
+            zCounterHearts = 5;
+            heart_renderer->rendering(world, zCounterHearts);
+            // monkey_renderer->printing();
+            heartsFrames = 0;
+        }
+
         // First of all, we search for a camera and for all the mesh renderers
         CameraComponent *camera = nullptr;
         opaqueCommands.clear();
@@ -196,6 +210,9 @@ namespace our
                 }
                 else if (command.material->affectedByLight)
                 {
+                    // there is no command for the light source but those commands for all objects that will be affected by the
+                    // light source so we store their data in RenderCommmad and then lightCommands list will be used to draw those
+                    // objects
                     lightCommands.push_back(command);
                 }
                 else
@@ -280,9 +297,17 @@ namespace our
             glm::mat4 M = command.localToWorld;
             glm::mat4 M_IT = glm::transpose(glm::inverse(M));
             glm::vec3 eye = camera->getOwner()->localTransform.position;
-            glm::vec3 sky_top = glm::vec3(0.0f, 0.0f, 1.0f);
-            glm::vec3 sky_horizon = glm::vec3(0.3f, 0.3f, 0.3f);
-            glm::vec3 sky_bottom = glm::vec3(1.0f, 0.0f, 0.0f);
+            glm::vec3 sky_top = glm::vec3(1.0f, 1.0f, 1.0f);
+            glm::vec3 sky_horizon = glm::vec3(1.0f, 1.0f, 1.0f);
+            glm::vec3 sky_bottom = glm::vec3(1.0f, 1.0f, 1.0f);
+            float time = (float)glfwGetTime();
+            float sky_r = 0.5f + 0.5f * sin(time);
+            float sky_g = 0.5f + 0.5f * sin(time + 2.0f);
+            float sky_b = 0.5f + 0.5f * sin(time + 4.0f);
+
+            // glm::vec3 sky_top = glm::vec3(sky_r, sky_g, sky_b);
+            // glm::vec3 sky_horizon = glm::vec3(1.0f, 1.0f, 1.0f);
+            // glm::vec3 sky_bottom = glm::vec3(sky_r, sky_g, sky_b);
             command.material->shader->set("M", M);
             command.material->shader->set("VP", VP);
             command.material->shader->set("M_IT", M_IT);

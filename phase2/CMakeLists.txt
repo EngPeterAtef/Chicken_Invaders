@@ -94,6 +94,8 @@ set(COMMON_SOURCES
         source/common/systems/movement.hpp
         source/common/systems/player.hpp
         source/common/systems/chicken-renderer.hpp
+        source/common/systems/monkeys-renderer.hpp
+        source/common/systems/hearts-renderer.hpp
         source/common/systems/sound.hpp
         source/common/systems/sound.cpp
         

@@ -128,6 +128,46 @@ class CollisionSystem
         }
         return nullptr;
     }
+    Entity *detectHeartCollision(World *world, Entity *player)
+    {
+
+        for (auto entity : world->getEntities())
+        {
+            // Look for the player
+            if (entity->name == "heart" && entity->getComponent<CollisionComponent>())
+            {
+                // gets the min and max vertices using the mesh class
+                glm::vec3 minPlayerVertex = player->getComponent<CollisionComponent>()->mesh->minvertex;
+                glm::vec3 maxPlayerVertex = player->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+                // transforms the min and max vertices to the wold space
+                minPlayerVertex *= player->localTransform.scale[0];
+                maxPlayerVertex *= player->localTransform.scale[0];
+                minPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
+                maxPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
+
+                // gets the min and max vertices using the mesh class
+                glm::vec3 minCollider = entity->getComponent<CollisionComponent>()->mesh->minvertex;
+                glm::vec3 maxCollider = entity->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+                // transforms the min and max vertices to the wold space
+                minCollider *= entity->localTransform.scale[0];
+                maxCollider *= entity->localTransform.scale[0];
+                minCollider += entity->localTransform.position;
+                maxCollider += entity->localTransform.position;
+
+                // collision between AABBs check
+                if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
+                    (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
+                    (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
+                {
+                    std::cout << "Heart collision" << '\n';
+                    return entity;
+                }
+            }
+        }
+        return nullptr;
+    }
     Entity *detectWeaponCollision(World *world, Entity *player)
     {
 
