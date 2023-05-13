@@ -31,7 +31,7 @@ class PlayerSystem
     Sound laser_sound = Sound("assets/sounds/laser.mp3", false);
     Sound chicken_leg_sound = Sound("assets/sounds/chicken_leg.mp3", false);
     Sound heart_sound = Sound("assets/sounds/monkey.mp3", false);
-    Sound background_sound = Sound("assets/sounds/in_game.mp3", false);
+    Sound background_sound = Sound("assets/sounds/in_game.mp3", true);
     bool is_rotating = false;
 
   public:
