@@ -212,6 +212,9 @@ class PlayerSystem
         Entity *monkey_collision = collisionSystem.detectMonkeyCollision(world, player);
         if (monkey_collision)
         {
+            monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
+            monkey_collision->deleteComponent<CollisionComponent>();
+            world->markForRemoval(monkey_collision);
             /* kill al chickens when you take a monkey */
             for (auto entity : world->getEntities())
             {
