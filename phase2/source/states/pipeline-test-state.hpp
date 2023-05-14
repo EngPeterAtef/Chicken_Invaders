@@ -72,7 +72,7 @@ class PipelineTestState: public our::State {
         glClearDepth(config.value("clearDepth", 1.0f));
     }
 
-    void onDraw(double deltaTime,int speed) override {
+    void onDraw(double deltaTime,int speed,bool level_state) override {
         // We make sure the color and depth masks are true (just in case the pipeline set any of them to false)
         // to make sure that glClear works correctly
         glColorMask(true, true, true, true);

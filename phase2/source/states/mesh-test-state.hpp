@@ -51,7 +51,7 @@ class MeshTestState: public our::State {
         }
     }
 
-    void onDraw(double deltaTime,int speed) override {
+    void onDraw(double deltaTime,int speed,bool level_state) override {
         // Clear the screen color
         glClear(GL_COLOR_BUFFER_BIT);
         // Use the shader then draw the mesh

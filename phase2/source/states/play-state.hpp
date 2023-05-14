@@ -45,7 +45,7 @@ class Playstate : public our::State
         renderer.initialize(size, config["renderer"]);
     }
 
-    void onDraw(double deltaTime,int speed) override
+    void onDraw(double deltaTime, int speed, bool level_state) override
     {
         // Here, we just run a bunch of systems to control the world logic
         movementSystem.update(&world, (float)deltaTime);
@@ -55,7 +55,7 @@ class Playstate : public our::State
         lightSystem.update(&world);
         // And finally we use the renderer system to draw the scene
         // chickenRenderer.delete_chickens(&world);
-        renderer.render(&world,speed);
+        renderer.render(&world, speed, level_state);
 
         // Get a reference to the keyboard object
         auto &keyboard = getApp()->getKeyboard();

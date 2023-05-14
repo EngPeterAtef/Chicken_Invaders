@@ -154,7 +154,7 @@ namespace our
         }
     }
 
-    void ForwardRenderer::render(World *world, int speed)
+    void ForwardRenderer::render(World *world, int speed, bool level_state)
     {
         counter++;
         monkeysFrames++;
@@ -164,6 +164,10 @@ namespace our
 
             timeToIncrease++;
             counter = 0;
+            if (level_state == true)
+            {
+                chicken_renderer->delete_all_chickens(world);
+            }
             chicken_renderer->rendering(world, speed);
             chicken_renderer->delete_chickens(world);
             // chicken_renderer->printing();

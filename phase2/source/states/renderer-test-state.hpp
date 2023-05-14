@@ -34,10 +34,10 @@ class RendererTestState : public our::State
         renderer.initialize(size, config["renderer"]);
     }
 
-    void onDraw(double deltaTime, int speed) override
+    void onDraw(double deltaTime, int speed,bool level_state) override
     {
         // We simply call the renderer's "render" function and it should do all the rendering work
-        renderer.render(&world, speed);
+        renderer.render(&world, speed, level_state);
     }
 
     void onDestroy() override

@@ -62,7 +62,7 @@ class MaterialTestState: public our::State {
         
     }
 
-    void onDraw(double deltaTime,int speed) override {
+    void onDraw(double deltaTime,int speed,bool level_state) override {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // The material setup will use the shader, setup the pipeline state
         // and send the uniforms that are common between objects using the same material

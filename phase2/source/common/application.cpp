@@ -9,7 +9,7 @@
 #include <sstream>
 #include <string>
 #include <tuple>
-
+#include "../states/game-over-state.hpp"
 #include <flags/flags.h>
 using namespace std;
 // Include the Dear ImGui implementation headers
@@ -320,13 +320,37 @@ int our::Application::run(int run_for_frames)
                 cout << current_level << endl;
             }
             chicken_speed += 4;
-            level_start_time = current_frame_time;
-        }
 
-        // Call onDraw, in which we will draw the current frame, and send to it the time difference between the last and current frame
-        if (currentState)
-            currentState->onDraw(current_frame_time - last_frame_time, chicken_speed); ///////////!!!!!//////////
-        last_frame_time = current_frame_time;                                          // Then update the last frame start time (this frame is now the last frame)
+            level_start_time = current_frame_time;
+            if (chicken_speed == 16 || chicken_speed == 28 || chicken_speed == 40 || chicken_speed == 52)
+            {
+                if (currentState)
+                    currentState->onDraw(current_frame_time - last_frame_time, chicken_speed, true); ///////////!!!!!//////////
+            }
+            else
+            {
+                if (currentState)
+                    currentState->onDraw(current_frame_time - last_frame_time, chicken_speed, false); ///////////!!!!!//////////
+            }
+        }
+        else
+        {
+            if (currentState)
+                currentState->onDraw(current_frame_time - last_frame_time, chicken_speed, false); ///////////!!!!!//////////
+        }
+        // 8 12 16   20 24 28    32 36 40      44 48 52
+        //  Call onDraw, in which we will draw the current frame, and send to it the time difference between the last and current frame
+        // State *parent_ptr = new GameOverState();
+        GameOverState *game_over_state = dynamic_cast<GameOverState *>(currentState);
+        if (game_over_state)
+        {
+            std::cout << "The pointer points to an object of type ChildA.\n";
+            chicken_speed = 0;
+            current_level = 1;
+            level_counter = 0;
+            last_frame_time = 0;
+        }
+        last_frame_time = current_frame_time; // Then update the last frame start time (this frame is now the last frame)
 
 #if defined(ENABLE_OPENGL_DEBUG_MESSAGES)
         // Since ImGui causes many messages to be thrown, we are temporarily disabling the debug messages till we render
@@ -408,10 +432,7 @@ int our::Application::run(int run_for_frames)
 
     // Destroy the window
     glfwDestroyWindow(window);
-    chicken_speed = 0;
-    current_level = 1;
-    level_counter = 0;
-    last_frame_time = 0;
+
     // And finally terminate GLFW
     glfwTerminate();
 

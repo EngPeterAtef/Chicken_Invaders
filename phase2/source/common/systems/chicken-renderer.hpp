@@ -13,7 +13,7 @@
 using namespace std;
 namespace our
 {
-
+    double scaling = 0.4;
     double generateRandomNumber(double minX, double maxX)
     {
         std::random_device rd;
@@ -32,22 +32,76 @@ namespace our
         void rendering(World *world, int speedIncrease)
         {
 
-            Entity *newEntity = world->add();
-            newEntity->name = "enemy";
             // cout <<world->
-            newEntity->localTransform.position = glm::vec3(generateRandomNumber(-30, 30), 0, -20);
-            newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
+            // 2 3 4  5 6 7  8 9 10  11 12 13
+            //  8 12 16   20 24 28    32 36 40      44 48 52
 
-            MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
-            meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
+            if (speedIncrease == 16 || speedIncrease == 28 || speedIncrease == 40 || speedIncrease == 52)
+            {
 
-            CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
-            collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}});
+                bool exists = false;
+                for (auto entity : world->getEntities())
+                {
 
-            MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
-            movementRendererComp->linearVelocity = glm::vec3(0, 0, (int)fmin(40, 4 + speedIncrease));
-            cout << 6 + speedIncrease << endl;
-            movementRendererComp->angularVelocity = glm::vec3(0, 3, 0);
+                    if (entity->name == "enemy")
+                    {
+
+                        exists = true;
+                        break;
+                    }
+                }
+                if (exists == true)
+                    return;
+
+                scaling = 4;
+                Entity *newEntity = world->add();
+                newEntity->name = "enemy";
+
+                newEntity->localTransform.scale = glm::vec3(scaling, scaling, scaling);
+                newEntity->localTransform.position = glm::vec3(0, 0, -5);
+
+                MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
+                meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
+
+                CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
+                collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}});
+
+                MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
+                movementRendererComp->linearVelocity = glm::vec3(0, 0, 0);
+                // cout << (int)fmin(40, 4 + speedIncrease) << endl;
+                movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
+                newEntity->name = "enemy";
+            }
+            else
+            {
+                Entity *newEntity = world->add();
+                newEntity->name = "enemy";
+
+                scaling = 0.4;
+                newEntity->localTransform.scale = glm::vec3(scaling + speedIncrease / 80.0, scaling + speedIncrease / 80.0, scaling + speedIncrease / 80.0);
+
+                newEntity->localTransform.position = glm::vec3(generateRandomNumber(-30, 30), 0, -20);
+                newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
+
+                MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
+                meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
+
+                CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
+                collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}});
+
+                MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
+                movementRendererComp->linearVelocity = glm::vec3(0, 0, (int)fmin(40, 4 + speedIncrease));
+                cout << 6 + speedIncrease << endl;
+                movementRendererComp->angularVelocity = glm::vec3(0, 3, 0);
+            }
+            // if (speedIncrease == 12 || speedIncrease = 24 || speedIncrease == 36 || speedIncrease == 48)
+            // {
+            //     scaling = 4;
+            // }
+            // if (speedIncrease == 8 || speedIncrease = 20 || speedIncrease == 32 || speedIncrease == 40)
+            // {
+            //     scaling = 4;
+            // }
         }
 
         void delete_chickens(World *world)
@@ -71,6 +125,21 @@ namespace our
 
                         // std::cout << "helllllllllllllllllllllll" << endl;
                     }
+                }
+            }
+            world->deleteMarkedEntities();
+        }
+
+        void delete_all_chickens(World *world)
+        {
+
+            for (auto entity : world->getEntities())
+            {
+
+                if (entity->name == "enemy")
+                {
+
+                    world->markForRemoval(entity);
                 }
             }
             world->deleteMarkedEntities();

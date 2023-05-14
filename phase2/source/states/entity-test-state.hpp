@@ -36,7 +36,7 @@ class EntityTestState: public our::State {
         
     }
 
-    void onDraw(double deltaTime,int speed) override {
+    void onDraw(double deltaTime,int speed,bool level_State) override {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // First, we look for a camera and if none was found, we return (there is nothing we can render)
         our::CameraComponent* camera = find<our::CameraComponent>(&world);
