@@ -26,7 +26,7 @@ void main(){
     // we need to normalize the normal to calculate the diffuse in the fragment shader
     //also the normal transformed using ((M)^-1).T
     vs_out.normal = normalize((M_IT * vec4(normal, 0.0)).xyz);
-    //direction from the vertex to the camera 34an na 3aiz al vector ali reflection light ma4i mno lel camera
+    //direction from the vertex to the camera 34an na 3aiz al vector ali ma4i mno lel camera
     vs_out.view = eye - world;
     vs_out.world = world;
 }
