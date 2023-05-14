@@ -16,16 +16,31 @@ class Menustate : public our::State
     bool fontLoaded = false;
     bool isMute = false;
     Sound background_sound = Sound("assets/sounds/intro.mp3", true);
+    // A meterial holding the menu shader and the menu texture to draw
+    our::TexturedMaterial *menuMaterial;
+
     void onInitialize() override
     {
         // Theme Source: https://github.com/ocornut/imgui/issues/707
         // ---------------INIT SOUND----------------
 
         background_sound.changeVolume(30);
-        background_sound.play();
+        background_sound.play(1);
+
+        // First, we create a material for the menu's background
+        menuMaterial = new our::TexturedMaterial();
+        // Here, we load the shader that will be used to draw the background
+        menuMaterial->shader = new our::ShaderProgram();
+        menuMaterial->shader->attach("assets/shaders/textured.vert", GL_VERTEX_SHADER);
+        menuMaterial->shader->attach("assets/shaders/textured.frag", GL_FRAGMENT_SHADER);
+        menuMaterial->shader->link();
+        // Then we load the menu texture
+        menuMaterial->texture = our::texture_utils::loadImage("assets/textures/menu2.png");
+        // Initially, the menu material will be black, then it will fade in
+        menuMaterial->tint = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
         if (!fontLoaded)
         {
-            ImGui::GetIO().Fonts->AddFontFromFileTTF("assets/fonts/Ruda-Bold.ttf", 14.0f);
+            ImGui::GetIO().Fonts->AddFontFromFileTTF("assets/fonts/Ruda-Bold.ttf", 22.0f);
             ImGui::GetIO().Fonts->Build();
             fontLoaded = true;
         }
@@ -93,36 +108,43 @@ class Menustate : public our::State
         window_flags |= ImGuiWindowFlags_NoScrollbar;
         bool *open_ptr = (bool *)true;
         ImGui::Begin("Main Menu", open_ptr, window_flags);
-        ImGui::SetWindowSize(ImVec2((float)550, (float)400));
-        ImGui::SetWindowPos(ImVec2(400.0f, 150.0f));
+        ImTextureID my_tex_id = (void *)(menuMaterial->texture); // use your own texture identifier here
+        // ImGui::Image(my_tex_id, ImVec2(200, 200));
+        ImVec2 window_pos = ImGui::GetWindowPos();
+        ImVec2 window_size = ImGui::GetWindowSize();
+        ImGui::GetBackgroundDrawList()->AddImage(my_tex_id, ImVec2(window_pos.x, window_pos.y),
+                                                 ImVec2(window_pos.x + window_size.x, window_pos.y + window_size.y));
+        ImGui::SetWindowSize(ImGui::GetIO().DisplaySize);
+        ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));
 
         // set title
-        ImGui::SetWindowFontScale(3.0f);
-        std::string message = "Welcome to Chicken Invaders!\n\n";
-        ImGui::TextUnformatted(message.c_str());
+        ImGui::SetCursorPosX(400.0f);
+        ImGui::SetCursorPosY(300.0f);
+        // ImGui::SetWindowFontScale(3.0f);
+        // std::string message = "Welcome to Chicken Invaders!\n\n";
+        // ImGui::TextUnformatted(message.c_str());
 
         // set  Main menu title
-        ImGui::SetWindowFontScale(3.5f);
-        message = "Main Menu\n";
+        ImGui::SetWindowFontScale(2.0f);
+        std::string message = "Main Menu\n";
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Main Menu").x - 30) / 2.0f);
         ImGui::TextUnformatted(message.c_str());
 
-        ImGui::SetWindowFontScale(1.0f);
+        ImGui::SetWindowFontScale(1.2f);
         message = "\n";
         ImGui::TextUnformatted(message.c_str());
 
         // set New Game button
-        ImGui::SetWindowFontScale(2.0f);
-        ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("New Game").x - 30) / 2.0f);
-        if (ImGui::Button("New Game"))
+        ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("   New Game   ").x - 30) / 2.0f);
+        if (ImGui::Button("   New Game   "))
         {
             background_sound.stop();
             getApp()->changeState("play");
         }
         if (isMute)
         {
-            ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Unmute").x - 30) / 2.0f);
-            if (ImGui::Button("Unmute"))
+            ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("   Unmute   ").x - 30) / 2.0f);
+            if (ImGui::Button("   Unmute   "))
             {
                 background_sound.changeVolume(30);
                 isMute = false;
@@ -130,8 +152,8 @@ class Menustate : public our::State
         }
         else
         {
-            ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Mute").x - 30) / 2.0f);
-            if (ImGui::Button("Mute"))
+            ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("   Mute   ").x - 30) / 2.0f);
+            if (ImGui::Button("   Mute   "))
             {
                 background_sound.changeVolume(0);
                 isMute = true;
@@ -139,8 +161,10 @@ class Menustate : public our::State
         }
 
         // set Exit button
-        ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Exit").x - 30) / 2.0f);
-        if (ImGui::Button("Exit"))
+        message = "\n";
+        ImGui::TextUnformatted(message.c_str());
+        ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("   Exit   ").x - 30) / 2.0f);
+        if (ImGui::Button("   Exit   "))
         {
             glfwSetWindowShouldClose(getApp()->getWindow(), GLFW_TRUE);
         }

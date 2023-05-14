@@ -1,7 +1,7 @@
 {
   "start-scene": "menu",
   "window": {
-    "title": "Default Game Window",
+    "title": "Chicken Invaders",
     "size": {
       "width": 1280,
       "height": 720
@@ -40,6 +40,7 @@
         "rocket": "assets/textures/rocket.jpg",
         "monkey": "assets/textures/monkey/monkey.png",
         "chicken_leg": "assets/textures/chicken_leg.jpg",
+        // "menu": "assets/textures/menu.jpg",
         "rocky_monkey_albedo": "assets/textures/monkey/rocky_monkey_albedo.jpg",
         "rocky_monkey_ambient_occlusion": "assets/textures/monkey/rocky_monkey_ambient_occlusion.jpg",
         "rocky_monkey_emissive": "assets/textures/monkey/rocky_monkey_emissive.jpg",
@@ -469,7 +470,8 @@
               }
             ]
           },
-          {//spot light inside the rocket
+          {
+            //spot light inside the rocket
             "position": [0, 0, -7],
             "rotation": [0, 0, -1], //rotation in the light component represents the direction of the light
             "components": [
@@ -496,7 +498,8 @@
               }
             ]
           },
-          {//moon light
+          {
+            //moon light
             "position": [0, 3, -20],
             "components": [
               {
@@ -507,7 +510,8 @@
               }
             ]
           },
-          {//directional light to up
+          {
+            //directional light to up
             "rotation": [0, 1, 0], //light direction
             "components": [
               {
@@ -536,17 +540,17 @@
         ]
         // ,
         // "children": [
-          // {
-          //   "position": [0, 0, 0],
-          //   "components": [
-          //     {
-          //       "type": "LightComponent",
-          //       "kind": 1, //point
-          //       "color": [1, 1, 1], //white
-          //       "attenuation": [0.05, 0, 0]
-          //     }
-          //   ]
-          // }
+        // {
+        //   "position": [0, 0, 0],
+        //   "components": [
+        //     {
+        //       "type": "LightComponent",
+        //       "kind": 1, //point
+        //       "color": [1, 1, 1], //white
+        //       "attenuation": [0.05, 0, 0]
+        //     }
+        //   ]
+        // }
         // ]
       }
     ]

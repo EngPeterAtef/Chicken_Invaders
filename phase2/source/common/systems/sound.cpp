@@ -36,9 +36,10 @@ void Sound::changeVolume(int volume)
 
     BASS_SetConfig(BASS_CONFIG_GVOL_STREAM, volume * 100);
 }
-void Sound::play()
+void Sound::play(int restart)
 {
-    BASS_ChannelPlay(channel, FALSE);
+
+    BASS_ChannelPlay(channel, restart);
 }
 void Sound::pause()
 {

@@ -338,6 +338,11 @@ class PlayerSystem
 
     void exit()
     {
+        delete player;
+        delete laser;
+        delete laser_green;
+        delete laser_left;
+        delete laser_right;
     }
 };
 
