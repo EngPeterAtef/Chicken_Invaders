@@ -32,6 +32,7 @@ class PlayerSystem
     Sound chicken_leg_sound = Sound("assets/sounds/chicken_leg.mp3", false);
     Sound heart_sound = Sound("assets/sounds/monkey.mp3", false);
     Sound background_sound = Sound("assets/sounds/in_game.mp3", true);
+    Sound rocket_sound = Sound("assets/sounds/rocket.mp3", true);
     bool is_rotating = false;
 
   public:
@@ -41,6 +42,7 @@ class PlayerSystem
     void enter(World *world, Application *app)
     {
         background_sound.play();
+        rocket_sound.play();
         weapon_level = 0;
         score = 0;
         lives = 3;
@@ -168,7 +170,7 @@ class PlayerSystem
             world->markForRemoval(enemy_collision);
 
             lives--;
-            std::cout << "Lives: " << lives << " Score : " << score << std::endl;
+            // std::cout << "Lives: " << lives << " Score : " << score << std::endl;
 
             for (auto entity1 : world->getEntities())
             {
@@ -187,6 +189,7 @@ class PlayerSystem
             if (lives == 0)
             {
                 app->changeState("game-over");
+                rocket_sound.stop();
                 background_sound.stop();
                 std::ifstream file_in("score.txt");
                 if (!file_in)
@@ -239,28 +242,28 @@ class PlayerSystem
             world->markForRemoval(heart_collision);
             heart_sound.play();
             lives++;
-            std::cout << "Lives: " << lives << " Score : " << score << std::endl;
+            // std::cout << "Lives: " << lives << " Score : " << score << std::endl;
             if (lives > 3)
             {
-                std::cout << "Lives are more than 3" << std::endl;
+                // std::cout << "Lives are more than 3" << std::endl;
                 lives = 3;
                 score += 100;
             }
             else
             {
-                std::cout << "Lives are less than 3" << std::endl;
+                // std::cout << "Lives are less than 3" << std::endl;
                 for (auto entity1 : world->getEntities())
                 {
                     // Look for the lives
                     if (lives == 3 && entity1->name == "lives1")
                     {
-                        std::cout << "Lives are 3" << std::endl;
+                        // std::cout << "Lives are 3" << std::endl;
                         entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
                         break;
                     }
                     if (lives == 2 && entity1->name == "lives2")
                     {
-                        std::cout << "Lives are 2" << std::endl;
+                        // std::cout << "Lives are 2" << std::endl;
                         entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
                         break;
                     }
@@ -283,6 +286,10 @@ class PlayerSystem
             laser->localTransform.scale = glm::vec3(0, 0, 0);
         }
         world->deleteMarkedEntities();
+        if (app->getKeyboard().isPressed(GLFW_KEY_ESCAPE))
+        {
+            rocket_sound.stop();
+        }
     }
 
     void weapon_level1_controll()

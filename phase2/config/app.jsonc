@@ -35,6 +35,7 @@
         "glass": "assets/textures/glass-panels.png",
         "heart": "assets/textures/heart.png",
         "green": "assets/textures/green.png",
+        "backfire": "assets/textures/fire.png",
         "chicken": "assets/textures/chicken1/chicken1.jpg",
         "rocket": "assets/textures/rocket.jpg",
         "monkey": "assets/textures/monkey/monkey.png",
@@ -50,6 +51,7 @@
         "cube": "assets/models/cube.obj",
         "chicken": "assets/models/Chicken1.obj",
         "plane": "assets/models/plane.obj",
+        "backfire": "assets/models/backfire.obj",
         "sphere": "assets/models/sphere.obj",
         "rocket": "assets/models/rocket.obj",
         "heart": "assets/models/heart.obj",
@@ -143,6 +145,21 @@
           },
           "tint": [1, 1, 1, 1],
           "texture": "heart",
+          "sampler": "default"
+        },
+        "backfire": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "backfire",
           "sampler": "default"
         },
         "laser1": {
@@ -288,8 +305,25 @@
                 "type": "Collision",
                 "mesh": "rocket"
               }
+            ],
+            "children": [
+              {
+                "name": "backfire",
+                "rotation": [180, 2, -2],
+                // "rotation": [-80, 0, 0],
+                "position": [40, 0, -50],
+                "scale": [4, 20, 4],
+                "components": [
+                  {
+                    "type": "Mesh Renderer",
+                    "mesh": "backfire",
+                    "material": "backfire"
+                  }
+                ]
+              }
             ]
           },
+
           {
             "name": "laser",
             "rotation": [1, 0.5, 0],

@@ -144,8 +144,11 @@ class CollisionSystem
         // transforms the min and max vertices to the wold space
         minPlayerVertex *= player->localTransform.scale[0];
         maxPlayerVertex *= player->localTransform.scale[0];
-        minPlayerVertex.y *= 0.1;
-        maxPlayerVertex.y *= 0.1;
+        if (enemy->name == "enemy")
+        {
+            minPlayerVertex.y *= 0.1;
+            maxPlayerVertex.y *= 0.1;
+        }
         minPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
         maxPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
 
