@@ -24,8 +24,8 @@ namespace our
 
             Entity *newEntity = world->add();
             newEntity->name = "monkey";
-            
-            newEntity->localTransform.position = glm::vec3(our::generateRandomNumber(-15, 15),our::generateRandomNumber(-3, 3), zCounter);
+
+            newEntity->localTransform.position = glm::vec3(our::generateRandomNumber(-15, 15), our::generateRandomNumber(-3, 3), zCounter);
             newEntity->localTransform.scale = glm::vec3(1, 1, 1);
 
             MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
@@ -35,7 +35,7 @@ namespace our
             collisionComp->deserialize({{"type", "Collision"}, {"mesh", "suzanne"}});
 
             MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
-            movementRendererComp->linearVelocity = glm::vec3(0, 0, 35);
+            movementRendererComp->linearVelocity = glm::vec3(0, 0, 20);
             movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
         }
 
@@ -66,4 +66,3 @@ namespace our
         }
     };
 } // namespace our
-
