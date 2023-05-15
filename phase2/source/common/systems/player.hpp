@@ -113,29 +113,13 @@ class PlayerSystem
                 Entity *fireEnemy2 = collisionSystem.detectFiring(world, laser_left);
                 Entity *fireEnemy3 = collisionSystem.detectFiring(world, laser_right);
                 if (fireEnemy1)
-                {
-                    generate_chicken_leg(world, fireEnemy1->localTransform.position);
-                    fireEnemy1->deleteComponent<CollisionComponent>();
-                    world->markForRemoval(fireEnemy1);
-                    score += 10;
-                    chicken_kaaaak_sound.play();
-                }
+                    hurt_enemy(world, fireEnemy1);
+
                 if (fireEnemy2)
-                {
-                    generate_chicken_leg(world, fireEnemy2->localTransform.position);
-                    fireEnemy2->deleteComponent<CollisionComponent>();
-                    world->markForRemoval(fireEnemy2);
-                    score += 10;
-                    chicken_kaaaak_sound.play();
-                }
+                    hurt_enemy(world, fireEnemy2);
+
                 if (fireEnemy3)
-                {
-                    generate_chicken_leg(world, fireEnemy3->localTransform.position);
-                    fireEnemy3->deleteComponent<CollisionComponent>();
-                    world->markForRemoval(fireEnemy3);
-                    score += 10;
-                    chicken_kaaaak_sound.play();
-                }
+                    hurt_enemy(world, fireEnemy3);
             }
             else
             {
@@ -143,14 +127,8 @@ class PlayerSystem
                 laser->localTransform.scale = glm::vec3(0.2, 0.2, 10);
                 Entity *fireEnemy = collisionSystem.detectFiring(world, laser);
                 if (fireEnemy)
-                {
-                    generate_chicken_leg(world, fireEnemy->localTransform.position);
-                    fireEnemy->localTransform.scale = glm::vec3(0, 0, 0);
-                    fireEnemy->deleteComponent<CollisionComponent>();
-                    world->markForRemoval(fireEnemy);
-                    score += 10;
-                    chicken_kaaaak_sound.play();
-                }
+
+                    hurt_enemy(world, fireEnemy);
             }
         }
         else
@@ -296,6 +274,22 @@ class PlayerSystem
     {
         glm::vec3 &rocket_rotation = player->localTransform.rotation;
         laser_green->localTransform.rotation.z = rocket_rotation.x;
+    }
+
+    void hurt_enemy(World *world, Entity *firedEnemy)
+    {
+        chicken_kaaaak_sound.play();
+        int enenmy_health = firedEnemy->getComponent<CollisionComponent>()->health--;
+        std::cout << "Enemy health: " << enenmy_health << std::endl;
+
+        if (enenmy_health == 0)
+        {
+
+            generate_chicken_leg(world, firedEnemy->localTransform.position);
+            firedEnemy->deleteComponent<CollisionComponent>();
+            world->markForRemoval(firedEnemy);
+            score += 10;
+        }
     }
 
     void generate_chicken_leg(World *world, glm::vec3 position)
