@@ -1,8 +1,8 @@
 #pragma once
-
 #include "../components/collision.hpp"
 #include "../ecs/entity.hpp"
 #include "../ecs/world.hpp"
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
@@ -53,21 +53,21 @@ class ChickenRenderer
             if (exists == true)
                 return;
 
-            scaling = 4;
+            scaling = 1.5;
             Entity *newEntity = world->add();
             newEntity->name = "enemy";
 
             newEntity->localTransform.scale = glm::vec3(scaling, scaling, scaling);
-            newEntity->localTransform.position = glm::vec3(0, 0, -5);
+            newEntity->localTransform.position = glm::vec3(0, 0, 30);
 
             MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
             meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
 
             CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
-            collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}});
+            collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}, {"health", 1000}, {"bonus", 1000}});
 
             MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
-            movementRendererComp->linearVelocity = glm::vec3(0, 0, 0);
+            movementRendererComp->linearVelocity = glm::vec3(0, 0, 0.5);
             // cout << (int)fmin(40, 4 + speedIncrease) << endl;
             movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
             newEntity->name = "enemy";
@@ -88,7 +88,7 @@ class ChickenRenderer
             meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
 
             CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
-            collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}, {"health", 1}});
+            collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}, {"health", 1}, {"bonus", 10}});
 
             MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
             movementRendererComp->linearVelocity = glm::vec3(0, 0, (int)fmin(40, 4 + speedIncrease));

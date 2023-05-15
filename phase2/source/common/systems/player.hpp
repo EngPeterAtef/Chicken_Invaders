@@ -112,13 +112,13 @@ class PlayerSystem
                 Entity *fireEnemy1 = collisionSystem.detectFiring(world, laser_green);
                 Entity *fireEnemy2 = collisionSystem.detectFiring(world, laser_left);
                 Entity *fireEnemy3 = collisionSystem.detectFiring(world, laser_right);
-                if (fireEnemy1)
+                if (fireEnemy1 && fireEnemy1->getComponent<CollisionComponent>())
                     hurt_enemy(world, fireEnemy1);
 
-                if (fireEnemy2)
+                if (fireEnemy2 && fireEnemy2->getComponent<CollisionComponent>())
                     hurt_enemy(world, fireEnemy2);
 
-                if (fireEnemy3)
+                if (fireEnemy3 && fireEnemy3->getComponent<CollisionComponent>())
                     hurt_enemy(world, fireEnemy3);
             }
             else
@@ -127,7 +127,6 @@ class PlayerSystem
                 laser->localTransform.scale = glm::vec3(0.2, 0.2, 10);
                 Entity *fireEnemy = collisionSystem.detectFiring(world, laser);
                 if (fireEnemy)
-
                     hurt_enemy(world, fireEnemy);
             }
         }
@@ -200,14 +199,10 @@ class PlayerSystem
             for (auto entity : world->getEntities())
             {
                 bomb_sound.play();
-                if (entity->name == "enemy")
+                if (entity->name == "enemy" && entity->getComponent<CollisionComponent>())
                 {
-                    generate_chicken_leg(world, entity->localTransform.position);
-                    entity->localTransform.scale = glm::vec3(0, 0, 0);
-                    entity->deleteComponent<CollisionComponent>();
-                    world->markForRemoval(entity);
-                    chicken_kaaaak_sound.play();
-                    score += 10;
+                    entity->getComponent<CollisionComponent>()->health -= 100;
+                    hurt_enemy(world, entity);
                 }
             }
         }
@@ -280,15 +275,15 @@ class PlayerSystem
     {
         chicken_kaaaak_sound.play();
         int enenmy_health = firedEnemy->getComponent<CollisionComponent>()->health--;
-        std::cout << "Enemy health: " << enenmy_health << std::endl;
+        // std::cout << "Enemy health: " << enenmy_health << std::endl;
 
-        if (enenmy_health == 0)
+        if (enenmy_health <= 0)
         {
 
             generate_chicken_leg(world, firedEnemy->localTransform.position);
+            score += firedEnemy->getComponent<CollisionComponent>()->bonus;
             firedEnemy->deleteComponent<CollisionComponent>();
             world->markForRemoval(firedEnemy);
-            score += 10;
         }
     }
 
@@ -323,7 +318,7 @@ class PlayerSystem
             ImGui::SetWindowSize(ImVec2((float)550, (float)200));
             ImGui::SetWindowPos(ImVec2(app->getWindowSize().x - 200.0f, 0.0f)); // Set position to top right
             std::string player_score = "score: " + std::to_string((int)score);  // Set score
-            ImGui::SetWindowFontScale(2.0f);
+            ImGui::SetWindowFontScale(1.0f);
             ImGui::TextUnformatted(player_score.c_str());
             // ImGui::TextUnformatted(hearts.c_str());
             ImGui::End();
