@@ -22,7 +22,7 @@ namespace our
     int timeToIncrease = 0;
     int zCounter = 0;
 
-    ChickenRenderer *chicken_renderer = new ChickenRenderer();
+    // ChickenRenderer *chicken_renderer = new ChickenRenderer();
     MonkeyRenderer *monkey_renderer = new MonkeyRenderer();
     HeartRenderer *heart_renderer = new HeartRenderer();
     // double generateRandomNumber(double minX, double maxX)
@@ -154,32 +154,32 @@ namespace our
         }
     }
 
-    void ForwardRenderer::render(World *world, int speed, bool level_state)
+    void ForwardRenderer::render(World *world)
     {
         counter++;
         monkeysFrames++;
         heartsFrames++;
-        if (counter >= 20)
-        {
+        // if (counter >= 20)
+        // {
 
-            timeToIncrease++;
-            counter = 0;
-            if (level_state == true)
-            {
-                chicken_renderer->delete_all_chickens(world);
-            }
-            chicken_renderer->rendering(world, speed);
-            chicken_renderer->delete_chickens(world);
-            // chicken_renderer->printing();
-        }
+        //     timeToIncrease++;
+        //     counter = 0;
+        //     if (level_state == true)
+        //     {
+        //         chicken_renderer->delete_all_chickens(world);
+        //     }
+        // chicken_renderer->rendering(world);
+        //     chicken_renderer->delete_chickens(world);
+        //     // chicken_renderer->printing();
+        // }
         // chicken_renderer->delete_chickens(world);
-        if (monkeysFrames >= 700)
-        {
-            zCounterMonkeys = 5;
-            monkey_renderer->rendering(world, zCounterMonkeys);
-            // monkey_renderer->printing();
-            monkeysFrames = 0;
-        }
+        // if (monkeysFrames >= 700)
+        // {
+        //     zCounterMonkeys = 5;
+        //     monkey_renderer->rendering(world, zCounterMonkeys);
+        //     // monkey_renderer->printing();
+        //     monkeysFrames = 0;
+        // }
         if (heartsFrames >= 500)
         {
             zCounterHearts = 5;
@@ -300,7 +300,7 @@ namespace our
         for (auto &command : lightCommands)
         {
             command.material->setup();
-            
+
             glm::mat4 M = command.localToWorld;
             glm::mat4 M_IT = glm::transpose(glm::inverse(M));
             glm::vec3 eye = camera->getOwner()->localTransform.position;

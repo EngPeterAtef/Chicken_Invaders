@@ -1,5 +1,5 @@
 #pragma once
-
+#include <GLFW/glfw3.h>
 #include "../components/collision.hpp"
 #include "../ecs/entity.hpp"
 #include "../ecs/world.hpp"
@@ -10,28 +10,40 @@
 #include <iostream>
 #include <random>
 #include <math.h>
+#include <ctime>
+
 using namespace std;
 namespace our
 {
-    double scaling = 0.4;
-    double generateRandomNumber(double minX, double maxX)
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis(minX, maxX);
-        return dis(gen);
-    }
+
     // The movement system is responsible for moving every entity which contains a MovementComponent.
     // This system is added as a simple example for how use the ECS framework to implement logic.
     // For more information, see "common/components/movement.hpp"
     class ChickenRenderer
     {
+        double scaling = 0.4;
+        double startTime = 0;
+        int speedIncrease = 0;
+        double generateRandomNumber(double minX, double maxX)
+        {
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_real_distribution<> dis(minX, maxX);
+            return dis(gen);
+        }
 
     public:
         // This should be called every frame to update all entities containing a MovementComponent.
-        void rendering(World *world, int speedIncrease)
+        void rendering(World *world)
         {
+            double currentTime = glfwGetTime();
+            if (currentTime - startTime > 5)
+            { // each 5 senconds increase the speed
+                // start time is of the current speed slot which is 5 seconds 1/3 the level period
 
+                speedIncrease += 4;
+                startTime = currentTime;
+            }
             // cout <<world->
             // 2 3 4  5 6 7  8 9 10  11 12 13
             //  8 12 16   20 24 28    32 36 40      44 48 52
@@ -43,7 +55,7 @@ namespace our
                 for (auto entity : world->getEntities())
                 {
 
-                    if (entity->name == "enemy")
+                    if (entity->name == "boss")
                     {
 
                         exists = true;
@@ -52,13 +64,13 @@ namespace our
                 }
                 if (exists == true)
                     return;
-
-                scaling = 4;
+                delete_chickens(world);
+                scaling = 1;
                 Entity *newEntity = world->add();
-                newEntity->name = "enemy";
+                newEntity->name = "boss";
 
                 newEntity->localTransform.scale = glm::vec3(scaling, scaling, scaling);
-                newEntity->localTransform.position = glm::vec3(0, 0, -5);
+                newEntity->localTransform.position = glm::vec3(0, 0, 40);
 
                 MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
                 meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
@@ -70,17 +82,30 @@ namespace our
                 movementRendererComp->linearVelocity = glm::vec3(0, 0, 0);
                 // cout << (int)fmin(40, 4 + speedIncrease) << endl;
                 movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
-                newEntity->name = "enemy";
+                newEntity->name = "boss";
             }
             else
             {
+                bool exists = false;
+                for (auto entity : world->getEntities())
+                {
+
+                    if (entity->name == "boss")
+                    {
+
+                        exists = true;
+                        break;
+                    }
+                }
+                if (exists == true)
+                    return;
                 Entity *newEntity = world->add();
                 newEntity->name = "enemy";
 
                 scaling = 0.4;
                 newEntity->localTransform.scale = glm::vec3(scaling + speedIncrease / 80.0, scaling + speedIncrease / 80.0, scaling + speedIncrease / 80.0);
 
-                newEntity->localTransform.position = glm::vec3(generateRandomNumber(-30, 30), 0, -20);
+                newEntity->localTransform.position = glm::vec3(generateRandomNumber(-30, 30), generateRandomNumber(-5, 5), -20);
                 newEntity->localTransform.scale = glm::vec3(0.4, 0.4, 0.4);
 
                 MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();

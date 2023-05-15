@@ -273,10 +273,10 @@ int our::Application::run(int run_for_frames)
     double last_frame_time = glfwGetTime();
     int current_frame = 0;
 
-    int chicken_speed = 0;                   ////////////////////////////////////////////
-    double level_start_time = glfwGetTime(); ////////////////////////////////
-    int current_level = 1;
-    int level_counter = 0;
+    int chicken_speed = 0; ////////////////////////////////////////////
+    // double level_start_time = glfwGetTime(); ////////////////////////////////
+    // int current_level = 1;
+    // int level_counter = 0;
 
     // Game loop
     while (!glfwWindowShouldClose(window))
@@ -310,46 +310,50 @@ int our::Application::run(int run_for_frames)
 
         // Get the current time (the time at which we are starting the current frame).
         double current_frame_time = glfwGetTime();
-        if (current_frame_time - level_start_time >= 5)
-        {
-            level_counter++;
-            if (level_counter == 3)
-            {
-                current_level++;
-                level_counter = 0;
-                cout << current_level << endl;
-            }
-            chicken_speed += 4;
+        // if (current_frame_time - level_start_time >= 5)
+        // {
+        //     level_counter++;
+        //     if (level_counter == 3)
+        //     {
+        //         current_level++;
+        //         level_counter = 0;
+        //         cout << current_level << endl;
+        //     }
+        //     chicken_speed += 4;
 
-            level_start_time = current_frame_time;
-            if (chicken_speed == 16 || chicken_speed == 28 || chicken_speed == 40 || chicken_speed == 52)
-            {
-                if (currentState)
-                    currentState->onDraw(current_frame_time - last_frame_time, chicken_speed, true); ///////////!!!!!//////////
-            }
-            else
-            {
-                if (currentState)
-                    currentState->onDraw(current_frame_time - last_frame_time, chicken_speed, false); ///////////!!!!!//////////
-            }
-        }
-        else
-        {
-            if (currentState)
-                currentState->onDraw(current_frame_time - last_frame_time, chicken_speed, false); ///////////!!!!!//////////
-        }
+        //     level_start_time = current_frame_time;
+        //     if (chicken_speed == 16 || chicken_speed == 28 || chicken_speed == 40 || chicken_speed == 52)
+        //     {
+        //         if (currentState)
+        //             currentState->onDraw(current_frame_time - last_frame_time, chicken_speed, true); ///////////!!!!!//////////
+        //     }
+        //     else
+        //     {
+        //         if (currentState)
+        //             currentState->onDraw(current_frame_time - last_frame_time, chicken_speed, false); ///////////!!!!!//////////
+        //     }
+        // }
+        // else
+        // {
+        //     if (currentState)
+        //         currentState->onDraw(current_frame_time - last_frame_time, chicken_speed, false); ///////////!!!!!//////////
+        // }
+
+        if (currentState)
+            currentState->onDraw(current_frame_time - last_frame_time);
+
         // 8 12 16   20 24 28    32 36 40      44 48 52
         //  Call onDraw, in which we will draw the current frame, and send to it the time difference between the last and current frame
         // State *parent_ptr = new GameOverState();
-        GameOverState *game_over_state = dynamic_cast<GameOverState *>(currentState);
-        if (game_over_state)
-        {
-            std::cout << "The pointer points to an object of type ChildA.\n";
-            chicken_speed = 0;
-            current_level = 1;
-            level_counter = 0;
-            last_frame_time = 0;
-        }
+        // GameOverState *game_over_state = dynamic_cast<GameOverState *>(currentState);
+        // if (game_over_state)
+        // {
+        //     std::cout << "The pointer points to an object of type ChildA.\n";
+        //     chicken_speed = 0;
+        //     current_level = 1;
+        //     level_counter = 0;
+        //     last_frame_time = 0;
+        // }
         last_frame_time = current_frame_time; // Then update the last frame start time (this frame is now the last frame)
 
 #if defined(ENABLE_OPENGL_DEBUG_MESSAGES)

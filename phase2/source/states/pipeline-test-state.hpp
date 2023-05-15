@@ -9,21 +9,22 @@
 #include <deserialize-utils.hpp>
 
 #include <vector>
-#include <glm/gtc/matrix_transform.hpp> 
-
+#include <glm/gtc/matrix_transform.hpp>
 
 // This state tests and shows how to use the PipelineState struct.
-class PipelineTestState: public our::State {
+class PipelineTestState : public our::State
+{
 
-    our::ShaderProgram* shader;
-    our::Mesh* mesh;
+    our::ShaderProgram *shader;
+    our::Mesh *mesh;
     std::vector<our::Transform> transforms;
     glm::mat4 VP;
     our::PipelineState pipeline;
-    
-    void onInitialize() override {
+
+    void onInitialize() override
+    {
         // First of all, we get the scene configuration from the app config
-        auto& config = getApp()->getConfig()["scene"];
+        auto &config = getApp()->getConfig()["scene"];
         // Then we load the shader that will be used for this scene
         shader = new our::ShaderProgram();
         shader->attach("assets/shaders/transform-test.vert", GL_VERTEX_SHADER);
@@ -34,9 +35,12 @@ class PipelineTestState: public our::State {
         // Then we read a list of transform objects from the shader
         // In draw, we will render a mesh for each of the transforms
         transforms.clear();
-        if(config.contains("objects")){
-            if(auto& objects = config["objects"]; objects.is_array()){
-                for(auto& object : objects){
+        if (config.contains("objects"))
+        {
+            if (auto &objects = config["objects"]; objects.is_array())
+            {
+                for (auto &object : objects)
+                {
                     our::Transform transform;
                     transform.deserialize(object);
                     transforms.push_back(transform);
@@ -44,8 +48,10 @@ class PipelineTestState: public our::State {
             }
         }
         // Then we read the camera information to compute the VP matrix
-        if(config.contains("camera")){
-            if(auto& camera = config["camera"]; camera.is_object()){
+        if (config.contains("camera"))
+        {
+            if (auto &camera = config["camera"]; camera.is_object())
+            {
                 glm::vec3 eye = camera.value("eye", glm::vec3(0, 0, 0));
                 glm::vec3 center = camera.value("center", glm::vec3(0, 0, -1));
                 glm::vec3 up = camera.value("up", glm::vec3(0, 1, 0));
@@ -56,14 +62,15 @@ class PipelineTestState: public our::State {
                 float far = camera.value("far", 1000.0f);
 
                 glm::ivec2 size = getApp()->getFrameBufferSize();
-                float aspect = float(size.x)/size.y;
+                float aspect = float(size.x) / size.y;
                 glm::mat4 P = glm::perspective(fov, aspect, near, far);
 
                 VP = P * V;
             }
         }
         // Then we read the pipeline state from the json config
-        if(config.contains("pipeline")){
+        if (config.contains("pipeline"))
+        {
             pipeline.deserialize(config["pipeline"]);
         }
         // We also read the clear color and depth since we may want to change it
@@ -72,7 +79,8 @@ class PipelineTestState: public our::State {
         glClearDepth(config.value("clearDepth", 1.0f));
     }
 
-    void onDraw(double deltaTime,int speed,bool level_state) override {
+    void onDraw(double deltaTime) override
+    {
         // We make sure the color and depth masks are true (just in case the pipeline set any of them to false)
         // to make sure that glClear works correctly
         glColorMask(true, true, true, true);
@@ -82,13 +90,15 @@ class PipelineTestState: public our::State {
         // Before drawing, we setup the pipeline state
         pipeline.setup();
         // Then we draw the objects
-        for(auto& transform : transforms){
+        for (auto &transform : transforms)
+        {
             shader->set("transform", VP * transform.toMat4());
             mesh->draw();
         }
     }
 
-    void onDestroy() override {
+    void onDestroy() override
+    {
         delete shader;
         delete mesh;
     }
