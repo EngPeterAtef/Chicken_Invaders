@@ -3,12 +3,12 @@
 #include "../components/collision.hpp"
 #include "../ecs/entity.hpp"
 #include "../ecs/world.hpp"
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
 #include <glm/trigonometric.hpp>
 #include <iostream>
-#include <random>
 #include <math.h>
 #include <ctime>
 
@@ -50,6 +50,7 @@ namespace our
 
             if (speedIncrease == 16 || speedIncrease == 28 || speedIncrease == 40 || speedIncrease == 52)
             {
+                // cout << "hereeeeeeeeeeeeee" << endl;
 
                 bool exists = false;
                 for (auto entity : world->getEntities())
@@ -164,13 +165,35 @@ namespace our
                 if (entity->name == "enemy")
                 {
 
+                    // // delete chicken
+                    // std::cout << "Chicken out of bounds\n";
                     world->markForRemoval(entity);
+                    // world->deleteMarkedEntities();
+
+                    // std::cout << "helllllllllllllllllllllll" << endl;
                 }
             }
-            world->deleteMarkedEntities();
         }
-    };
-} // namespace our
+        world->deleteMarkedEntities();
+    }
+
+    void
+    delete_all_chickens(World *world)
+    {
+
+        for (auto entity : world->getEntities())
+        {
+
+            if (entity->name == "enemy")
+            {
+
+                world->markForRemoval(entity);
+            }
+        }
+        world->deleteMarkedEntities();
+    }
+};
+// } // namespace our
 
 // float zDistance =
 //     glm::distance(player->getLocalToWorldMatrix() * glm::vec4(player->localTransform.position, 1.0),

@@ -18,6 +18,7 @@ class CollisionComponent : public Component
     glm::vec3 minCollider = {0.0f, 0.0f, 0.0f}; // The minimum coordinates of the bounding box
     glm::vec3 maxCollider = {0.0f, 0.0f, 0.0f}; // The maximum coordinates of the bounding box
     int health = 0;
+    int bonus = 0;
     // The ID of this component type is "Collision"
     static std::string getID()
     {

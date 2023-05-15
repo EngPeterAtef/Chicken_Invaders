@@ -1,8 +1,9 @@
 #pragma once
-#include <ctime>
+
 #include "../components/camera.hpp"
 #include "../components/collision.hpp"
 #include "../ecs/world.hpp"
+#include <ctime>
 
 #include "../application.hpp"
 
@@ -38,10 +39,9 @@ namespace our
     public:
         int lives = 3;
         int score = 0;
-        double level_start_time = 0; ////////////////////////////////
-        int current_level = 1;
-        int level_counter = 0; ///////////////////////
         int weapon_level = 0;
+        int level_counter = 0;
+        double level_start_time = 0;
         void enter(World *world, Application *app)
         {
             background_sound.play();
@@ -49,9 +49,8 @@ namespace our
             weapon_level = 0;
             score = 0;
             lives = 3;
-            level_start_time = glfwGetTime(); //////////start time of level
-
             this->app = app;
+            level_start_time = glfwGetTime(); //////////start time of level
             for (auto entity1 : world->getEntities())
             {
                 // Look for the player
@@ -106,13 +105,10 @@ namespace our
             double currentFrameTime = glfwGetTime();
             if (currentFrameTime - level_start_time >= 15) // each level 15 seconds
             {
-
-                current_level++;
                 level_counter = 0;
 
                 level_start_time = currentFrameTime;
             }
-
             if (weapon_level == 1)
                 weapon_level1_controll();
             if (app->getKeyboard().isPressed(GLFW_KEY_SPACE))
@@ -127,30 +123,14 @@ namespace our
                     Entity *fireEnemy1 = collisionSystem.detectFiring(world, laser_green);
                     Entity *fireEnemy2 = collisionSystem.detectFiring(world, laser_left);
                     Entity *fireEnemy3 = collisionSystem.detectFiring(world, laser_right);
-                    if (fireEnemy1)
-                    {
-                        generate_chicken_leg(world, fireEnemy1->localTransform.position);
-                        fireEnemy1->deleteComponent<CollisionComponent>();
-                        world->markForRemoval(fireEnemy1);
-                        score += 10;
-                        chicken_kaaaak_sound.play();
-                    }
-                    if (fireEnemy2)
-                    {
-                        generate_chicken_leg(world, fireEnemy2->localTransform.position);
-                        fireEnemy2->deleteComponent<CollisionComponent>();
-                        world->markForRemoval(fireEnemy2);
-                        score += 10;
-                        chicken_kaaaak_sound.play();
-                    }
-                    if (fireEnemy3)
-                    {
-                        generate_chicken_leg(world, fireEnemy3->localTransform.position);
-                        fireEnemy3->deleteComponent<CollisionComponent>();
-                        world->markForRemoval(fireEnemy3);
-                        score += 10;
-                        chicken_kaaaak_sound.play();
-                    }
+                    if (fireEnemy1 && fireEnemy1->getComponent<CollisionComponent>())
+                        hurt_enemy(world, fireEnemy1);
+
+                    if (fireEnemy2 && fireEnemy2->getComponent<CollisionComponent>())
+                        hurt_enemy(world, fireEnemy2);
+
+                    if (fireEnemy3 && fireEnemy3->getComponent<CollisionComponent>())
+                        hurt_enemy(world, fireEnemy3);
                 }
                 else
                 {
@@ -158,14 +138,7 @@ namespace our
                     laser->localTransform.scale = glm::vec3(0.2, 0.2, 10);
                     Entity *fireEnemy = collisionSystem.detectFiring(world, laser);
                     if (fireEnemy)
-                    {
-                        generate_chicken_leg(world, fireEnemy->localTransform.position);
-                        fireEnemy->localTransform.scale = glm::vec3(0, 0, 0);
-                        fireEnemy->deleteComponent<CollisionComponent>();
-                        world->markForRemoval(fireEnemy);
-                        score += 10;
-                        chicken_kaaaak_sound.play();
-                    }
+                        hurt_enemy(world, fireEnemy);
                 }
             }
             else
@@ -233,19 +206,15 @@ namespace our
             {
                 monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
                 monkey_collision->deleteComponent<CollisionComponent>();
-                world->markForRemoval(monkey_collision);
+                // world->markForRemoval(monkey_collision); // if we delete monkey an error occurs in monkey light
                 /* kill al chickens when you take a monkey */
                 for (auto entity : world->getEntities())
                 {
                     bomb_sound.play();
-                    if (entity->name == "enemy")
+                    if (entity->name == "enemy" && entity->getComponent<CollisionComponent>())
                     {
-                        generate_chicken_leg(world, entity->localTransform.position);
-                        entity->localTransform.scale = glm::vec3(0, 0, 0);
-                        entity->deleteComponent<CollisionComponent>();
-                        world->markForRemoval(entity);
-                        chicken_kaaaak_sound.play();
-                        score += 10;
+                        entity->getComponent<CollisionComponent>()->health -= 100;
+                        hurt_enemy(world, entity);
                     }
                 }
             }
@@ -314,6 +283,22 @@ namespace our
             laser_green->localTransform.rotation.z = rocket_rotation.x;
         }
 
+        void hurt_enemy(World *world, Entity *firedEnemy)
+        {
+            chicken_kaaaak_sound.play();
+            int enenmy_health = firedEnemy->getComponent<CollisionComponent>()->health--;
+            // std::cout << "Enemy health: " << enenmy_health << std::endl;
+
+            if (enenmy_health <= 0)
+            {
+
+                generate_chicken_leg(world, firedEnemy->localTransform.position);
+                score += firedEnemy->getComponent<CollisionComponent>()->bonus;
+                firedEnemy->deleteComponent<CollisionComponent>();
+                world->markForRemoval(firedEnemy);
+            }
+        }
+
         void generate_chicken_leg(World *world, glm::vec3 position)
         {
             Entity *childEntity = world->add();
@@ -345,7 +330,7 @@ namespace our
                 ImGui::SetWindowSize(ImVec2((float)550, (float)200));
                 ImGui::SetWindowPos(ImVec2(app->getWindowSize().x - 200.0f, 0.0f)); // Set position to top right
                 std::string player_score = "score: " + std::to_string((int)score);  // Set score
-                ImGui::SetWindowFontScale(2.0f);
+                ImGui::SetWindowFontScale(1.0f);
                 ImGui::TextUnformatted(player_score.c_str());
                 // ImGui::TextUnformatted(hearts.c_str());
                 ImGui::End();
