@@ -59,6 +59,7 @@ class ChickenRenderer
 
             newEntity->localTransform.scale = glm::vec3(scaling, scaling, scaling);
             newEntity->localTransform.position = glm::vec3(0, 0, 30);
+            //TODO: generate the chicken at different values in y-axis: newEntity->localTransform.position = glm::vec3(0, our::generateRandomNumber(-3, 3), 30);
 
             MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
             meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
