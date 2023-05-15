@@ -11,7 +11,7 @@
 #include <iostream>
 #include <math.h>
 #include <ctime>
-
+#include <random>
 using namespace std;
 namespace our
 {
@@ -77,7 +77,7 @@ namespace our
                 meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
 
                 CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
-                collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}});
+                collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}, {"health", 100}, {"bonus", 1000}});
 
                 MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
                 movementRendererComp->linearVelocity = glm::vec3(0, 0, 0);
@@ -113,7 +113,7 @@ namespace our
                 meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
 
                 CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
-                collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}});
+                collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}, {"health", 1}, {"bonus", 10}});
 
                 MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
                 movementRendererComp->linearVelocity = glm::vec3(0, 0, (int)fmin(40, 4 + speedIncrease));
@@ -173,25 +173,9 @@ namespace our
                     // std::cout << "helllllllllllllllllllllll" << endl;
                 }
             }
+            world->deleteMarkedEntities();
         }
-        world->deleteMarkedEntities();
-    }
-
-    void
-    delete_all_chickens(World *world)
-    {
-
-        for (auto entity : world->getEntities())
-        {
-
-            if (entity->name == "enemy")
-            {
-
-                world->markForRemoval(entity);
-            }
-        }
-        world->deleteMarkedEntities();
-    }
+    };
 };
 // } // namespace our
 

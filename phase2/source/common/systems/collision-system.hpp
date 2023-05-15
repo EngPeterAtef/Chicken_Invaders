@@ -16,163 +16,163 @@
 
 namespace our
 {
-class CollisionSystem
-{
-
-  public:
-    // detect collision between laser and chickens
-    Entity *detectFiring(World *world, Entity *laser)
+    class CollisionSystem
     {
-        for (auto entity : world->getEntities())
-        {
-            // Look for the player
-            if (entity->name == "enemy" && entity->getComponent<CollisionComponent>())
-            {
-                // gets the min and max vertices using the mesh class
-                glm::vec3 minLaserVertex = laser->getComponent<CollisionComponent>()->mesh->minvertex;
-                glm::vec3 maxLaserVertex = laser->getComponent<CollisionComponent>()->mesh->maxvertex;
 
-                // transforms the min and max vertices to the wold space
-                minLaserVertex *= laser->localTransform.scale[2];
-                maxLaserVertex *= laser->localTransform.scale[2];
-                minLaserVertex.x *= laser->localTransform.scale[0] * 0.005;
-                maxLaserVertex.x *= laser->localTransform.scale[0] * 0.005;
-                minLaserVertex.y *= laser->localTransform.scale[0];
-                maxLaserVertex.y *= laser->localTransform.scale[0];
-                if (laser->parent->parent)
+    public:
+        // detect collision between laser and chickens
+        Entity *detectFiring(World *world, Entity *laser)
+        {
+            for (auto entity : world->getEntities())
+            {
+                // Look for the player
+                if ((entity->name == "enemy" || entity->name == "boss") && entity->getComponent<CollisionComponent>())
                 {
-                    minLaserVertex.x *= laser->localTransform.scale[0] * 1000;
-                    maxLaserVertex.x *= laser->localTransform.scale[0] * 1000;
-                    minLaserVertex += laser->parent->parent->localTransform.position;
-                    maxLaserVertex += laser->parent->parent->localTransform.position;
+                    // gets the min and max vertices using the mesh class
+                    glm::vec3 minLaserVertex = laser->getComponent<CollisionComponent>()->mesh->minvertex;
+                    glm::vec3 maxLaserVertex = laser->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+                    // transforms the min and max vertices to the wold space
+                    minLaserVertex *= laser->localTransform.scale[2];
+                    maxLaserVertex *= laser->localTransform.scale[2];
+                    minLaserVertex.x *= laser->localTransform.scale[0] * 0.005;
+                    maxLaserVertex.x *= laser->localTransform.scale[0] * 0.005;
+                    minLaserVertex.y *= laser->localTransform.scale[0];
+                    maxLaserVertex.y *= laser->localTransform.scale[0];
+                    if (laser->parent->parent)
+                    {
+                        minLaserVertex.x *= laser->localTransform.scale[0] * 1000;
+                        maxLaserVertex.x *= laser->localTransform.scale[0] * 1000;
+                        minLaserVertex += laser->parent->parent->localTransform.position;
+                        maxLaserVertex += laser->parent->parent->localTransform.position;
+                    }
+                    minLaserVertex += laser->localTransform.position + laser->parent->localTransform.position;
+                    maxLaserVertex += laser->localTransform.position + laser->parent->localTransform.position;
+
+                    // gets the min and max vertices using the mesh class
+                    glm::vec3 minCollider = entity->getComponent<CollisionComponent>()->mesh->minvertex;
+                    glm::vec3 maxCollider = entity->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+                    // transforms the min and max vertices to the wold space
+                    minCollider *= entity->localTransform.scale[0];
+                    maxCollider *= entity->localTransform.scale[0];
+                    minCollider += entity->localTransform.position;
+                    maxCollider += entity->localTransform.position;
+
+                    // collision between AABBs check
+                    if ((minLaserVertex.x <= maxCollider.x && maxLaserVertex.x >= minCollider.x) &&
+                        (minLaserVertex.y <= maxCollider.y && maxLaserVertex.y >= minCollider.y) &&
+                        (minLaserVertex.z <= maxCollider.z && maxLaserVertex.z >= minCollider.z))
+                    {
+                        // std::cout << "collision detected laser ----------------------------------" << '\n';
+                        return entity;
+                    }
                 }
-                minLaserVertex += laser->localTransform.position + laser->parent->localTransform.position;
-                maxLaserVertex += laser->localTransform.position + laser->parent->localTransform.position;
+            }
+            return nullptr;
+        }
 
-                // gets the min and max vertices using the mesh class
-                glm::vec3 minCollider = entity->getComponent<CollisionComponent>()->mesh->minvertex;
-                glm::vec3 maxCollider = entity->getComponent<CollisionComponent>()->mesh->maxvertex;
+        // detect collision between player and monkey to get the bomb effect
+        Entity *detectMonkeyCollision(World *world, Entity *player)
+        {
 
-                // transforms the min and max vertices to the wold space
-                minCollider *= entity->localTransform.scale[0];
-                maxCollider *= entity->localTransform.scale[0];
-                minCollider += entity->localTransform.position;
-                maxCollider += entity->localTransform.position;
-
-                // collision between AABBs check
-                if ((minLaserVertex.x <= maxCollider.x && maxLaserVertex.x >= minCollider.x) &&
-                    (minLaserVertex.y <= maxCollider.y && maxLaserVertex.y >= minCollider.y) &&
-                    (minLaserVertex.z <= maxCollider.z && maxLaserVertex.z >= minCollider.z))
+            for (auto entity : world->getEntities())
+            {
+                if (entity->name == "monkey" && entity->getComponent<CollisionComponent>())
                 {
-                    // std::cout << "collision detected laser ----------------------------------" << '\n';
-                    return entity;
+                    Entity *result = checkCollision(player, entity);
+                    if (result)
+                        return result;
                 }
             }
+            return nullptr;
         }
-        return nullptr;
-    }
 
-    // detect collision between player and monkey to get the bomb effect
-    Entity *detectMonkeyCollision(World *world, Entity *player)
-    {
-
-        for (auto entity : world->getEntities())
+        // detect collision between player and heart to increase health
+        Entity *detectHeartCollision(World *world, Entity *player)
         {
-            if (entity->name == "monkey" && entity->getComponent<CollisionComponent>())
+            for (auto entity : world->getEntities())
             {
-                Entity *result = checkCollision(player, entity);
-                if (result)
-                    return result;
+                if (entity->name == "heart" && entity->getComponent<CollisionComponent>())
+                {
+                    Entity *result = checkCollision(player, entity);
+                    if (result)
+                        return result;
+                }
             }
+            return nullptr;
         }
-        return nullptr;
-    }
 
-    // detect collision between player and heart to increase health
-    Entity *detectHeartCollision(World *world, Entity *player)
-    {
-        for (auto entity : world->getEntities())
+        // detect collision between player and chicken to decrease health
+        Entity *detectCollision(World *world, Entity *player)
         {
-            if (entity->name == "heart" && entity->getComponent<CollisionComponent>())
+
+            for (auto entity : world->getEntities())
             {
-                Entity *result = checkCollision(player, entity);
-                if (result)
-                    return result;
+                if (entity->name == "enemy" && entity->getComponent<CollisionComponent>())
+                {
+                    Entity *result = checkCollision(player, entity);
+                    if (result)
+                        return result;
+                }
             }
+            return nullptr;
         }
-        return nullptr;
-    }
 
-    // detect collision between player and chicken to decrease health
-    Entity *detectCollision(World *world, Entity *player)
-    {
-
-        for (auto entity : world->getEntities())
+        // detect collision between player and chicken-leg to get bonus score
+        Entity *detectChickenLeg(World *world, Entity *player)
         {
-            if (entity->name == "enemy" && entity->getComponent<CollisionComponent>())
+            for (auto entity : world->getEntities())
             {
-                Entity *result = checkCollision(player, entity);
-                if (result)
-                    return result;
+                // Look for the player
+                if (entity->name == "chicken_leg" && entity->getComponent<CollisionComponent>())
+                {
+                    Entity *result = checkCollision(player, entity);
+                    if (result)
+                        return result;
+                }
             }
+            return nullptr;
         }
-        return nullptr;
-    }
 
-    // detect collision between player and chicken-leg to get bonus score
-    Entity *detectChickenLeg(World *world, Entity *player)
-    {
-        for (auto entity : world->getEntities())
+        Entity *checkCollision(Entity *player, Entity *enemy)
         {
-            // Look for the player
-            if (entity->name == "chicken_leg" && entity->getComponent<CollisionComponent>())
+            // gets the min and max vertices using the mesh class
+            glm::vec3 minPlayerVertex = player->getComponent<CollisionComponent>()->mesh->minvertex;
+            glm::vec3 maxPlayerVertex = player->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+            // transforms the min and max vertices to the wold space
+            minPlayerVertex *= player->localTransform.scale[0];
+            maxPlayerVertex *= player->localTransform.scale[0];
+            if (enemy->name == "enemy")
             {
-                Entity *result = checkCollision(player, entity);
-                if (result)
-                    return result;
+                minPlayerVertex.y *= 0.1;
+                maxPlayerVertex.y *= 0.1;
             }
+            minPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
+            maxPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
+
+            // gets the min and max vertices using the mesh class
+            glm::vec3 minCollider = enemy->getComponent<CollisionComponent>()->mesh->minvertex;
+            glm::vec3 maxCollider = enemy->getComponent<CollisionComponent>()->mesh->maxvertex;
+
+            // transforms the min and max vertices to the wold space
+            minCollider *= enemy->localTransform.scale[0];
+            maxCollider *= enemy->localTransform.scale[0];
+            minCollider += enemy->localTransform.position;
+            maxCollider += enemy->localTransform.position;
+
+            // collision between AABBs check
+            if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
+                (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
+                (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
+            {
+
+                // std::cout << "Collision" << '\n';
+                return enemy;
+            }
+            return nullptr;
         }
-        return nullptr;
-    }
-
-    Entity *checkCollision(Entity *player, Entity *enemy)
-    {
-        // gets the min and max vertices using the mesh class
-        glm::vec3 minPlayerVertex = player->getComponent<CollisionComponent>()->mesh->minvertex;
-        glm::vec3 maxPlayerVertex = player->getComponent<CollisionComponent>()->mesh->maxvertex;
-
-        // transforms the min and max vertices to the wold space
-        minPlayerVertex *= player->localTransform.scale[0];
-        maxPlayerVertex *= player->localTransform.scale[0];
-        if (enemy->name == "enemy")
-        {
-            minPlayerVertex.y *= 0.1;
-            maxPlayerVertex.y *= 0.1;
-        }
-        minPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
-        maxPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
-
-        // gets the min and max vertices using the mesh class
-        glm::vec3 minCollider = enemy->getComponent<CollisionComponent>()->mesh->minvertex;
-        glm::vec3 maxCollider = enemy->getComponent<CollisionComponent>()->mesh->maxvertex;
-
-        // transforms the min and max vertices to the wold space
-        minCollider *= enemy->localTransform.scale[0];
-        maxCollider *= enemy->localTransform.scale[0];
-        minCollider += enemy->localTransform.position;
-        maxCollider += enemy->localTransform.position;
-
-        // collision between AABBs check
-        if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
-            (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
-            (minPlayerVertex.z <= maxCollider.z && maxPlayerVertex.z >= minCollider.z))
-        {
-
-            // std::cout << "Collision" << '\n';
-            return enemy;
-        }
-        return nullptr;
-    }
-};
+    };
 
 } // namespace our

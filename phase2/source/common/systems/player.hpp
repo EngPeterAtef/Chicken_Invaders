@@ -211,7 +211,7 @@ namespace our
                 for (auto entity : world->getEntities())
                 {
                     bomb_sound.play();
-                    if (entity->name == "enemy" && entity->getComponent<CollisionComponent>())
+                    if ((entity->name == "enemy" || entity->name == "boss") && entity->getComponent<CollisionComponent>())
                     {
                         entity->getComponent<CollisionComponent>()->health -= 100;
                         hurt_enemy(world, entity);
