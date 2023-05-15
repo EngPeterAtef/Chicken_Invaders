@@ -194,7 +194,7 @@ class PlayerSystem
         {
             monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
             monkey_collision->deleteComponent<CollisionComponent>();
-            world->markForRemoval(monkey_collision);
+            // world->markForRemoval(monkey_collision); // if we delete monkey an error occurs in monkey light
             /* kill al chickens when you take a monkey */
             for (auto entity : world->getEntities())
             {
