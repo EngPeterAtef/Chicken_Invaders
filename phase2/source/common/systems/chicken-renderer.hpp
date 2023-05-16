@@ -94,7 +94,7 @@ class ChickenRenderer
 
                 CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
                 collisionComp->deserialize(
-                    {{"type", "Collision"}, {"mesh", "chicken"}, {"health", 100}, {"bonus", 1000}});
+                    {{"type", "Collision"}, {"mesh", "chicken"}, {"health", 100}, {"bonus", 1000 * i}});
 
                 MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
                 movementRendererComp->linearVelocity = glm::vec3(0, 0, 0);

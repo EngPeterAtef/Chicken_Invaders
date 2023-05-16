@@ -222,7 +222,7 @@ class PlayerSystem
             laser_right->localTransform.scale = glm::vec3(0, 0, 0);
         }
         // score += 1;
-        Entity *enemy_collision = collisionSystem.detectCollision(world, player);
+        Entity *enemy_collision = collisionSystem.detectCollision(world, player, "enemy");
         if (enemy_collision)
         {
             chicken_kaaaak_sound.play();
@@ -273,7 +273,7 @@ class PlayerSystem
                 outfile.close();
             }
         }
-        Entity *monkey_collision = collisionSystem.detectMonkeyCollision(world, player);
+        Entity *monkey_collision = collisionSystem.detectCollision(world, player, "monkey");
         if (monkey_collision)
         {
             monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
@@ -291,7 +291,7 @@ class PlayerSystem
             }
         }
 
-        Entity *heart_collision = collisionSystem.detectHeartCollision(world, player);
+        Entity *heart_collision = collisionSystem.detectCollision(world, player, "heart");
         if (heart_collision)
         {
             heart_collision->localTransform.scale = glm::vec3(0, 0, 0);
@@ -328,7 +328,7 @@ class PlayerSystem
             }
         }
 
-        Entity *chicken_leg = collisionSystem.detectChickenLeg(world, player);
+        Entity *chicken_leg = collisionSystem.detectCollision(world, player, "chicken_leg");
         if (chicken_leg)
         {
 
