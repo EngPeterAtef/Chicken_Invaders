@@ -110,50 +110,6 @@ class PlayerSystem
     int update(World *world, float deltaTime, bool bossExists)
     {
         int create_boss = boss(bossExists);
-        // int create_boss = 0;
-        // if (!bossExists && !bossExisted)
-        // {
-        //     int time = glfwGetTime() - level_start_time;
-        //     if (time == 30 && currentLevel == 0)
-        //     {
-        //         currentLevel = 1;
-        //         create_boss = 1;
-        //         std::cout << "create 1 bosses!!!!!!!!!!!!!!!!!";
-        //     }
-        //     else if (time == 75 && currentLevel == 1)
-        //     {
-        //         create_boss = 2;
-
-        //         currentLevel = 2;
-        //     }
-        //     else if (time == 135 && currentLevel == 2)
-        //     {
-        //         create_boss = 3;
-
-        //         currentLevel = 3;
-        //     }
-        //     else if (time == 225 && currentLevel == 3)
-        //     {
-        //         create_boss = 4;
-
-        //         currentLevel = 4;
-        //     }
-        //     else if (time >= 225 && currentLevel == 4)
-        //     {
-        //         create_boss = 5;
-
-        //         currentLevel = 5;
-        //     }
-        // }
-        // else if (!bossExists && bossExisted) // el boss kan mawgoud w meshy
-        // {
-        //     level_start_time = glfwGetTime();
-        //     bossExisted = false;
-        // }
-        // if (bossExists && !bossExisted) // law el boss lessa gai
-        // {
-        //     bossExisted = true;
-        // }
 
         // if (bossExists && beforeBossExisits == 0)
         // { // first call after boss was here
