@@ -16,6 +16,7 @@ using namespace std;
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD2
 #include <imgui_impl/imgui_impl_glfw.h>
 #include <imgui_impl/imgui_impl_opengl3.h>
+// #include "./systems/chicken-renderer.hpp"
 
 #if !defined(NDEBUG)
 // If NDEBUG (no debug) is not defined, enable OpenGL debug messages
@@ -277,7 +278,7 @@ int our::Application::run(int run_for_frames)
     // double level_start_time = glfwGetTime(); ////////////////////////////////
     // int current_level = 1;
     // int level_counter = 0;
-
+    // ChickenRenderer chickenRenderer;
     // Game loop
     while (!glfwWindowShouldClose(window))
     {
@@ -349,10 +350,7 @@ int our::Application::run(int run_for_frames)
         // if (game_over_state)
         // {
         //     std::cout << "The pointer points to an object of type ChildA.\n";
-        //     chicken_speed = 0;
-        //     current_level = 1;
-        //     level_counter = 0;
-        //     last_frame_time = 0;
+        //     // chickenRenderer.intialization();
         // }
         last_frame_time = current_frame_time; // Then update the last frame start time (this frame is now the last frame)
 

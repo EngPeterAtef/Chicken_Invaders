@@ -24,6 +24,7 @@ class Playstate : public our::State
     our::PlayerSystem playerSystem;
     our::LightSystem lightSystem;
     int counter = 0;
+    // bool firstDraw = true;
 
     void onInitialize() override
     {
@@ -43,6 +44,7 @@ class Playstate : public our::State
         // We initialize the camera controller system since it needs a pointer to the app
         cameraController.enter(getApp());
         playerSystem.enter(&world, getApp());
+        chickenRenderer.intialization();
         // Then we initialize the renderer
         auto size = getApp()->getFrameBufferSize();
         renderer.initialize(size, config["renderer"]);
@@ -53,15 +55,23 @@ class Playstate : public our::State
         counter++;
         // Here, we just run a bunch of systems to control the world logic
         movementSystem.update(&world, (float)deltaTime);
-        cameraController.update(&world, (float)deltaTime);
-        playerSystem.update(&world, (float)deltaTime);
 
+        cameraController.update(&world, (float)deltaTime);
+
+        int bosses = playerSystem.update(&world, (float)deltaTime, chickenRenderer.boss_exists(&world));
+        cout << "bossessssssssssssssssssss" << bosses << endl;
         lightSystem.update(&world);
         // And finally we use the renderer system to draw the scene
         chickenRenderer.delete_chickens(&world);
-        if (counter >= 30)
+        // if (firstDraw == true)
+        // {
+        //     chickenRenderer.intialization();
+        //     firstDraw = false;
+        // }
+        if (counter >= 30 || bosses != 0)
         {
-            chickenRenderer.rendering(&world);
+            chickenRenderer.rendering(&world, bosses);
+
             counter = 0;
         }
         renderer.render(&world);

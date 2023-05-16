@@ -15,12 +15,14 @@
 #include <glm/gtx/fast_trigonometry.hpp>
 #include <glm/trigonometric.hpp>
 #include <iostream>
+// #include "./chicken-renderer.hpp"
 
 namespace our
 {
     class PlayerSystem
     {
         Application *app;
+        // our::ChickenRenderer chickenRenderer;
         our::CollisionSystem collisionSystem;
         Entity *laser;
         Entity *laser_green;
@@ -40,10 +42,15 @@ namespace our
         int lives = 3;
         int score = 0;
         int weapon_level = 0;
-        int level_counter = 0;
+        bool bossExisted = false;
+        // int level_counter = 0;
         double level_start_time = 0;
+        int currentLevel = 0;
         void enter(World *world, Application *app)
         {
+            // chickenRenderer.intialization();
+            bossExisted = false;
+            currentLevel = 0;
             background_sound.play();
             rocket_sound.play();
             weapon_level = 0;
@@ -100,15 +107,81 @@ namespace our
         }
 
         // This should be called every frame to update player
-        void update(World *world, float deltaTime)
+        int update(World *world, float deltaTime, bool bossExists)
         {
-            double currentFrameTime = glfwGetTime();
-            if (currentFrameTime - level_start_time >= 15) // each level 15 seconds
+            int create_boss = 0;
+            if (!bossExists && !bossExisted)
             {
-                level_counter = 0;
+                int time = glfwGetTime() - level_start_time;
+                if (time == 30 && currentLevel == 0)
+                {
+                    currentLevel = 1;
+                    create_boss = 1;
+                    std::cout << "create 1 bosses!!!!!!!!!!!!!!!!!";
+                }
+                else if (time == 75 && currentLevel == 1)
+                {
+                    create_boss = 2;
 
-                level_start_time = currentFrameTime;
+                    currentLevel = 2;
+                }
+                else if (time == 135 && currentLevel == 2)
+                {
+                    create_boss = 3;
+
+                    currentLevel = 3;
+                }
+                else if (time == 225 && currentLevel == 3)
+                {
+                    create_boss = 4;
+
+                    currentLevel = 4;
+                }
+                else if (time >= 225 && currentLevel == 4)
+                {
+                    create_boss = 5;
+
+                    currentLevel = 5;
+                }
             }
+            else if (!bossExists && bossExisted) // el boss kan mawgoud w meshy
+            {
+                level_start_time = glfwGetTime();
+                bossExisted = false;
+            }
+            if (bossExists && !bossExisted) // law el boss lessa gai
+            {
+                bossExisted = true;
+            }
+
+            // if (bossExists && beforeBossExisits == 0)
+            // { // first call after boss was here
+            //     beforeBossExisits = glfwGetTime();
+            // }
+            // else if (!bossExists && beforeBossExisits != 0)
+            // { // kan zaher abl keda
+            //     beforeBossExisits = 0;
+            // }
+            // int timeSpentInGame = glfwGetTime() - level_start_time;
+            // switch (timeSpentInGame)
+            // {
+            // case 30:
+            //     currentLevel = 2;
+            // case 75:
+            //     currentLevel = 3;
+            // case 135:
+            //     currentLevel = 4;
+            // case 225:
+            //     currentLevel = 5;
+            // }
+
+            // if (currentFrameTime - level_start_time >= 15) // each level 15 seconds
+            // {
+            //     // level_counter = 0;
+            //     currentLevel++;
+
+            //     level_start_time = currentFrameTime;
+            // }
             if (weapon_level == 1)
                 weapon_level1_controll();
             if (app->getKeyboard().isPressed(GLFW_KEY_SPACE))
@@ -275,6 +348,7 @@ namespace our
             {
                 rocket_sound.stop();
             }
+            return create_boss;
         }
 
         void weapon_level1_controll()
@@ -328,11 +402,9 @@ namespace our
             if (ImGui::Begin("Chicken", open_ptr, window_flags))
             {
                 ImGui::SetWindowSize(ImVec2((float)550, (float)200));
-                ImGui::SetWindowPos(ImVec2(app->getWindowSize().x - 200.0f, 0.0f)); // Set position to top right
-                std::string player_score = "score: " + std::to_string((int)score);  // Set score
-                ImGui::SetWindowFontScale(1.0f);
-                ImGui::TextUnformatted(player_score.c_str());
-                // ImGui::TextUnformatted(hearts.c_str());
+                ImGui::SetWindowPos(ImVec2(app->getWindowSize().x - 200.0f, 0.0f));                                                          // Set position to top right
+                std::string score__and_level = "Score: " + std::to_string((int)score) + "\nLevel: " + std::to_string((int)currentLevel + 1); // Set score                ImGui::SetWindowFontScale(1.0f);
+                ImGui::TextUnformatted(score__and_level.c_str());
                 ImGui::End();
             }
         }

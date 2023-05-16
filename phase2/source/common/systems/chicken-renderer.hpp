@@ -21,9 +21,7 @@ namespace our
     // For more information, see "common/components/movement.hpp"
     class ChickenRenderer
     {
-        double scaling = 0.4;
-        double startTime = 0;
-        int speedIncrease = 0;
+
         double generateRandomNumber(double minX, double maxX)
         {
             std::random_device rd;
@@ -34,72 +32,23 @@ namespace our
 
     public:
         // This should be called every frame to update all entities containing a MovementComponent.
-        void rendering(World *world)
+        double scaling = 0.4;
+        double startTime = 0;
+        double speedIncrease = 0;
+        void intialization()
         {
-            double currentTime = glfwGetTime();
-            if (currentTime - startTime > 5)
-            { // each 5 senconds increase the speed
-                // start time is of the current speed slot which is 5 seconds 1/3 the level period
+            startTime = 0;
+            speedIncrease = 0;
+            cout << endl
+                 << "innnnnnnnnnnnnnnnnnnnnnn initialise" << endl;
+            // return;
+        }
+        void rendering(World *world, int bossesToCreate)
+        {
 
-                speedIncrease += 4;
-                startTime = currentTime;
-            }
-            // cout <<world->
-            // 2 3 4  5 6 7  8 9 10  11 12 13
-            //  8 12 16   20 24 28    32 36 40      44 48 52
-
-            if (speedIncrease == 16 || speedIncrease == 28 || speedIncrease == 40 || speedIncrease == 52)
+            if (bossesToCreate == 0 && !boss_exists(world))
             {
-                // cout << "hereeeeeeeeeeeeee" << endl;
-
-                bool exists = false;
-                for (auto entity : world->getEntities())
-                {
-
-                    if (entity->name == "boss")
-                    {
-
-                        exists = true;
-                        break;
-                    }
-                }
-                if (exists == true)
-                    return;
-                delete_chickens(world);
-                scaling = 1;
-                Entity *newEntity = world->add();
-                newEntity->name = "boss";
-
-                newEntity->localTransform.scale = glm::vec3(scaling, scaling, scaling);
-                newEntity->localTransform.position = glm::vec3(0, 0, 40);
-
-                MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
-                meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
-
-                CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
-                collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}, {"health", 100}, {"bonus", 1000}});
-
-                MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
-                movementRendererComp->linearVelocity = glm::vec3(0, 0, 0);
-                // cout << (int)fmin(40, 4 + speedIncrease) << endl;
-                movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
-                newEntity->name = "boss";
-            }
-            else
-            {
-                bool exists = false;
-                for (auto entity : world->getEntities())
-                {
-
-                    if (entity->name == "boss")
-                    {
-
-                        exists = true;
-                        break;
-                    }
-                }
-                if (exists == true)
-                    return;
+                speedIncrease += 0.1;
                 Entity *newEntity = world->add();
                 newEntity->name = "enemy";
 
@@ -117,19 +66,61 @@ namespace our
 
                 MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
                 movementRendererComp->linearVelocity = glm::vec3(0, 0, (int)fmin(40, 4 + speedIncrease));
-                cout << 6 + speedIncrease << endl;
+                cout << "speed " << 4 + speedIncrease << endl;
                 movementRendererComp->angularVelocity = glm::vec3(0, 3, 0);
             }
-            // if (speedIncrease == 12 || speedIncrease = 24 || speedIncrease == 36 || speedIncrease == 48)
-            // {
-            //     scaling = 4;
-            // }
-            // if (speedIncrease == 8 || speedIncrease = 20 || speedIncrease == 32 || speedIncrease == 40)
-            // {
-            //     scaling = 4;
-            // }
+            else if (bossesToCreate != 0)
+            {
+                delete_chickens(world);
+                cout << "innnnnnnnnnnnnnnnn bossssssssssssssssssssssssssssssss";
+                for (int i = 1; i <= bossesToCreate; i++)
+                {
+                    scaling = 1;
+                    Entity *newEntity = world->add();
+                    newEntity->name = "boss";
+                    int shift = 0;
+                    if (i % 2 == 0)
+                    {
+                        shift = 10;
+                    }
+                    else if (i % 2 != 0 && i != 1)
+                    {
+                        shift = -10;
+                    }
+
+                    newEntity->localTransform.scale = glm::vec3(scaling, scaling, scaling);
+                    newEntity->localTransform.position = glm::vec3(0, shift, 40);
+
+                    MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
+                    meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "chicken"}, {"material", "chicken"}});
+
+                    CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
+                    collisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken"}, {"health", 100}, {"bonus", 1000}});
+
+                    MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
+                    movementRendererComp->linearVelocity = glm::vec3(0, 0, 0);
+                    // cout << (int)fmin(40, 4 + speedIncrease) << endl;
+                    movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
+                    newEntity->name = "boss";
+                }
+            }
         }
 
+        bool boss_exists(World *world)
+        {
+            bool exists = false;
+            for (auto entity : world->getEntities())
+            {
+
+                if (entity->name == "boss")
+                {
+
+                    exists = true;
+                    break;
+                }
+            }
+            return exists;
+        }
         void delete_chickens(World *world)
         {
 
