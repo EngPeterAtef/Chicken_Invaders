@@ -99,11 +99,12 @@ class CollisionSystem
         // transforms the min and max vertices to the wold space
         minPlayerVertex *= player->localTransform.scale[0];
         maxPlayerVertex *= player->localTransform.scale[0];
-        if (enemy->name == "enemy")
+        if (enemy->name == "enemy") // special case for chickens
         {
             minPlayerVertex.y *= 0.1;
             maxPlayerVertex.y *= 0.1;
         }
+
         minPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
         maxPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
 
@@ -111,12 +112,16 @@ class CollisionSystem
         glm::vec3 minCollider = enemy->getComponent<CollisionComponent>()->mesh->minvertex;
         glm::vec3 maxCollider = enemy->getComponent<CollisionComponent>()->mesh->maxvertex;
 
+        if (enemy->name == "heart") // special case for heart (because it is very narrow in z axis)
+        {
+            minCollider.z *= 2;
+            maxCollider.z *= 2;
+        }
         // transforms the min and max vertices to the wold space
         minCollider *= enemy->localTransform.scale[0];
         maxCollider *= enemy->localTransform.scale[0];
         minCollider += enemy->localTransform.position;
         maxCollider += enemy->localTransform.position;
-
         // collision between AABBs check
         if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
             (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
