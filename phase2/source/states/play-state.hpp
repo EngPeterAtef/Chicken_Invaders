@@ -4,13 +4,12 @@
 #include <asset-loader.hpp>
 #include <ecs/world.hpp>
 #include <imgui-utils/utils.hpp>
+#include <systems/chicken-renderer.hpp>
 #include <systems/forward-renderer.hpp>
 #include <systems/free-camera-controller.hpp>
 #include <systems/light.hpp>
 #include <systems/movement.hpp>
 #include <systems/player.hpp>
-#include <systems/chicken-renderer.hpp>
-// #include <systems/chicken-renderer.hpp>
 
 // This state shows how to use the ECS framework and deserialization.
 class Playstate : public our::State
@@ -24,7 +23,6 @@ class Playstate : public our::State
     our::PlayerSystem playerSystem;
     our::LightSystem lightSystem;
     int counter = 0;
-    // bool firstDraw = true;
 
     void onInitialize() override
     {
@@ -59,7 +57,7 @@ class Playstate : public our::State
         cameraController.update(&world, (float)deltaTime);
 
         int bosses = playerSystem.update(&world, (float)deltaTime, chickenRenderer.boss_exists(&world));
-        cout << "bossessssssssssssssssssss" << bosses << endl;
+        // cout << "bossessssssssssssssssssss" << bosses << endl;
         lightSystem.update(&world);
         // And finally we use the renderer system to draw the scene
         chickenRenderer.delete_chickens(&world);
