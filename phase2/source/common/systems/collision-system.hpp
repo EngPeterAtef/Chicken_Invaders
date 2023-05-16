@@ -20,7 +20,8 @@ class CollisionSystem
 {
 
   public:
-    // detect collision between laser and chickens
+    // Detect collision between laser and chickens
+    // returns the chicken laser that the laser collided with
     Entity *detectFiring(World *world, Entity *laser)
     {
         for (auto entity : world->getEntities())

@@ -58,6 +58,16 @@ class PlayerSystem
         lives = 3;
         this->app = app;
         level_start_time = glfwGetTime(); //////////start time of level
+
+        for (auto entity1 : world->getEntities())
+        {
+            // Look for the player
+            if (entity1->name == "player")
+            {
+                player = entity1;
+                break;
+            }
+        }
         for (auto entity1 : world->getEntities())
         {
             // Look for the player
@@ -70,16 +80,7 @@ class PlayerSystem
         }
         for (auto entity1 : world->getEntities())
         {
-            // Look for the player
-            if (entity1->name == "player")
-            {
-                player = entity1;
-                break;
-            }
-        }
-        for (auto entity1 : world->getEntities())
-        {
-            // Look for the right laser
+            // Look for the middle green laser
             if (entity1->name == "laser_green")
             {
                 laser_green = entity1;
@@ -152,18 +153,19 @@ class PlayerSystem
             laser_left->localTransform.scale = glm::vec3(0, 0, 0);
             laser_right->localTransform.scale = glm::vec3(0, 0, 0);
         }
+        // check for collision with chickens
         Entity *enemy_collision = collisionSystem.detectCollision(world, player, "enemy");
         if (enemy_collision)
             chickenHit(world, enemy_collision);
-
+        // check for collision with monkey
         Entity *monkey_collision = collisionSystem.detectCollision(world, player, "monkey");
         if (monkey_collision)
             monkey(world, monkey_collision);
-
+        // check for collision with heart
         Entity *heart_collision = collisionSystem.detectCollision(world, player, "heart");
         if (heart_collision)
             heart(world, heart_collision);
-
+        // check for collision with chicken leg
         Entity *chicken_leg = collisionSystem.detectCollision(world, player, "chicken_leg");
         if (chicken_leg)
         {
@@ -173,16 +175,18 @@ class PlayerSystem
             chicken_leg_sound.play();
             score += 50;
         }
+        // check for score to increase weapon level
         if (score > 2000 && weapon_level != 1)
         {
             weapon_level = 1;
             laser->localTransform.scale = glm::vec3(0, 0, 0);
         }
+        // delete all marked entities
         world->deleteMarkedEntities();
+
         if (app->getKeyboard().isPressed(GLFW_KEY_ESCAPE))
-        {
             rocket_sound.stop();
-        }
+
         return create_boss;
     }
     // switching to weapon level 1
