@@ -109,6 +109,152 @@ class PlayerSystem
     // This should be called every frame to update player
     int update(World *world, float deltaTime, bool bossExists)
     {
+        int create_boss = boss(bossExists);
+        // int create_boss = 0;
+        // if (!bossExists && !bossExisted)
+        // {
+        //     int time = glfwGetTime() - level_start_time;
+        //     if (time == 30 && currentLevel == 0)
+        //     {
+        //         currentLevel = 1;
+        //         create_boss = 1;
+        //         std::cout << "create 1 bosses!!!!!!!!!!!!!!!!!";
+        //     }
+        //     else if (time == 75 && currentLevel == 1)
+        //     {
+        //         create_boss = 2;
+
+        //         currentLevel = 2;
+        //     }
+        //     else if (time == 135 && currentLevel == 2)
+        //     {
+        //         create_boss = 3;
+
+        //         currentLevel = 3;
+        //     }
+        //     else if (time == 225 && currentLevel == 3)
+        //     {
+        //         create_boss = 4;
+
+        //         currentLevel = 4;
+        //     }
+        //     else if (time >= 225 && currentLevel == 4)
+        //     {
+        //         create_boss = 5;
+
+        //         currentLevel = 5;
+        //     }
+        // }
+        // else if (!bossExists && bossExisted) // el boss kan mawgoud w meshy
+        // {
+        //     level_start_time = glfwGetTime();
+        //     bossExisted = false;
+        // }
+        // if (bossExists && !bossExisted) // law el boss lessa gai
+        // {
+        //     bossExisted = true;
+        // }
+
+        // if (bossExists && beforeBossExisits == 0)
+        // { // first call after boss was here
+        //     beforeBossExisits = glfwGetTime();
+        // }
+        // else if (!bossExists && beforeBossExisits != 0)
+        // { // kan zaher abl keda
+        //     beforeBossExisits = 0;
+        // }
+        // int timeSpentInGame = glfwGetTime() - level_start_time;
+        // switch (timeSpentInGame)
+        // {
+        // case 30:
+        //     currentLevel = 2;
+        // case 75:
+        //     currentLevel = 3;
+        // case 135:
+        //     currentLevel = 4;
+        // case 225:
+        //     currentLevel = 5;
+        // }
+
+        // if (currentFrameTime - level_start_time >= 15) // each level 15 seconds
+        // {
+        //     // level_counter = 0;
+        //     currentLevel++;
+
+        //     level_start_time = currentFrameTime;
+        // }
+        if (weapon_level == 1)
+            weapon_level1_controll();
+        if (app->getKeyboard().isPressed(GLFW_KEY_SPACE))
+        {
+            fire(world);
+        }
+        else
+        {
+            laser->localTransform.scale = glm::vec3(0, 0, 0);
+            laser_green->localTransform.scale = glm::vec3(0, 0, 0);
+            laser_left->localTransform.scale = glm::vec3(0, 0, 0);
+            laser_right->localTransform.scale = glm::vec3(0, 0, 0);
+        }
+        Entity *enemy_collision = collisionSystem.detectCollision(world, player, "enemy");
+        if (enemy_collision)
+            chickenHit(world, enemy_collision);
+
+        Entity *monkey_collision = collisionSystem.detectCollision(world, player, "monkey");
+        if (monkey_collision)
+            monkey(world, monkey_collision);
+
+        Entity *heart_collision = collisionSystem.detectCollision(world, player, "heart");
+        if (heart_collision)
+            heart(world, heart_collision);
+
+        Entity *chicken_leg = collisionSystem.detectCollision(world, player, "chicken_leg");
+        if (chicken_leg)
+        {
+
+            chicken_leg->deleteComponent<CollisionComponent>();
+            world->markForRemoval(chicken_leg);
+            chicken_leg_sound.play();
+            score += 50;
+        }
+        if (score > 2000 && weapon_level != 1)
+        {
+            weapon_level = 1;
+            laser->localTransform.scale = glm::vec3(0, 0, 0);
+        }
+        world->deleteMarkedEntities();
+        if (app->getKeyboard().isPressed(GLFW_KEY_ESCAPE))
+        {
+            rocket_sound.stop();
+        }
+        return create_boss;
+    }
+    // switching to weapon level 1
+    void weapon_level1_controll()
+    {
+        glm::vec3 &rocket_rotation = player->localTransform.rotation;
+        laser_green->localTransform.rotation.z = rocket_rotation.x;
+    }
+
+    // responsible for fire on enemy logic
+    void hurt_enemy(World *world, Entity *firedEnemy)
+    {
+        chicken_kaaaak_sound.play();
+        int enenmy_health = firedEnemy->getComponent<CollisionComponent>()->health--;
+
+        if (enenmy_health <= 0)
+        {
+
+            generate_chicken_leg(world, firedEnemy->localTransform.position);
+            score += firedEnemy->getComponent<CollisionComponent>()->bonus;
+            firedEnemy->deleteComponent<CollisionComponent>();
+            world->markForRemoval(firedEnemy);
+        }
+    }
+
+    // responsible for boss generation logic
+    int boss(bool bossExists)
+    {
         int create_boss = 0;
         if (!bossExists && !bossExisted)
         {
@@ -117,7 +263,7 @@ class PlayerSystem
             {
                 currentLevel = 1;
                 create_boss = 1;
-                std::cout << "create 1 bosses!!!!!!!!!!!!!!!!!";
+                // std::cout << "create 1 bosses!!!!!!!!!!!!!!!!!";
             }
             else if (time == 75 && currentLevel == 1)
             {
@@ -153,225 +299,86 @@ class PlayerSystem
         {
             bossExisted = true;
         }
-
-        // if (bossExists && beforeBossExisits == 0)
-        // { // first call after boss was here
-        //     beforeBossExisits = glfwGetTime();
-        // }
-        // else if (!bossExists && beforeBossExisits != 0)
-        // { // kan zaher abl keda
-        //     beforeBossExisits = 0;
-        // }
-        // int timeSpentInGame = glfwGetTime() - level_start_time;
-        // switch (timeSpentInGame)
-        // {
-        // case 30:
-        //     currentLevel = 2;
-        // case 75:
-        //     currentLevel = 3;
-        // case 135:
-        //     currentLevel = 4;
-        // case 225:
-        //     currentLevel = 5;
-        // }
-
-        // if (currentFrameTime - level_start_time >= 15) // each level 15 seconds
-        // {
-        //     // level_counter = 0;
-        //     currentLevel++;
-
-        //     level_start_time = currentFrameTime;
-        // }
+        return create_boss;
+    }
+    // responsible for firing logic
+    void fire(World *world)
+    {
+        laser_sound.play();
         if (weapon_level == 1)
-            weapon_level1_controll();
-        if (app->getKeyboard().isPressed(GLFW_KEY_SPACE))
         {
-            laser_sound.play();
-            if (weapon_level == 1)
-            {
 
-                laser_green->localTransform.scale = glm::vec3(0.2, 0.2, 10);
-                laser_left->localTransform.scale = glm::vec3(1, 1, 1);
-                laser_right->localTransform.scale = glm::vec3(1, 1, 1);
-                Entity *fireEnemy1 = collisionSystem.detectFiring(world, laser_green);
-                Entity *fireEnemy2 = collisionSystem.detectFiring(world, laser_left);
-                Entity *fireEnemy3 = collisionSystem.detectFiring(world, laser_right);
-                if (fireEnemy1 && fireEnemy1->getComponent<CollisionComponent>())
-                    hurt_enemy(world, fireEnemy1);
+            laser_green->localTransform.scale = glm::vec3(0.2, 0.2, 10);
+            laser_left->localTransform.scale = glm::vec3(1, 1, 1);
+            laser_right->localTransform.scale = glm::vec3(1, 1, 1);
+            Entity *fireEnemy1 = collisionSystem.detectFiring(world, laser_green);
+            Entity *fireEnemy2 = collisionSystem.detectFiring(world, laser_left);
+            Entity *fireEnemy3 = collisionSystem.detectFiring(world, laser_right);
+            if (fireEnemy1 && fireEnemy1->getComponent<CollisionComponent>())
+                hurt_enemy(world, fireEnemy1);
 
-                if (fireEnemy2 && fireEnemy2->getComponent<CollisionComponent>())
-                    hurt_enemy(world, fireEnemy2);
+            if (fireEnemy2 && fireEnemy2->getComponent<CollisionComponent>())
+                hurt_enemy(world, fireEnemy2);
 
-                if (fireEnemy3 && fireEnemy3->getComponent<CollisionComponent>())
-                    hurt_enemy(world, fireEnemy3);
-            }
-            else
-            {
-
-                laser->localTransform.scale = glm::vec3(0.2, 0.2, 10);
-                Entity *fireEnemy = collisionSystem.detectFiring(world, laser);
-                if (fireEnemy)
-                    hurt_enemy(world, fireEnemy);
-            }
+            if (fireEnemy3 && fireEnemy3->getComponent<CollisionComponent>())
+                hurt_enemy(world, fireEnemy3);
         }
         else
         {
-            laser->localTransform.scale = glm::vec3(0, 0, 0);
-            laser_green->localTransform.scale = glm::vec3(0, 0, 0);
-            laser_left->localTransform.scale = glm::vec3(0, 0, 0);
-            laser_right->localTransform.scale = glm::vec3(0, 0, 0);
+
+            laser->localTransform.scale = glm::vec3(0.2, 0.2, 10);
+            Entity *fireEnemy = collisionSystem.detectFiring(world, laser);
+            if (fireEnemy)
+                hurt_enemy(world, fireEnemy);
         }
-        // score += 1;
-        Entity *enemy_collision = collisionSystem.detectCollision(world, player, "enemy");
-        if (enemy_collision)
+    }
+
+    // responsible for collision with monkey logic
+    void monkey(World *world, Entity *monkey_collision)
+    {
+        monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
+        monkey_collision->deleteComponent<CollisionComponent>();
+        for (auto entity : world->getEntities())
         {
-            chicken_kaaaak_sound.play();
-            enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
-            enemy_collision->deleteComponent<CollisionComponent>();
-            world->markForRemoval(enemy_collision);
-
-            lives--;
-            // std::cout << "Lives: " << lives << " Score : " << score << std::endl;
-
+            bomb_sound.play();
+            if ((entity->name == "enemy" || entity->name == "boss") && entity->getComponent<CollisionComponent>())
+            {
+                entity->getComponent<CollisionComponent>()->health -= 100;
+                hurt_enemy(world, entity);
+            }
+        }
+    }
+    // responsible for collision with heart logic
+    void heart(World *world, Entity *heart_collision)
+    {
+        heart_collision->localTransform.scale = glm::vec3(0, 0, 0);
+        heart_collision->deleteComponent<CollisionComponent>();
+        world->markForRemoval(heart_collision);
+        heart_sound.play();
+        lives++;
+        if (lives > 3)
+        {
+            lives = 3;
+            score += 100;
+        }
+        else
+        {
             for (auto entity1 : world->getEntities())
             {
                 // Look for the lives
-                if (lives == 2 && entity1->name == "lives1")
+                if (lives == 3 && entity1->name == "lives1")
                 {
-                    entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                    entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
                     break;
                 }
-                else if (lives == 1 && entity1->name == "lives2")
+                if (lives == 2 && entity1->name == "lives2")
                 {
-                    entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                    entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
                     break;
                 }
             }
-            if (lives == 0)
-            {
-                app->changeState("game-over");
-                rocket_sound.stop();
-                background_sound.stop();
-                std::ifstream file_in("score.txt");
-                if (!file_in)
-                {
-                    std::cerr << "Couldn't open file: "
-                              << "score.txt" << std::endl;
-                }
-                // Read the file into a json object then close the file
-                std::string str;
-                getline(file_in, str);
-                file_in.close();
-                int highScore = std::stoi(str);
-
-                if (score > highScore)
-                    highScore = score; // Compare json highscore with current score
-
-                std::ofstream outfile;
-                outfile.open("score.txt");
-                outfile << highScore << '\n' << score;
-                outfile.close();
-            }
-        }
-        Entity *monkey_collision = collisionSystem.detectCollision(world, player, "monkey");
-        if (monkey_collision)
-        {
-            monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
-            monkey_collision->deleteComponent<CollisionComponent>();
-            // world->markForRemoval(monkey_collision); // if we delete monkey an error occurs in monkey light
-            /* kill al chickens when you take a monkey */
-            for (auto entity : world->getEntities())
-            {
-                bomb_sound.play();
-                if ((entity->name == "enemy" || entity->name == "boss") && entity->getComponent<CollisionComponent>())
-                {
-                    entity->getComponent<CollisionComponent>()->health -= 100;
-                    hurt_enemy(world, entity);
-                }
-            }
-        }
-
-        Entity *heart_collision = collisionSystem.detectCollision(world, player, "heart");
-        if (heart_collision)
-        {
-            heart_collision->localTransform.scale = glm::vec3(0, 0, 0);
-            heart_collision->deleteComponent<CollisionComponent>();
-            world->markForRemoval(heart_collision);
-            heart_sound.play();
-            lives++;
-            // std::cout << "Lives: " << lives << " Score : " << score << std::endl;
-            if (lives > 3)
-            {
-                // std::cout << "Lives are more than 3" << std::endl;
-                lives = 3;
-                score += 100;
-            }
-            else
-            {
-                // std::cout << "Lives are less than 3" << std::endl;
-                for (auto entity1 : world->getEntities())
-                {
-                    // Look for the lives
-                    if (lives == 3 && entity1->name == "lives1")
-                    {
-                        // std::cout << "Lives are 3" << std::endl;
-                        entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
-                        break;
-                    }
-                    if (lives == 2 && entity1->name == "lives2")
-                    {
-                        // std::cout << "Lives are 2" << std::endl;
-                        entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
-                        break;
-                    }
-                }
-            }
-        }
-
-        Entity *chicken_leg = collisionSystem.detectCollision(world, player, "chicken_leg");
-        if (chicken_leg)
-        {
-
-            chicken_leg->deleteComponent<CollisionComponent>();
-            world->markForRemoval(chicken_leg);
-            chicken_leg_sound.play();
-            score += 50;
-        }
-        if (score > 2000 && weapon_level != 1)
-        {
-            weapon_level = 1;
-            laser->localTransform.scale = glm::vec3(0, 0, 0);
-        }
-        world->deleteMarkedEntities();
-        if (app->getKeyboard().isPressed(GLFW_KEY_ESCAPE))
-        {
-            rocket_sound.stop();
-        }
-        return create_boss;
-    }
-
-    void weapon_level1_controll()
-    {
-        glm::vec3 &rocket_rotation = player->localTransform.rotation;
-        laser_green->localTransform.rotation.z = rocket_rotation.x;
-    }
-
-    void hurt_enemy(World *world, Entity *firedEnemy)
-    {
-        chicken_kaaaak_sound.play();
-        int enenmy_health = firedEnemy->getComponent<CollisionComponent>()->health--;
-        // std::cout << "Enemy health: " << enenmy_health << std::endl;
-
-        if (enenmy_health <= 0)
-        {
-
-            generate_chicken_leg(world, firedEnemy->localTransform.position);
-            score += firedEnemy->getComponent<CollisionComponent>()->bonus;
-            firedEnemy->deleteComponent<CollisionComponent>();
-            world->markForRemoval(firedEnemy);
         }
     }
-
     void generate_chicken_leg(World *world, glm::vec3 position)
     {
         Entity *childEntity = world->add();
@@ -388,7 +395,53 @@ class PlayerSystem
         childMovementRendererComp->linearVelocity = glm::vec3(0, 0, 15);
         childMovementRendererComp->angularVelocity = glm::vec3(0, 10, 0);
     }
+    void chickenHit(World *world, Entity *enemy_collision)
+    {
+        chicken_kaaaak_sound.play();
+        enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
+        enemy_collision->deleteComponent<CollisionComponent>();
+        world->markForRemoval(enemy_collision);
+        lives--;
 
+        for (auto entity1 : world->getEntities())
+        {
+            // Look for the lives
+            if (lives == 2 && entity1->name == "lives1")
+            {
+                entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                break;
+            }
+            else if (lives == 1 && entity1->name == "lives2")
+            {
+                entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                break;
+            }
+        }
+        if (lives == 0)
+        {
+            app->changeState("game-over");
+            rocket_sound.stop();
+            background_sound.stop();
+            std::ifstream file_in("score.txt");
+            if (!file_in)
+            {
+                std::cerr << "Couldn't open file: "
+                          << "score.txt" << std::endl;
+            }
+            std::string str;
+            getline(file_in, str);
+            file_in.close();
+            int highScore = std::stoi(str);
+
+            if (score > highScore)
+                highScore = score;
+
+            std::ofstream outfile;
+            outfile.open("score.txt");
+            outfile << highScore << '\n' << score;
+            outfile.close();
+        }
+    }
     void imgui()
     {
         ImGuiWindowFlags window_flags = 0;
