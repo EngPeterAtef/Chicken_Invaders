@@ -114,8 +114,8 @@ class CollisionSystem
 
         if (enemy->name == "egg") // special case for heart (because it is very narrow in z axis)
         {
-            minCollider *= 0.2;
-            maxCollider *= 0.2;
+            minCollider *= 0.1;
+            maxCollider *= 0.1;
         }
         if (enemy->name == "heart") // special case for heart (because it is very narrow in z axis)
         {
