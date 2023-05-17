@@ -16,9 +16,12 @@ class Menustate : public our::State
     bool fontLoaded = false;
     bool isMute = false;
     Sound background_sound = Sound("assets/sounds/intro.mp3", true);
+    Sound menu_select_sound = Sound("assets/sounds/menu_select.mp3", false);
     // A meterial holding the menu shader and the menu texture to draw
     our::TexturedMaterial *menuMaterial;
-
+    bool is_hovered_play = false;
+    bool is_hovered_mute = false;
+    bool is_hovered_exit = false;
     void onInitialize() override
     {
         // Theme Source: https://github.com/ocornut/imgui/issues/707
@@ -141,6 +144,15 @@ class Menustate : public our::State
             background_sound.stop();
             getApp()->changeState("play");
         }
+        if (ImGui::IsItemHovered() && !is_hovered_play)
+        {
+
+            menu_select_sound.play(0);
+            is_hovered_play = true;
+            is_hovered_mute = false;
+            is_hovered_exit = false;
+        }
+
         if (isMute)
         {
             ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("   Unmute   ").x - 30) / 2.0f);
@@ -148,6 +160,14 @@ class Menustate : public our::State
             {
                 background_sound.changeVolume(30);
                 isMute = false;
+            }
+            if (ImGui::IsItemHovered() && !is_hovered_mute)
+            {
+
+                menu_select_sound.play(0);
+                is_hovered_play = false;
+                is_hovered_mute = true;
+                is_hovered_exit = false;
             }
         }
         else
@@ -158,6 +178,14 @@ class Menustate : public our::State
                 background_sound.changeVolume(0);
                 isMute = true;
             }
+            if (ImGui::IsItemHovered() && !is_hovered_mute)
+            {
+
+                menu_select_sound.play(0);
+                is_hovered_play = false;
+                is_hovered_mute = true;
+                is_hovered_exit = false;
+            }
         }
 
         // set Exit button
@@ -167,6 +195,14 @@ class Menustate : public our::State
         if (ImGui::Button("   Exit   "))
         {
             glfwSetWindowShouldClose(getApp()->getWindow(), GLFW_TRUE);
+        }
+        if (ImGui::IsItemHovered() && !is_hovered_exit)
+        {
+
+            menu_select_sound.play(0);
+            is_hovered_play = false;
+            is_hovered_mute = false;
+            is_hovered_exit = true;
         }
 
         ImGui::End();

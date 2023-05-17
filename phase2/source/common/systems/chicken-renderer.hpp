@@ -124,7 +124,7 @@ class ChickenRenderer
                     collisionComp->deserialize({{"type", "Collision"}, {"mesh", "egg"}});
 
                     MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
-                    movementRendererComp->linearVelocity = glm::vec3(0, 0, 8);
+                    movementRendererComp->linearVelocity = glm::vec3(0, 0, 5);
                     movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
                     // break;
                 }

@@ -18,6 +18,10 @@ class GameOverState : public our::State
     int score = 0;
     our::TexturedMaterial *menuMaterial;
     Sound game_over_sound = Sound("assets/sounds/game_over.mp3", false);
+    Sound menu_select_sound = Sound("assets/sounds/menu_select.mp3", false);
+    bool is_hovered_play = false;
+    bool is_hovered_menu = false;
+    bool is_hovered_exit = false;
     void onInitialize() override
     {
         game_over_sound.play();
@@ -148,12 +152,28 @@ class GameOverState : public our::State
             game_over_sound.stop();
             getApp()->changeState("play");
         }
+        if (ImGui::IsItemHovered() && !is_hovered_play)
+        {
+
+            menu_select_sound.play(0);
+            is_hovered_play = true;
+            is_hovered_menu = false;
+            is_hovered_exit = false;
+        }
         // set Back to main menu
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Main Menu").x - 30) / 2.0f);
         if (ImGui::Button("Main Menu"))
         {
             game_over_sound.stop();
             getApp()->changeState("menu");
+        }
+        if (ImGui::IsItemHovered() && !is_hovered_menu)
+        {
+
+            menu_select_sound.play(0);
+            is_hovered_play = false;
+            is_hovered_menu = true;
+            is_hovered_exit = false;
         }
         // set Exit button
         message = "\n";
@@ -163,6 +183,14 @@ class GameOverState : public our::State
         {
             game_over_sound.stop();
             glfwSetWindowShouldClose(getApp()->getWindow(), GLFW_TRUE);
+        }
+        if (ImGui::IsItemHovered() && !is_hovered_exit)
+        {
+
+            menu_select_sound.play(0);
+            is_hovered_play = false;
+            is_hovered_menu = false;
+            is_hovered_exit = true;
         }
         ImGui::End();
     }

@@ -193,7 +193,10 @@ class PlayerSystem
         world->deleteMarkedEntities();
 
         if (app->getKeyboard().isPressed(GLFW_KEY_ESCAPE))
+        {
             rocket_sound.stop();
+            background_sound.stop();
+        }
 
         return create_boss;
     }

@@ -104,7 +104,11 @@ class CollisionSystem
             minPlayerVertex.y *= 0.1;
             maxPlayerVertex.y *= 0.1;
         }
-
+        if (enemy->name == "egg") // special case foreggs
+        {
+            minPlayerVertex.y *= 0.3;
+            maxPlayerVertex.y *= 0.3;
+        }
         minPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
         maxPlayerVertex += player->localTransform.position + player->parent->localTransform.position;
 
@@ -112,11 +116,6 @@ class CollisionSystem
         glm::vec3 minCollider = enemy->getComponent<CollisionComponent>()->mesh->minvertex;
         glm::vec3 maxCollider = enemy->getComponent<CollisionComponent>()->mesh->maxvertex;
 
-        if (enemy->name == "egg") // special case for heart (because it is very narrow in z axis)
-        {
-            minCollider *= 0.1;
-            maxCollider *= 0.1;
-        }
         if (enemy->name == "heart") // special case for heart (because it is very narrow in z axis)
         {
             minCollider.z *= 2;
