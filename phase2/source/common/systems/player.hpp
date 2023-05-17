@@ -16,7 +16,11 @@
 #include <glm/trigonometric.hpp>
 #include <iostream>
 // #include "./chicken-renderer.hpp"
-
+#define TIME_LEVEL_1 30
+#define TIME_LEVEL_2 60
+#define TIME_LEVEL_3 90
+#define TIME_LEVEL_4 120
+#define TIME_LEVEL_5 160
 namespace our
 {
 class PlayerSystem
@@ -165,6 +169,10 @@ class PlayerSystem
         Entity *heart_collision = collisionSystem.detectCollision(world, player, "heart");
         if (heart_collision)
             heart(world, heart_collision);
+        // check for collision with egg
+        Entity *egg_collision = collisionSystem.detectCollision(world, player, "egg");
+        if (egg_collision)
+            egg(world, egg_collision);
         // check for collision with chicken leg
         Entity *chicken_leg = collisionSystem.detectCollision(world, player, "chicken_leg");
         if (chicken_leg)
@@ -189,6 +197,7 @@ class PlayerSystem
 
         return create_boss;
     }
+
     // switching to weapon level 1
     void weapon_level1_controll()
     {
@@ -219,31 +228,31 @@ class PlayerSystem
         if (!bossExists && !bossExisted)
         {
             int time = glfwGetTime() - level_start_time;
-            if (time == 30 && currentLevel == 0)
+            if (time == TIME_LEVEL_1 && currentLevel == 0)
             {
                 currentLevel = 1;
                 create_boss = 1;
                 // std::cout << "create 1 bosses!!!!!!!!!!!!!!!!!";
             }
-            else if (time == 75 && currentLevel == 1)
+            else if (time == TIME_LEVEL_2 && currentLevel == 1)
             {
                 create_boss = 2;
 
                 currentLevel = 2;
             }
-            else if (time == 135 && currentLevel == 2)
+            else if (time == TIME_LEVEL_3 && currentLevel == 2)
             {
                 create_boss = 3;
 
                 currentLevel = 3;
             }
-            else if (time == 225 && currentLevel == 3)
+            else if (time == TIME_LEVEL_4 && currentLevel == 3)
             {
                 create_boss = 4;
 
                 currentLevel = 4;
             }
-            else if (time >= 225 && currentLevel == 4)
+            else if (time >= TIME_LEVEL_5 && currentLevel == 4)
             {
                 create_boss = 5;
 
@@ -293,6 +302,53 @@ class PlayerSystem
         }
     }
 
+    // responsible for collision with monkey logic
+    void egg(World *world, Entity *egg_collision)
+    {
+        egg_collision->localTransform.scale = glm::vec3(0, 0, 0);
+        egg_collision->deleteComponent<CollisionComponent>();
+        world->markForRemoval(egg_collision);
+        lives--;
+
+        for (auto entity1 : world->getEntities())
+        {
+            // Look for the lives
+            if (lives == 2 && entity1->name == "lives1")
+            {
+                entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                break;
+            }
+            else if (lives == 1 && entity1->name == "lives2")
+            {
+                entity1->localTransform.scale = glm::vec3(0, 0, 0);
+                break;
+            }
+        }
+        if (lives == 0)
+        {
+            app->changeState("game-over");
+            rocket_sound.stop();
+            background_sound.stop();
+            std::ifstream file_in("score.txt");
+            if (!file_in)
+            {
+                std::cerr << "Couldn't open file: "
+                          << "score.txt" << std::endl;
+            }
+            std::string str;
+            getline(file_in, str);
+            file_in.close();
+            int highScore = std::stoi(str);
+
+            if (score > highScore)
+                highScore = score;
+
+            std::ofstream outfile;
+            outfile.open("score.txt");
+            outfile << highScore << '\n' << score;
+            outfile.close();
+        }
+    }
     // responsible for collision with monkey logic
     void monkey(World *world, Entity *monkey_collision)
     {

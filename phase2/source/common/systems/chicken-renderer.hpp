@@ -84,9 +84,8 @@ class ChickenRenderer
                 {
                     shift = -10;
                 }
-
                 newEntity->localTransform.scale = glm::vec3(scaling, scaling, scaling);
-                newEntity->localTransform.position = glm::vec3(shift, 0, 40);
+                newEntity->localTransform.position = glm::vec3(shift, 0, 30);
 
                 MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
                 meshRendererComp->deserialize(
@@ -94,12 +93,41 @@ class ChickenRenderer
 
                 CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
                 collisionComp->deserialize(
-                    {{"type", "Collision"}, {"mesh", "chicken"}, {"health", 100}, {"bonus", 1000 * i}});
+                    {{"type", "Collision"}, {"mesh", "chicken"}, {"health", 1000}, {"bonus", 1000 * i}});
 
                 MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
                 movementRendererComp->linearVelocity = glm::vec3(0, 0, 0);
                 movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
-                newEntity->name = "boss";
+            }
+        }
+        if (boss_exists(world))
+        {
+
+            for (auto entity1 : world->getEntities())
+            {
+                // Look for the boss
+                if (entity1->name == "boss")
+                {
+
+                    glm::vec3 pos = entity1->localTransform.position;
+                    Entity *newEntity = world->add();
+                    newEntity->name = "egg";
+                    double x = generateRandomNumber(pos.x - 5, pos.x + 5);
+                    double y = generateRandomNumber(pos.y, pos.y + 7);
+                    newEntity->localTransform.scale = glm::vec3(0.1, 0.1, 0.1);
+                    newEntity->localTransform.position = glm::vec3(x, y, pos.z);
+
+                    MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
+                    meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "egg"}, {"material", "egg"}});
+
+                    CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
+                    collisionComp->deserialize({{"type", "Collision"}, {"mesh", "egg"}});
+
+                    MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
+                    movementRendererComp->linearVelocity = glm::vec3(0, 0, 8);
+                    movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
+                    // break;
+                }
             }
         }
     }

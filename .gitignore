@@ -28,4 +28,4 @@ phase2/errors/
 phase2/screenshots/
 
 # scoring
-score.txt
+phase2/score.txt

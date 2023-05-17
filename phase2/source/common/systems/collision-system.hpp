@@ -112,6 +112,11 @@ class CollisionSystem
         glm::vec3 minCollider = enemy->getComponent<CollisionComponent>()->mesh->minvertex;
         glm::vec3 maxCollider = enemy->getComponent<CollisionComponent>()->mesh->maxvertex;
 
+        if (enemy->name == "egg") // special case for heart (because it is very narrow in z axis)
+        {
+            minCollider *= 0.2;
+            maxCollider *= 0.2;
+        }
         if (enemy->name == "heart") // special case for heart (because it is very narrow in z axis)
         {
             minCollider.z *= 2;
