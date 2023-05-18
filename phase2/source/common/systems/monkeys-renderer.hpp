@@ -27,14 +27,13 @@ class MonkeyRenderer
 
   public:
     // This should be called every frame to update all entities containing a MovementComponent.
-    void rendering(World *world, int zCounter)
+    void rendering(World *world)
     {
 
         Entity *newEntity = world->add();
         newEntity->name = "monkey";
 
-        newEntity->localTransform.position =
-            glm::vec3(generateRandomNumber(-15, 15), generateRandomNumber(-3, 3), zCounter);
+        newEntity->localTransform.position = glm::vec3(generateRandomNumber(-30, 30), generateRandomNumber(-5, 5), -20);
         newEntity->localTransform.scale = glm::vec3(1, 1, 1);
 
         MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
@@ -47,37 +46,52 @@ class MonkeyRenderer
         movementRendererComp->linearVelocity = glm::vec3(0, 0, 20);
         movementRendererComp->angularVelocity = glm::vec3(0, 0, 0);
 
-        Entity *light = world->add();
-        light->parent = newEntity;
-        light->localTransform.position = glm::vec3(0, 0, 1);
-        light->localTransform.rotation = glm::vec3(0, 0, -1);
-        light->addComponent<LightComponent>()->deserialize({{"type", "Light"},
-                                                            {"kind", 2},
-                                                            {"color", {0.7, 0.7, 0.7}},
-                                                            {"cone_angles", {10, 0}},
-                                                            {"attenuation", {0.01, 0, 0}}});
+        // Entity *light = world->add();
+        // light->parent = newEntity;
+        // light->name = "monkey_light";
+        // light->localTransform.position = glm::vec3(0, 0, 1);
+        // light->localTransform.rotation = glm::vec3(0, 0, -1);
+        // light->addComponent<LightComponent>()->deserialize({{"type", "Light"},
+        //                                                     {"kind", 2},
+        //                                                     {"color", {0.7, 0.7, 0.7}},
+        //                                                     {"cone_angles", {10, 0}},
+        //                                                     {"attenuation", {0.01, 0, 0}}});
     }
+    void delete_monkey_light(World *world)
+    {
+        for (auto entity : world->getEntities())
+        {
 
+            if (entity->name == "monkey_light")
+            {
+                if (entity->parent == nullptr)
+                {
+                    world->markForRemoval(entity);
+                    world->deleteMarkedEntities();
+                    break;
+                }
+            }
+        }
+    }
     void delete_monkeys(World *world)
     {
 
         for (auto entity : world->getEntities())
         {
 
-            if (entity->name == "moneky")
+            if (entity->name == "monkey")
             {
-                // cout << "hereeeeeeeeeeeeee" << endl;
-
                 glm::vec3 maxCollider = entity->getComponent<CollisionComponent>()->mesh->maxvertex;
                 maxCollider *= entity->localTransform.scale[0];
                 maxCollider += entity->localTransform.position;
-                if (maxCollider.z > entity->parent->localTransform.position.z)
+                if (entity->localTransform.position.z > 60)
                 {
 
                     // delete monkey
-                    std::cout << "Monkeys out of bounds\n";
+                    // std::cout << "Monkeys out of bounds\n";
                     world->markForRemoval(entity);
                     world->deleteMarkedEntities();
+                    break;
                 }
             }
         }

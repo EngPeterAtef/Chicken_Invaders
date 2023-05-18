@@ -69,7 +69,7 @@ class ChickenRenderer
         }
         else if (bossesToCreate != 0)
         {
-            delete_chickens(world);
+            // clearOutOfBoundEntities(world);
             for (int i = 1; i <= bossesToCreate; i++)
             {
                 scaling = 1;
@@ -93,7 +93,7 @@ class ChickenRenderer
 
                 CollisionComponent *collisionComp = newEntity->addComponent<CollisionComponent>();
                 collisionComp->deserialize(
-                    {{"type", "Collision"}, {"mesh", "chicken"}, {"health", 1000}, {"bonus", 1000 * i}});
+                    {{"type", "Collision"}, {"mesh", "chicken"}, {"health", 200}, {"bonus", 1000 * i}});
 
                 MovementComponent *movementRendererComp = newEntity->addComponent<MovementComponent>();
                 movementRendererComp->linearVelocity = glm::vec3(0, 0, 0);
@@ -147,19 +147,15 @@ class ChickenRenderer
         }
         return exists;
     }
-    void delete_chickens(World *world)
+    void clearOutOfBoundEntities(World *world)
     {
 
         for (auto entity : world->getEntities())
         {
 
-            if (entity->name == "enemy")
+            if (entity->localTransform.position.z > 60)
             {
-                if (entity->localTransform.position.z > 100)
-                {
-                    // // delete chicken
-                    world->markForRemoval(entity);
-                }
+                world->markForRemoval(entity);
             }
         }
         world->deleteMarkedEntities();
