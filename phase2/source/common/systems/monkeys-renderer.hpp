@@ -57,45 +57,5 @@ class MonkeyRenderer
         //                                                     {"cone_angles", {10, 0}},
         //                                                     {"attenuation", {0.01, 0, 0}}});
     }
-    void delete_monkey_light(World *world)
-    {
-        for (auto entity : world->getEntities())
-        {
-
-            if (entity->name == "monkey_light")
-            {
-                if (entity->parent == nullptr)
-                {
-                    world->markForRemoval(entity);
-                    world->deleteMarkedEntities();
-                    break;
-                }
-            }
-        }
-    }
-    void delete_monkeys(World *world)
-    {
-
-        for (auto entity : world->getEntities())
-        {
-
-            if (entity->name == "monkey")
-            {
-                glm::vec3 maxCollider = entity->getComponent<CollisionComponent>()->mesh->maxvertex;
-                maxCollider *= entity->localTransform.scale[0];
-                maxCollider += entity->localTransform.position;
-                if (entity->localTransform.position.z > 60)
-                {
-
-                    // delete monkey
-                    // std::cout << "Monkeys out of bounds\n";
-                    world->markForRemoval(entity);
-                    world->deleteMarkedEntities();
-                    break;
-                }
-            }
-        }
-        world->deleteMarkedEntities();
-    }
 };
 } // namespace our
