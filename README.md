@@ -21,7 +21,8 @@ To run the code on Windows:
 
 ## Demo Video
 
-https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/d127d7be-0a0a-4096-93d7-7648f69aa757
+https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/9f642f37-d87d-4e13-a65d-d3dd7c027ce7
+
 
 ## Download Link
 
