@@ -11,7 +11,12 @@
   "scene": {
     "renderer": {
       "sky": "assets/textures/universe.jpg",
-      "postprocess": "assets/shaders/postprocess/vignette.frag"
+      "postprocess": [
+        "assets/shaders/postprocess/vignette.frag",
+        "assets/shaders/postprocess/grayscale.frag",
+        "assets/shaders/postprocess/chromatic-aberration.frag",
+        "assets/shaders/postprocess/radial-blur.frag"
+      ]
     },
     "assets": {
       "shaders": {
@@ -83,7 +88,12 @@
               "enabled": true
             }
           },
-          "tint": [0.45, 0.4, 0.5, 1]
+          "tint": [
+            0.45,
+            0.4,
+            0.5,
+            1
+          ]
         },
         "glass": {
           "type": "textured",
@@ -103,7 +113,12 @@
             "depthMask": false
           },
           "transparent": true,
-          "tint": [1, 1, 1, 1],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
           "texture": "glass",
           "sampler": "pixelated"
         },
@@ -118,7 +133,12 @@
               "enabled": true
             }
           },
-          "tint": [1, 1, 1, 1],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
           "texture": "grass",
           "sampler": "default"
         },
@@ -133,7 +153,12 @@
               "enabled": true
             }
           },
-          "tint": [1, 1, 1, 1],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
           "texture": "monkey",
           "sampler": "default"
         },
@@ -148,7 +173,12 @@
               "enabled": true
             }
           },
-          "tint": [1, 1, 1, 1],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
           "texture": "heart",
           "sampler": "default"
         },
@@ -163,7 +193,12 @@
               "enabled": true
             }
           },
-          "tint": [1, 1, 1, 1],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
           "texture": "egg",
           "sampler": "default"
         },
@@ -178,7 +213,12 @@
               "enabled": true
             }
           },
-          "tint": [1, 1, 1, 1],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
           "texture": "backfire",
           "sampler": "default"
         },
@@ -193,7 +233,12 @@
               "enabled": true
             }
           },
-          "tint": [1, 1, 1, 1],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
           "texture": "green",
           // "texture": "heart",
           "sampler": "default"
@@ -226,7 +271,12 @@
               "enabled": true
             }
           },
-          "tint": [1, 1, 1, 1],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
           "texture": "chicken_leg",
           "sampler": "default"
         },
@@ -241,7 +291,12 @@
               "enabled": true
             }
           },
-          "tint": [1, 1, 1, 1],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
           "texture": "heart",
           "sampler": "default"
         },
@@ -273,7 +328,12 @@
               "enabled": true
             }
           },
-          "tint": [1, 1, 1, 1],
+          "tint": [
+            1,
+            1,
+            1,
+            1
+          ],
           "texture": "moon",
           "sampler": "default"
         },
@@ -316,7 +376,11 @@
     },
     "world": [
       {
-        "position": [0, 0, 50],
+        "position": [
+          0,
+          0,
+          50
+        ],
         "components": [
           {
             "type": "Camera"
@@ -332,9 +396,21 @@
         "children": [
           {
             "name": "player",
-            "rotation": [0, -90, 90],
-            "position": [0, -3, -5],
-            "scale": [0.005, 0.005, 0.005],
+            "rotation": [
+              0,
+              -90,
+              90
+            ],
+            "position": [
+              0,
+              -3,
+              -5
+            ],
+            "scale": [
+              0.005,
+              0.005,
+              0.005
+            ],
             "components": [
               {
                 "type": "Mesh Renderer",
@@ -349,10 +425,22 @@
             "children": [
               {
                 "name": "backfire",
-                "rotation": [180, 2, -2],
+                "rotation": [
+                  180,
+                  2,
+                  -2
+                ],
                 // "rotation": [-80, 0, 0],
-                "position": [40, 0, -50],
-                "scale": [4, 20, 4],
+                "position": [
+                  40,
+                  0,
+                  -50
+                ],
+                "scale": [
+                  4,
+                  20,
+                  4
+                ],
                 "components": [
                   {
                     "type": "Mesh Renderer",
@@ -363,12 +451,23 @@
               }
             ]
           },
-
           {
             "name": "laser",
-            "rotation": [1, 0.5, 0],
-            "position": [0, -3, -20],
-            "scale": [0.15, 0.15, 10],
+            "rotation": [
+              1,
+              0.5,
+              0
+            ],
+            "position": [
+              0,
+              -3,
+              -20
+            ],
+            "scale": [
+              0.15,
+              0.15,
+              10
+            ],
             "components": [
               {
                 "type": "Mesh Renderer",
@@ -384,9 +483,21 @@
           // testing new weapon start
           {
             "name": "laser_green",
-            "rotation": [1, 0.5, 0],
-            "position": [0, -3, -20],
-            "scale": [0.15, 0.15, 10],
+            "rotation": [
+              1,
+              0.5,
+              0
+            ],
+            "position": [
+              0,
+              -3,
+              -20
+            ],
+            "scale": [
+              0.15,
+              0.15,
+              10
+            ],
             "components": [
               {
                 "type": "Mesh Renderer",
@@ -401,9 +512,21 @@
             "children": [
               {
                 "name": "laser_right",
-                "rotation": [0, 0, 0],
-                "position": [5, 7, 0.3],
-                "scale": [1, 1, 1],
+                "rotation": [
+                  0,
+                  0,
+                  0
+                ],
+                "position": [
+                  5,
+                  7,
+                  0.3
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ],
                 "components": [
                   {
                     "type": "Mesh Renderer",
@@ -418,9 +541,21 @@
               },
               {
                 "name": "laser_left",
-                "rotation": [0, 0, 0],
-                "position": [-7, 3, 0.3],
-                "scale": [1, 1, 1],
+                "rotation": [
+                  0,
+                  0,
+                  0
+                ],
+                "position": [
+                  -7,
+                  3,
+                  0.3
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ],
                 "components": [
                   {
                     "type": "Mesh Renderer",
@@ -438,9 +573,21 @@
           // testing end
           {
             "name": "lives1",
-            "rotation": [-70, -10, 0],
-            "position": [-2.6, 1.5, -2],
-            "scale": [0.008, 0.008, 0.008],
+            "rotation": [
+              -70,
+              -10,
+              0
+            ],
+            "position": [
+              -2.6,
+              1.5,
+              -2
+            ],
+            "scale": [
+              0.008,
+              0.008,
+              0.008
+            ],
             "components": [
               {
                 "type": "Mesh Renderer",
@@ -449,15 +596,31 @@
               },
               {
                 "type": "Movement",
-                "angularVelocity": [0, 50, 0]
+                "angularVelocity": [
+                  0,
+                  50,
+                  0
+                ]
               }
             ]
           },
           {
             "name": "lives2",
-            "rotation": [-70, -10, 0],
-            "position": [-2.95, 1.5, -2],
-            "scale": [0.008, 0.008, 0.008],
+            "rotation": [
+              -70,
+              -10,
+              0
+            ],
+            "position": [
+              -2.95,
+              1.5,
+              -2
+            ],
+            "scale": [
+              0.008,
+              0.008,
+              0.008
+            ],
             "components": [
               {
                 "type": "Mesh Renderer",
@@ -466,15 +629,31 @@
               },
               {
                 "type": "Movement",
-                "angularVelocity": [0, 50, 0]
+                "angularVelocity": [
+                  0,
+                  50,
+                  0
+                ]
               }
             ]
           },
           {
             "name": "lives3",
-            "rotation": [-70, -10, 0],
-            "position": [-3.3, 1.5, -2],
-            "scale": [0.008, 0.008, 0.008],
+            "rotation": [
+              -70,
+              -10,
+              0
+            ],
+            "position": [
+              -3.3,
+              1.5,
+              -2
+            ],
+            "scale": [
+              0.008,
+              0.008,
+              0.008
+            ],
             "components": [
               {
                 "type": "Mesh Renderer",
@@ -483,67 +662,141 @@
               },
               {
                 "type": "Movement",
-                "angularVelocity": [0, 50, 0]
+                "angularVelocity": [
+                  0,
+                  50,
+                  0
+                ]
               }
             ]
           },
           {
             //spot light inside the rocket
-            "position": [0, 0, -7],
-            "rotation": [0, 0, -1], //rotation in the light component represents the direction of the light
+            "position": [
+              0,
+              0,
+              -7
+            ],
+            "rotation": [
+              0,
+              0,
+              -1
+            ], //rotation in the light component represents the direction of the light
             "components": [
               {
                 "type": "LightComponent",
                 "kind": 2, //spot
-                "color": [0.5, 0.5, 0.5],
-                "cone_angles": [10, 0],
-                "attenuation": [0.01, 0, 0]
+                "color": [
+                  0.5,
+                  0.5,
+                  0.5
+                ],
+                "cone_angles": [
+                  10,
+                  0
+                ],
+                "attenuation": [
+                  0.01,
+                  0,
+                  0
+                ]
               }
             ]
           },
           {
             //spot for right of the rocket body
-            "position": [0.5, 0, -2], //
-            "rotation": [-1, 0, 0], //rotation in the light component represents the direction of the light
+            "position": [
+              0.5,
+              0,
+              -2
+            ], //
+            "rotation": [
+              -1,
+              0,
+              0
+            ], //rotation in the light component represents the direction of the light
             "components": [
               {
                 "type": "LightComponent",
                 "kind": 2, //spot
-                "color": [0.2, 0.2, 0.2], //red
-                "cone_angles": [0.7, 0],
-                "attenuation": [0.01, 0, 0]
+                "color": [
+                  0.2,
+                  0.2,
+                  0.2
+                ], //red
+                "cone_angles": [
+                  0.7,
+                  0
+                ],
+                "attenuation": [
+                  0.01,
+                  0,
+                  0
+                ]
               }
             ]
           },
           {
             //moon light
-            "position": [0, 5, -20],
+            "position": [
+              0,
+              5,
+              -20
+            ],
             "components": [
               {
                 "type": "LightComponent",
                 "kind": 1, //point
-                "color": [1, 1, 1], //white
-                "attenuation": [0.001, 0.001, 0.001]
+                "color": [
+                  1,
+                  1,
+                  1
+                ], //white
+                "attenuation": [
+                  0.001,
+                  0.001,
+                  0.001
+                ]
               }
             ]
           },
           {
             //directional light to up
-            "rotation": [0, 1, 0], //light direction
+            "rotation": [
+              0,
+              1,
+              0
+            ], //light direction
             "components": [
               {
                 "type": "LightComponent",
                 "kind": 0, //directional
-                "color": [1, 0, 0.0] //red
+                "color": [
+                  1,
+                  0,
+                  0.0
+                ] //red
               }
             ]
           }
         ]
       },
       {
-        "position": [0, 15, 10],
-        "rotation": [45, 45, 0],
-        "scale": [5, 5, 5],
+        "position": [
+          0,
+          15,
+          10
+        ],
+        "rotation": [
+          45,
+          45,
+          0
+        ],
+        "scale": [
+          5,
+          5,
+          5
+        ],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -552,7 +805,11 @@
           },
           {
             "type": "Movement",
-            "angularVelocity": [0, 90, 0]
+            "angularVelocity": [
+              0,
+              90,
+              0
+            ]
           }
         ]
         // ,
