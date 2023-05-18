@@ -36,6 +36,7 @@ class PlayerSystem
     Entity *laser_left;
     Entity *laser_right;
     Entity *player;
+    Entity *shield;
     Sound chicken_kaaaak_sound = Sound("assets/sounds/chicken_kill.mp3", false);
     Sound chicken_hit_sound = Sound("assets/sounds/chicken_hit.mp3", false);
     Sound bomb_sound = Sound("assets/sounds/bomb-explosion.mp3", false);
@@ -48,6 +49,8 @@ class PlayerSystem
     our::ForwardRenderer *forwardRenderer;
     bool applyingPostProcess = false;
     int postProcessingCurrentCounter = 0;
+    int shieldCounter = 0;
+    bool shieldEnabled = false;
 
   public:
     int lives = 3;
@@ -77,6 +80,15 @@ class PlayerSystem
             if (entity1->name == "player")
             {
                 player = entity1;
+                break;
+            }
+        }
+        for (auto entity1 : world->getEntities())
+        {
+            // Look for the shield
+            if (entity1->name == "shield")
+            {
+                shield = entity1;
                 break;
             }
         }
@@ -312,8 +324,13 @@ class PlayerSystem
         egg_collision->localTransform.scale = glm::vec3(0, 0, 0);
         egg_collision->deleteComponent<CollisionComponent>();
         world->markForRemoval(egg_collision);
-        lives--;
-
+        if (!shieldEnabled)
+            lives--;
+        else
+        {
+            shield->localTransform.scale = glm::vec3(0, 0, 0);
+            shieldEnabled = false;
+        }
         for (auto entity1 : world->getEntities())
         {
             // Look for the lives
@@ -359,15 +376,25 @@ class PlayerSystem
         changePostprocessing(2);
         monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
         monkey_collision->deleteComponent<CollisionComponent>();
-        for (auto entity : world->getEntities())
+        world->markForRemoval(monkey_collision);
+        if (shieldCounter < 1 || shieldEnabled)
         {
-            bomb_sound.play();
-            if ((entity->name == "enemy" || entity->name == "boss") && entity->getComponent<CollisionComponent>())
+            shieldCounter++;
+            for (auto entity : world->getEntities())
             {
-                entity->getComponent<CollisionComponent>()->health -= 100;
-                world->markForRemoval(monkey_collision);
-                hurt_enemy(world, entity);
+                bomb_sound.play();
+                if ((entity->name == "enemy" || entity->name == "boss") && entity->getComponent<CollisionComponent>())
+                {
+                    entity->getComponent<CollisionComponent>()->health -= 100;
+                    hurt_enemy(world, entity);
+                }
             }
+        }
+        else
+        {
+            shieldCounter = 0;
+            shield->localTransform.scale = glm::vec3(2, 2, 2);
+            shieldEnabled = true;
         }
     }
     // responsible for collision with heart logic
@@ -425,8 +452,13 @@ class PlayerSystem
         enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
         enemy_collision->deleteComponent<CollisionComponent>();
         world->markForRemoval(enemy_collision);
-        lives--;
-
+        if (!shieldEnabled)
+            lives--;
+        else
+        {
+            shield->localTransform.scale = glm::vec3(0, 0, 0);
+            shieldEnabled = false;
+        }
         for (auto entity1 : world->getEntities())
         {
             // Look for the lives
