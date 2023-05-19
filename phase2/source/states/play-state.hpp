@@ -50,13 +50,13 @@ class Playstate : public our::State
             world.deserialize(config["world"]);
         }
         auto size = getApp()->getFrameBufferSize();
+        // Then we initialize the renderer
         renderer.initialize(size, config["renderer"]);
 
         // We initialize the camera controller system since it needs a pointer to the app
         cameraController.enter(getApp());
         playerSystem.enter(&world, getApp(), &renderer);
         chickenRenderer.intialization();
-        // Then we initialize the renderer
     }
 
     void onDraw(double deltaTime) override
@@ -74,24 +74,22 @@ class Playstate : public our::State
         chickenRenderer.clearOutOfBoundEntities(&world);
         // monkeyRenderer.delete_monkey_light(&world); // this has a problem because the light is child to the monkey
 
-        // generate hearts every 700 frames
+        // generate hearts every 1000 frames
         if (heartsCounter >= HEARTS_GEN_SPEED)
         {
             heartRenderer.rendering(&world);
             heartsCounter = 0;
         }
-        // generate monkeys every 600 frames
+        // generate monkeys every 800 frames
         if (monkeysCounter >= MONKEY_GEN_SPEED)
         {
             monkeyRenderer.rendering(&world);
             monkeysCounter = 0;
         }
-        // generate chicken every 30 frames
+        // generate chicken every 30 frames and if there is no boss
         if (counter >= CHICKENS_GEN_SPEED || bosses != 0)
         {
-
             chickenRenderer.rendering(&world, bosses);
-
             counter = 0;
         }
 
