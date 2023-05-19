@@ -141,6 +141,7 @@ void ForwardRenderer::changePostprocessShader(int index)
     if (index < postprocessShadersList.size())
         postprocessMaterial->shader = postprocessShadersList[index];
 }
+
 void ForwardRenderer::destroy()
 {
     // Delete all objects related to the sky
@@ -162,6 +163,7 @@ void ForwardRenderer::destroy()
         delete postprocessMaterial->sampler;
         delete postprocessMaterial->shader;
         delete postprocessMaterial;
+        postprocessShadersList.clear();
     }
 }
 

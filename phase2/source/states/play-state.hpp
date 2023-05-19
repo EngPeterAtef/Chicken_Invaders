@@ -34,6 +34,9 @@ class Playstate : public our::State
     int monkeysCounter = 0;
     void onInitialize() override
     {
+        counter = 30;
+        heartsCounter = 0;
+        monkeysCounter = 0;
         // First of all, we get the scene configuration from the app config
         auto &config = getApp()->getConfig()["scene"];
         // If we have assets in the scene config, we deserialize them
@@ -46,14 +49,14 @@ class Playstate : public our::State
         {
             world.deserialize(config["world"]);
         }
+        auto size = getApp()->getFrameBufferSize();
+        renderer.initialize(size, config["renderer"]);
 
         // We initialize the camera controller system since it needs a pointer to the app
         cameraController.enter(getApp());
+        playerSystem.enter(&world, getApp(), &renderer);
         chickenRenderer.intialization();
         // Then we initialize the renderer
-        auto size = getApp()->getFrameBufferSize();
-        renderer.initialize(size, config["renderer"]);
-        playerSystem.enter(&world, getApp(), &renderer);
     }
 
     void onDraw(double deltaTime) override

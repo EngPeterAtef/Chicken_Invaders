@@ -47,19 +47,19 @@ class PlayerSystem
     Sound rocket_sound = Sound("assets/sounds/rocket.mp3", true);
     bool is_rotating = false;
     our::ForwardRenderer *forwardRenderer;
-    bool applyingPostProcess = false;
-    int postProcessingCurrentCounter = 0;
-    int shieldCounter = 0;
-    bool shieldEnabled = false;
 
   public:
-    int lives = 3;
-    int score = 0;
-    int weapon_level = 0;
-    bool bossExisted = false;
-    // int level_counter = 0;
-    double level_start_time = 0;
-    int currentLevel = 0;
+    bool applyingPostProcess;
+    int postProcessingCurrentCounter;
+    int shieldCounter;
+    bool shieldEnabled;
+    int lives;
+    int score;
+    int weapon_level;
+    bool bossExisted;
+    // int level_counter;
+    double level_start_time;
+    int currentLevel;
     void enter(World *world, Application *app, our::ForwardRenderer *forwardRenderer)
     {
         // chickenRenderer.intialization();
@@ -74,6 +74,11 @@ class PlayerSystem
         this->app = app;
         level_start_time = glfwGetTime(); //////////start time of level
 
+        shieldEnabled = false;
+        shieldCounter = 0;
+        postProcessingCurrentCounter = 0;
+        applyingPostProcess = false;
+        is_rotating = false;
         for (auto entity1 : world->getEntities())
         {
             // Look for the player
@@ -526,11 +531,11 @@ class PlayerSystem
     }
     void exit()
     {
-        delete player;
         delete laser;
         delete laser_green;
         delete laser_left;
         delete laser_right;
+        delete player;
     }
 };
 

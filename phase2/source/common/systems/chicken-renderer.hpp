@@ -153,7 +153,7 @@ class ChickenRenderer
         for (auto entity : world->getEntities())
         {
 
-            if (entity->localTransform.position.z > 60)
+            if (entity->localTransform.position.z > 100)
             {
                 world->markForRemoval(entity);
             }
