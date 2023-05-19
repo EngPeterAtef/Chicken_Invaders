@@ -13,25 +13,8 @@
 
 namespace our
 {
-// int counter = 0;
-// int monkeysFrames = 0;
-// int heartsFrames = 0;
-// int zCounter = 0;
-// int zCounterMonkeys = 0;
-// int zCounterHearts = 0;
-// int timeToIncrease = 0;
-// int zCounter = 0;
-
-// ChickenRenderer *chicken_renderer = new ChickenRenderer();
 MonkeyRenderer *monkey_renderer = new MonkeyRenderer();
 HeartRenderer *heart_renderer = new HeartRenderer();
-// double generateRandomNumber(double minX, double maxX)
-// {
-//     std::random_device rd;
-//     std::mt19937 gen(rd());
-//     std::uniform_real_distribution<> dis(minX, maxX);
-//     return dis(gen);
-// }
 
 void ForwardRenderer::initialize(glm::ivec2 windowSize, const nlohmann::json &config)
 {
@@ -169,38 +152,6 @@ void ForwardRenderer::destroy()
 
 void ForwardRenderer::render(World *world)
 {
-    // counter++;
-    // monkeysFrames++;
-    // heartsFrames++;
-    // if (counter >= 20)
-    // {
-
-    //     timeToIncrease++;
-    //     counter = 0;
-    //     if (level_state == true)
-    //     {
-    //         chicken_renderer->delete_all_chickens(world);
-    //     }
-    // chicken_renderer->rendering(world);
-    //     chicken_renderer->delete_chickens(world);
-    //     // chicken_renderer->printing();
-    // }
-    // chicken_renderer->delete_chickens(world);
-    // if (monkeysFrames >= 700)
-    // {
-    //     zCounterMonkeys = 5;
-    //     monkey_renderer->rendering(world, zCounterMonkeys);
-    //     // monkey_renderer->printing();
-    //     monkeysFrames = 0;
-    // }
-    // if (heartsFrames >= 500)
-    // {
-    //     zCounterHearts = 5;
-    //     heart_renderer->rendering(world, zCounterHearts);
-    //     // monkey_renderer->printing();
-    //     heartsFrames = 0;
-    // }
-
     // First of all, we search for a camera and for all the mesh renderers
     CameraComponent *camera = nullptr;
     opaqueCommands.clear();
@@ -307,8 +258,7 @@ void ForwardRenderer::render(World *world)
     //-----------Support for light---------------
     //-------------------------------------------
     int light_count = world->light_count;
-    Light *lights = world->lights;
-    // std::cout << "light objects" << lightCommands.size() << std::endl;
+    Light *lights = world->lights;//lights array stored in world
     for (auto &command : lightCommands)
     {
         command.material->setup();
@@ -316,19 +266,10 @@ void ForwardRenderer::render(World *world)
         glm::mat4 M = command.localToWorld;
         glm::mat4 M_IT = glm::transpose(glm::inverse(M));
         glm::vec3 eye = camera->getOwner()->localTransform.position;
-        glm::vec3 sky_top = glm::vec3(0.0f, 0.0f, 1.0f);
+        glm::vec3 sky_top = glm::vec3(0.5f, 0.5f, 0.5f);
         glm::vec3 sky_horizon = glm::vec3(0.5f, 0.5f, 0.5f);
-        glm::vec3 sky_bottom = glm::vec3(1.0f, 1.0f, 1.0f);
-
-        // float time = (float)glfwGetTime();
-        // float sky_r = 0.5f + 0.5f * sin(time);
-        // float sky_g = 0.5f + 0.5f * sin(time + 2.0f);
-        // float sky_b = 0.5f + 0.5f * sin(time + 4.0f);
-
-        // glm::vec3 sky_top = glm::vec3(sky_r, sky_g, sky_b);
-        // glm::vec3 sky_horizon = glm::vec3(0.5f, 0.5f, 0.5f);
-        // glm::vec3 sky_bottom = glm::vec3(sky_r, sky_g, sky_b);
-
+        glm::vec3 sky_bottom = glm::vec3(0.5f, 0.0f, 0.0f);
+        // send the uniforms to the shader
         command.material->shader->set("M", M);
         command.material->shader->set("VP", VP);
         command.material->shader->set("M_IT", M_IT);
@@ -337,6 +278,7 @@ void ForwardRenderer::render(World *world)
         command.material->shader->set("sky.horizon", sky_horizon);
         command.material->shader->set("sky.bottom", sky_bottom);
         command.material->shader->set("light_count", light_count);
+        //send light data to shader
         for (int i = 0; i < light_count; i++)
         {
             command.material->shader->set("lights[" + std::to_string(i) + "].type", lights[i].kind);
@@ -346,8 +288,7 @@ void ForwardRenderer::render(World *world)
             command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i].direction);
             command.material->shader->set("lights[" + std::to_string(i) + "].cone_angles", lights[i].cone_angles);
         }
-        command.mesh->draw();
-        // std::cout<<"light command end"<<std::endl;
+        command.mesh->draw();//draw the mesh of the object affected by light
     }
     //-------------------------------------------
     //-------------------------------------------

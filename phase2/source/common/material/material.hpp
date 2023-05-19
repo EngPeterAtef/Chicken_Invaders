@@ -24,7 +24,7 @@ namespace our
         PipelineState pipelineState;
         ShaderProgram *shader;
         bool transparent;
-        bool affectedByLight;
+        bool affectedByLight;//this variable will be used to determine if the object is affected by light sources or not
 
         // This function does 2 things: setup the pipeline state and set the shader program to be used
         virtual void setup() const;

@@ -87,15 +87,16 @@ void main(){
     vec3 material_emissive=texture(material.emissive,fs_in.tex_coord).rgb;
     
     vec3 ambient_light=compute_sky_light(normal);
-        
+    //to make sure that the light count is not larger than the max light count
     int clamped_light_count=min(MAX_LIGHTS,light_count);
     
     vec3 world_to_light_dir;
+    //adding the emissive light to the ambient light
     vec3 color=material_emissive+ambient_light*material_ambient;
     
     for(int i=0;i<clamped_light_count;i++){
         Light light=lights[i];
-        // light.direction=normalize(light.direction);
+        light.direction=normalize(light.direction);
         float attenuation=1;
         
         //in case of the direction light the vector from the point to the light source is the opposite of the light direction

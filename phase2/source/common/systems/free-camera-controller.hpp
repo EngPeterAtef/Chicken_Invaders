@@ -11,9 +11,6 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
 #include <glm/trigonometric.hpp>
-#include <iostream>
-
-// #include "./collision-system.hpp"
 
 namespace our
 {

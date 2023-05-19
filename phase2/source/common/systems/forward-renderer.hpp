@@ -37,7 +37,8 @@ namespace our
         // We define them here (instead of being local to the "render" function) as an optimization to prevent reallocating them every frame
         std::vector<RenderCommand> opaqueCommands;
         std::vector<RenderCommand> transparentCommands;
-        std::vector<RenderCommand> lightCommands;
+        std::vector<RenderCommand> lightCommands; 
+        //this vector will be used to store the objects that will be rendered in the light pass"objects affected by light sources"""
 
         // Objects used for rendering a skybox
         Mesh *skySphere;

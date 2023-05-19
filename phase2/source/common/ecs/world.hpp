@@ -6,6 +6,13 @@
 namespace our
 {
     // This class holds a set of entities
+
+    /*
+    LIGHT STRUCT
+    This struct is used to store the light information
+    it read the position and the direction of the light from its entity
+    it also read the color, attenuation and cone angles from its entity's light component
+    */
     struct Light
     {
         int kind;
@@ -21,8 +28,9 @@ namespace our
         std::unordered_set<Entity *> markedForRemoval; // These are the entities that are awaiting to be deleted
                                                        // when deleteMarkedEntities is called
     public:
-        Light lights[16];
-        int light_count = 0;
+        Light lights[16];//the array of lights in the scene "max 16 lights"
+        //this array will be used to send the data to the shader in the forward rendering class
+        int light_count = 0;//the number of lights in the scene
         World() = default;
 
         // This will deserialize a json array of entities and add the new entities to the current world

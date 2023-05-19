@@ -11,8 +11,8 @@ namespace our
     public:
         int kind;//the kind of the light
         glm::vec3 color;//the light color
-        glm::vec3 attenuation;
-        glm::vec2 cone_angles;
+        glm::vec3 attenuation;//1/(constant+linear*d+quadratic*d*d)
+        glm::vec2 cone_angles;//the inner and outer cone angles
         static std::string getID() { return "LightComponent"; }
 
         void deserialize(const nlohmann::json &data) override;

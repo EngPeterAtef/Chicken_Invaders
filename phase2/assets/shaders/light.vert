@@ -28,5 +28,6 @@ void main(){
     vs_out.normal = normalize((M_IT * vec4(normal, 0.0)).xyz);
     //direction from the vertex to the camera 34an na 3aiz al vector ali ma4i mno lel camera
     vs_out.view = eye - world;
+    // send the position of the point in the world space
     vs_out.world = world;
 }

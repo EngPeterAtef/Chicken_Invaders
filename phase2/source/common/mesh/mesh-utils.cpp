@@ -4,7 +4,6 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tinyobj/tiny_obj_loader.h>
 
-#include <iostream>
 #include <vector>
 #include <unordered_map>
 
