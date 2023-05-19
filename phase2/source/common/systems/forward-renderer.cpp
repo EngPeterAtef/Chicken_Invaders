@@ -13,14 +13,14 @@
 
 namespace our
 {
-int counter = 0;
-int monkeysFrames = 0;
-int heartsFrames = 0;
+// int counter = 0;
+// int monkeysFrames = 0;
+// int heartsFrames = 0;
 // int zCounter = 0;
-int zCounterMonkeys = 0;
-int zCounterHearts = 0;
-int timeToIncrease = 0;
-int zCounter = 0;
+// int zCounterMonkeys = 0;
+// int zCounterHearts = 0;
+// int timeToIncrease = 0;
+// int zCounter = 0;
 
 // ChickenRenderer *chicken_renderer = new ChickenRenderer();
 MonkeyRenderer *monkey_renderer = new MonkeyRenderer();
@@ -169,9 +169,9 @@ void ForwardRenderer::destroy()
 
 void ForwardRenderer::render(World *world)
 {
-    counter++;
-    monkeysFrames++;
-    heartsFrames++;
+    // counter++;
+    // monkeysFrames++;
+    // heartsFrames++;
     // if (counter >= 20)
     // {
 
@@ -316,17 +316,19 @@ void ForwardRenderer::render(World *world)
         glm::mat4 M = command.localToWorld;
         glm::mat4 M_IT = glm::transpose(glm::inverse(M));
         glm::vec3 eye = camera->getOwner()->localTransform.position;
-        glm::vec3 sky_top = glm::vec3(1.0f, 1.0f, 1.0f);
-        glm::vec3 sky_horizon = glm::vec3(1.0f, 1.0f, 1.0f);
+        glm::vec3 sky_top = glm::vec3(0.0f, 0.0f, 1.0f);
+        glm::vec3 sky_horizon = glm::vec3(0.5f, 0.5f, 0.5f);
         glm::vec3 sky_bottom = glm::vec3(1.0f, 1.0f, 1.0f);
-        float time = (float)glfwGetTime();
-        float sky_r = 0.5f + 0.5f * sin(time);
-        float sky_g = 0.5f + 0.5f * sin(time + 2.0f);
-        float sky_b = 0.5f + 0.5f * sin(time + 4.0f);
+
+        // float time = (float)glfwGetTime();
+        // float sky_r = 0.5f + 0.5f * sin(time);
+        // float sky_g = 0.5f + 0.5f * sin(time + 2.0f);
+        // float sky_b = 0.5f + 0.5f * sin(time + 4.0f);
 
         // glm::vec3 sky_top = glm::vec3(sky_r, sky_g, sky_b);
-        // glm::vec3 sky_horizon = glm::vec3(1.0f, 1.0f, 1.0f);
+        // glm::vec3 sky_horizon = glm::vec3(0.5f, 0.5f, 0.5f);
         // glm::vec3 sky_bottom = glm::vec3(sky_r, sky_g, sky_b);
+
         command.material->shader->set("M", M);
         command.material->shader->set("VP", VP);
         command.material->shader->set("M_IT", M_IT);

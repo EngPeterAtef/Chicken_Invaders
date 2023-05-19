@@ -352,10 +352,6 @@
           {
             "type": "Free Camera Controller"
           }
-          // {
-          //   "type": "Movement",
-          //   "linearVelocity": [0, 0, -10]
-          // }
         ],
         "children": [
           {
@@ -531,15 +527,15 @@
           },
           {
             //spot light inside the rocket
-            "position": [-1, -1, -10],
-            "rotation": [0, 0, -1], //rotation in the light component represents the direction of the light
+            "position": [0, -1, -5],
+            "rotation": [0, -1, -1], //rotation in the light component represents the direction of the light
             "components": [
               {
                 "type": "LightComponent",
                 "kind": 2, //spot
-                "color": [1, 1, 1],
-                "cone_angles": [10, 0],
-                "attenuation": [0.05, 0, 0]
+                "color": [0.8, 0.8, 0.8],
+                "cone_angles": [45, 22.5],
+                "attenuation": [0.0001, 0.05, 0]
               }
             ]
           },
@@ -550,10 +546,10 @@
             "components": [
               {
                 "type": "LightComponent",
-                "kind": 2, //spot
-                "color": [0.2, 0.3, 0.2], //red
-                "cone_angles": [0.7, 0],
-                "attenuation": [0.01, 0, 0]
+                "kind": 1, //point
+                "color": [0.05, 0.09, 0.05], //geen
+                // "cone_angles": [40, 0],
+                "attenuation": [0.01, 0.01, 0]
               }
             ]
           },
@@ -565,43 +561,23 @@
                 "type": "LightComponent",
                 "kind": 1, //point
                 "color": [1, 1, 1], //white
-                "attenuation": [0.001, 0.001, 0.001]
+                "attenuation": [0.001, 0, 0]
               }
             ]
           },
           {
             //directional light to up
-            "rotation": [0, 1, -1], //light direction
+            "rotation": [0, 1, 0], //light direction
             "components": [
               {
                 "type": "LightComponent",
                 "kind": 0, //directional
-                "color": [1, 0, 0.0] //red
+                "color": [1, 0.0, 1.0] //red
               }
             ]
           }
         ]
       },
-      // {
-      //   //enemy
-      //   "name": "enemy",
-      //   "position": [0, 0, 20],
-      //   "rotation": [0, 0, 0],
-      //   "scale": [1, 1, 1],
-      //   "components": [
-      //     {
-      //       "type": "Mesh Renderer",
-      //       "mesh": "chicken",
-      //       "material": "chicken"
-      //     },
-      //     {
-      //       "type": "Collision",
-      //       "mesh": "chicken",
-      //       "health": 1000000,
-      //       "bonus": 10
-      //     }
-      //   ]
-      // },
       {
         "position": [0, 15, 10],
         "rotation": [45, 45, 0],

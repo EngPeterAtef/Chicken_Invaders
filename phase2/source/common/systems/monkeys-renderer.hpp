@@ -34,7 +34,7 @@ class MonkeyRenderer
         newEntity->name = "monkey";
 
         newEntity->localTransform.position = glm::vec3(generateRandomNumber(-30, 30), generateRandomNumber(-5, 5), -20);
-        newEntity->localTransform.scale = glm::vec3(1, 1, 1);
+        newEntity->localTransform.scale = glm::vec3(1.1, 1.1, 1.1);
 
         MeshRendererComponent *meshRendererComp = newEntity->addComponent<MeshRendererComponent>();
         meshRendererComp->deserialize({{"type", "Mesh Renderer"}, {"mesh", "suzanne"}, {"material", "rocky_monkey"}});

@@ -126,27 +126,6 @@ void main(){
         vec3 computed_specular=light.color*material_specular*phong(reflected,view,material_shininess);
         
         color+=(computed_diffuse+computed_specular)*attenuation;
-        // vec3 direction_to_light = -light.direction;
-        // if(light.type != DIRECTIONAL){
-            //     direction_to_light = normalize(light.position - fs_in.world);
-        // }
-        
-        // vec3 diffuse = light.diffuse * material_diffuse * max(0, dot(normal, direction_to_light));
-        
-        // vec3 reflected = normalize(reflect(-direction_to_light, normal));//Added normalization
-        
-        // vec3 specular = light.specular * material_specular * pow(max(0, dot(view, reflected)), material_shininess);
-        
-        // if(light.type != DIRECTIONAL){
-            //     float d = distance(light.position, fs_in.world);
-            //     attenuation /= dot(light.attenuation, vec3(d*d, d, 1));
-            //     if(light.type == SPOT){
-                //         float angle = acos(dot(-direction_to_light, light.direction));
-                //         attenuation *= max(0,1-(1-cos(angle-light.cone_angles.y))/(1-cos(light.cone_angles.x)));
-            //     }
-        // }
-        
-        // frag_color.rgb += (diffuse + specular) * attenuation;
     }
     frag_color=vec4(color,1.);
     
