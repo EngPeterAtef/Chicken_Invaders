@@ -16,20 +16,19 @@
 #include <glm/gtx/fast_trigonometry.hpp>
 #include <glm/trigonometric.hpp>
 #include <iostream>
-// #include "./chicken-renderer.hpp"
+
 #define TIME_LEVEL_1 30
 #define TIME_LEVEL_2 60
 #define TIME_LEVEL_3 90
 #define TIME_LEVEL_4 120
 #define TIME_LEVEL_5 160
-#define postProcessingDuration 20
+#define postProcessingDuration 20 // the duration of post processing is 20 frames
 
 namespace our
 {
 class PlayerSystem
 {
     Application *app;
-    // our::ChickenRenderer chickenRenderer;
     our::CollisionSystem collisionSystem;
     Entity *laser;
     Entity *laser_green;
@@ -37,6 +36,7 @@ class PlayerSystem
     Entity *laser_right;
     Entity *player;
     Entity *shield;
+    // all game sounds
     Sound chicken_kaaaak_sound = Sound("assets/sounds/chicken_kill.mp3", false);
     Sound chicken_hit_sound = Sound("assets/sounds/chicken_hit.mp3", false);
     Sound bomb_sound = Sound("assets/sounds/bomb-explosion.mp3", false);
@@ -45,21 +45,20 @@ class PlayerSystem
     Sound heart_sound = Sound("assets/sounds/monkey.mp3", false);
     Sound background_sound = Sound("assets/sounds/in_game.mp3", true);
     Sound rocket_sound = Sound("assets/sounds/rocket.mp3", true);
-    bool is_rotating = false;
-    our::ForwardRenderer *forwardRenderer;
+    bool is_rotating = false;              // used for controlling laser level 1 while rotating
+    our::ForwardRenderer *forwardRenderer; // to use post processing
 
   public:
-    bool applyingPostProcess;
-    int postProcessingCurrentCounter;
-    int shieldCounter;
-    bool shieldEnabled;
-    int lives;
-    int score;
-    int weapon_level;
-    bool bossExisted;
-    // int level_counter;
-    double level_start_time;
-    int currentLevel;
+    bool applyingPostProcess;         // whether we are applying post processing or not
+    int postProcessingCurrentCounter; // to count the time of post processing
+    int shieldCounter;                // to have a shield each odd time you take a monkey
+    bool shieldEnabled;               // if the shield is enabled now or not
+    int lives;                        // player lives
+    int score;                        // player score
+    int weapon_level;                 // player weapon level (0 or 1)
+    bool bossExisted;                 // if the boss existed or not
+    double level_start_time;          // used to set each level time
+    int currentLevel;                 // current level from 1 to 5
     void enter(World *world, Application *app, our::ForwardRenderer *forwardRenderer)
     {
         // chickenRenderer.intialization();
@@ -176,7 +175,6 @@ class PlayerSystem
         Entity *chicken_leg = collisionSystem.detectCollision(world, player, "chicken_leg");
         if (chicken_leg)
         {
-
             chicken_leg->deleteComponent<CollisionComponent>();
             world->markForRemoval(chicken_leg);
             chicken_leg_sound.play();
@@ -203,6 +201,7 @@ class PlayerSystem
     // post processing logic
     void checkForPostProcessing()
     {
+        // applying post processing effect for some duration defined by postProcessingDuration
         if (applyingPostProcess)
         {
             if (postProcessingCurrentCounter == postProcessingDuration)
@@ -227,9 +226,11 @@ class PlayerSystem
     // responsible for fire on enemy logic
     void hurt_enemy(World *world, Entity *firedEnemy)
     {
+        // when the laser hits the enemy it will remove the chicken, generate a chicken leg and increase the score
         chicken_kaaaak_sound.play();
         int enenmy_health = firedEnemy->getComponent<CollisionComponent>()->health--;
 
+        // enemy health is defined in the collision component of the chicken and the boss
         if (enenmy_health <= 0)
         {
 
@@ -294,7 +295,7 @@ class PlayerSystem
     {
 
         laser_sound.play();
-        if (weapon_level == 1)
+        if (weapon_level == 1) // 3 green lasers
         {
 
             laser_green->localTransform.scale = glm::vec3(0.2, 0.2, 10);
@@ -303,6 +304,7 @@ class PlayerSystem
             Entity *fireEnemy1 = collisionSystem.detectFiring(world, laser_green);
             Entity *fireEnemy2 = collisionSystem.detectFiring(world, laser_left);
             Entity *fireEnemy3 = collisionSystem.detectFiring(world, laser_right);
+            // check for collision with each laser
             if (fireEnemy1 && fireEnemy1->getComponent<CollisionComponent>())
                 hurt_enemy(world, fireEnemy1);
 
@@ -312,7 +314,7 @@ class PlayerSystem
             if (fireEnemy3 && fireEnemy3->getComponent<CollisionComponent>())
                 hurt_enemy(world, fireEnemy3);
         }
-        else
+        else // red laser
         {
 
             laser->localTransform.scale = glm::vec3(0.2, 0.2, 10);
@@ -325,10 +327,13 @@ class PlayerSystem
     // responsible for collision with monkey logic
     void egg(World *world, Entity *egg_collision)
     {
+        // change post processing to radial blur
         changePostprocessing(3);
+        // remove the entity from the world
         egg_collision->localTransform.scale = glm::vec3(0, 0, 0);
         egg_collision->deleteComponent<CollisionComponent>();
         world->markForRemoval(egg_collision);
+        // if shield is enabled, disable it and if not enabled remove a life
         if (!shieldEnabled)
             lives--;
         else
@@ -352,9 +357,12 @@ class PlayerSystem
         }
         if (lives == 0)
         {
+            // go to game over screen
             app->changeState("game-over");
+            // stop sounds
             rocket_sound.stop();
             background_sound.stop();
+            // read the highscore from the text file
             std::ifstream file_in("score.txt");
             if (!file_in)
             {
@@ -366,9 +374,11 @@ class PlayerSystem
             file_in.close();
             int highScore = std::stoi(str);
 
+            // if current score is higher than highscore, update the highscore
             if (score > highScore)
                 highScore = score;
 
+            // write the highscore to the text file
             std::ofstream outfile;
             outfile.open("score.txt");
             outfile << highScore << '\n' << score;
@@ -378,12 +388,15 @@ class PlayerSystem
     // responsible for collision with monkey logic
     void monkey(World *world, Entity *monkey_collision)
     {
-        changePostprocessing(2);
+        changePostprocessing(2); // change post processing to chromatic effect
         monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
         monkey_collision->deleteComponent<CollisionComponent>();
         world->markForRemoval(monkey_collision);
-        if (shieldCounter < 1 || shieldEnabled)
+        // this makes that each time the player collides with a monkey, the player kill all chickens or get a shield
+
+        if (shieldCounter < 1 || shieldEnabled) // kill all chickens
         {
+
             shieldCounter++;
             for (auto entity : world->getEntities())
             {
@@ -395,7 +408,7 @@ class PlayerSystem
                 }
             }
         }
-        else
+        else // get a shield
         {
             shieldCounter = 0;
             shield->localTransform.scale = glm::vec3(2, 2, 2);
@@ -435,8 +448,10 @@ class PlayerSystem
     }
     void generate_chicken_leg(World *world, glm::vec3 position)
     {
+        // create a new entity for the chicken leg
         Entity *childEntity = world->add();
         childEntity->name = "chicken_leg";
+        // same position as the chicken was
         childEntity->localTransform.position = position;
         childEntity->localTransform.scale = glm::vec3(0.2, 0.2, 0.2);
         childEntity->localTransform.rotation = glm::vec3(0, 0, -90);
@@ -451,8 +466,8 @@ class PlayerSystem
     }
     void chickenHit(World *world, Entity *enemy_collision)
     {
+        // same logic as egg collision
         changePostprocessing(3);
-
         chicken_hit_sound.play();
         enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
         enemy_collision->deleteComponent<CollisionComponent>();
@@ -531,11 +546,6 @@ class PlayerSystem
     }
     void exit()
     {
-        delete laser;
-        delete laser_green;
-        delete laser_left;
-        delete laser_right;
-        delete player;
     }
 };
 

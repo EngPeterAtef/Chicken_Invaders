@@ -25,7 +25,7 @@ class CollisionComponent : public Component
         return "Collision";
     }
 
-    // Reads minCollider & maxCollider from the given json object
+    // Reads minCollider, maxCollider, health and bonus from the given json object
     void deserialize(const nlohmann::json &data) override;
 };
 
