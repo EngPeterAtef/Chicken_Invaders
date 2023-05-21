@@ -101,12 +101,12 @@ namespace our
             // transforms the min and max vertices to the wold space
             minPlayerVertex *= player->localTransform.scale[0];
             maxPlayerVertex *= player->localTransform.scale[0];
-            if (enemy->name == "enemy") // special case for chickens
+            if (enemy->name == "enemy") // special case for chickens because its collider is too long in y direction
             {
                 minPlayerVertex.y *= 0.1;
                 maxPlayerVertex.y *= 0.1;
             }
-            if (enemy->name == "egg") // special case for eggs
+            if (enemy->name == "egg") // special case for eggs because its collider is too long in y direction
             {
                 minPlayerVertex.y *= 0.3;
                 maxPlayerVertex.y *= 0.3;
@@ -123,7 +123,8 @@ namespace our
             maxCollider *= enemy->localTransform.scale[0];
             minCollider += enemy->localTransform.position;
             maxCollider += enemy->localTransform.position;
-            if (enemy->name == "heart") // special case for heart because it's y min/max colliders are shifted up for some reason
+            // special case for heart because it's y min/max colliders are shifted up for some reason
+            if (enemy->name == "heart")
             {
                 minCollider.y += 5;
                 maxCollider.y += 5;
