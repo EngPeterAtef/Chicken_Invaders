@@ -118,16 +118,16 @@ namespace our
             glm::vec3 minCollider = enemy->getComponent<CollisionComponent>()->mesh->minvertex;
             glm::vec3 maxCollider = enemy->getComponent<CollisionComponent>()->mesh->maxvertex;
 
-            if (enemy->name == "heart") // special case for heart (because it is very narrow in z axis)
-            {
-                minCollider.z *= 2;
-                maxCollider.z *= 2;
-            }
             // transforms the min and max vertices to the wold space
             minCollider *= enemy->localTransform.scale[0];
             maxCollider *= enemy->localTransform.scale[0];
             minCollider += enemy->localTransform.position;
             maxCollider += enemy->localTransform.position;
+            if (enemy->name == "heart") // special case for heart because it's y min/max colliders are shifted up for some reason
+            {
+                minCollider.y += 5;
+                maxCollider.y += 5;
+            }
             // collision between AABBs check
             if ((minPlayerVertex.x <= maxCollider.x && maxPlayerVertex.x >= minCollider.x) &&
                 (minPlayerVertex.y <= maxCollider.y && maxPlayerVertex.y >= minCollider.y) &&
