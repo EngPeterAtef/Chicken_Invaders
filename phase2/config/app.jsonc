@@ -529,15 +529,14 @@
           },
           {
             //spot light inside the rocket
-            "position": [0, -1, -6.5],
-            // "rotation": [0, -1, -1], //rotation in the light component represents the direction of the light
-            "rotation": [45, 0, 90], //rotation in the light component represents the direction of the light
+            "position": [0, -1, -8],
+            "rotation": [45, 180, 90], //rotation in the light component represents the direction of the light
             "components": [
               {
                 "type": "LightComponent",
                 "kind": 2, //spot
-                "color": [5, 5, 5],
-                "cone_angles": [45, 22.5],
+                "color": [10, 10, 10],
+                "cone_angles": [30, 20],
                 "attenuation": [0, 0.5, 0]
               }
             ]
@@ -562,6 +561,17 @@
                 "type": "LightComponent",
                 "kind": 0, //directional
                 "color": [2.0, 0.0, 0.0] //red
+              }
+            ]
+          },
+          {
+            //directional light to up
+            "rotation": [-45, 0, 0], //light direction is in +ve y by default
+            "components": [
+              {
+                "type": "LightComponent",
+                "kind": 0, //directional
+                "color": [0.0, 0.0, 1.0] //red
               }
             ]
           }
