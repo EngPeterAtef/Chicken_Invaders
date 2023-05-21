@@ -23,7 +23,7 @@ To run the code on Windows:
 
 ## Demo Video
 
-https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/88cf5c8b-d15b-4807-9f8b-27676db3cbb3
+https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/6673ed8e-84a0-491a-8165-99c723f45053
 
 
 ## Download Link
