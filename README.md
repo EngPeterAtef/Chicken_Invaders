@@ -8,8 +8,9 @@ To run the code on Windows:
 
 0. Clone this repository.
 1. Open vscode in phase 2 directory.
-2. Make sure to have GCC v12 (or newer version) complier or any other C++ compiler.
+2. Make sure to have GCC v11 (or newer version) complier or any equivilant C++ compiler.
 3. Build and run the project.
+
 
 ## How to Play
 
@@ -18,10 +19,11 @@ To run the code on Windows:
 - Avoid hitting chickens to keep your lifes
 - You can take lifes on your way to increase your lifes or to increase your score if you have 3 lifes already.
 - If you take the glowy monkey all chickens that exist will be destroyed.
+- You can switch between themes with the P button.
 
 ## Demo Video
 
-https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/9f642f37-d87d-4e13-a65d-d3dd7c027ce7
+https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/88cf5c8b-d15b-4807-9f8b-27676db3cbb3
 
 
 ## Download Link
