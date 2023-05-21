@@ -41,6 +41,8 @@ namespace our
         Sound chicken_hit_sound = Sound("assets/sounds/chicken_hit.mp3", false);
         Sound bomb_sound = Sound("assets/sounds/bomb-explosion.mp3", false);
         Sound laser_sound = Sound("assets/sounds/laser.mp3", false);
+        Sound shieldON_sound = Sound("assets/sounds/shield_on.mp3", false);
+        Sound shieldOFF_sound = Sound("assets/sounds/shield_off.mp3", false);
         Sound chicken_leg_sound = Sound("assets/sounds/chicken_leg.mp3", false);
         Sound heart_sound = Sound("assets/sounds/monkey.mp3", false);
         Sound background_sound = Sound("assets/sounds/in_game.mp3", true);
@@ -68,13 +70,13 @@ namespace our
             this->forwardRenderer = forwardRenderer;
             bossExisted = false;
             currentLevel = 0;
-            background_sound.play();
-            rocket_sound.play();
+            background_sound.play(1); // play background sound
+            rocket_sound.play();      // play rocket sound
             weapon_level = 0;
             score = 0;
             lives = 3;
             this->app = app;
-            level_start_time = glfwGetTime(); //////////start time of level
+            level_start_time = glfwGetTime(); // start time of level
 
             shieldEnabled = false;
             shieldCounter = 0;
@@ -82,60 +84,21 @@ namespace our
             applyingPostProcess = false;
             testApplyingPostProcess = false;
             is_rotating = false;
-            for (auto entity1 : world->getEntities())
+            for (auto entity : world->getEntities()) // initialize all player's related entities
             {
-                // Look for the player
-                if (entity1->name == "player")
-                {
-                    player = entity1;
-                    break;
-                }
-            }
-            for (auto entity1 : world->getEntities())
-            {
-                // Look for the shield
-                if (entity1->name == "shield")
-                {
-                    shield = entity1;
-                    break;
-                }
-            }
-            for (auto entity1 : world->getEntities())
-            {
-                // Look for the player
-                if (entity1->name == "laser")
-                {
-                    laser = entity1;
-
-                    break;
-                }
-            }
-            for (auto entity1 : world->getEntities())
-            {
-                // Look for the middle green laser
-                if (entity1->name == "laser_green")
-                {
-                    laser_green = entity1;
-                    break;
-                }
-            }
-            for (auto entity1 : world->getEntities())
-            {
-                // Look for the right laser
-                if (entity1->name == "laser_right")
-                {
-                    laser_right = entity1;
-                    break;
-                }
-            }
-            for (auto entity1 : world->getEntities())
-            {
-                // Look for the left laser
-                if (entity1->name == "laser_left")
-                {
-                    laser_left = entity1;
-                    break;
-                }
+                std::string name = entity->name;
+                if (name == "player") // look for the rocket
+                    player = entity;
+                else if (name == "shield") // look for the shield
+                    shield = entity;
+                else if (name == "laser") // look for the red laser
+                    laser = entity;
+                else if (name == "laser_green") // look for the green middle laser
+                    laser_green = entity;
+                else if (name == "laser_right") // look for the green right laser
+                    laser_right = entity;
+                else if (name == "laser_left") // look for the green left laser
+                    laser_left = entity;
             }
         }
 
@@ -226,10 +189,6 @@ namespace our
                     postProcessingCurrentCounter++;
                 }
             }
-            // else if (testApplyingPostProcess)
-            // {
-            //     /* code */
-            // }
         }
         // switching to weapon level 1
         void weapon_level1_controll()
@@ -339,7 +298,7 @@ namespace our
             }
         }
 
-        // responsible for collision with monkey logic
+        // responsible for collision with egg logic
         void egg(World *world, Entity *egg_collision)
         {
             // change post processing to radial blur
@@ -355,6 +314,7 @@ namespace our
             {
                 shield->localTransform.scale = glm::vec3(0, 0, 0);
                 shieldEnabled = false;
+                shieldOFF_sound.play();
             }
             for (auto entity1 : world->getEntities())
             {
@@ -401,86 +361,8 @@ namespace our
                 outfile.close();
             }
         }
-        // responsible for collision with monkey logic
-        void monkey(World *world, Entity *monkey_collision)
-        {
-            monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
-            monkey_collision->deleteComponent<CollisionComponent>();
-            world->markForRemoval(monkey_collision);
-            // this makes that each time the player collides with a monkey, the player kill all chickens or get a shield
 
-            if (shieldCounter < 1 || shieldEnabled) // kill all chickens
-            {
-                changePostprocessing(4);
-                shieldCounter++;
-                for (auto entity : world->getEntities())
-                {
-                    bomb_sound.play();
-                    if ((entity->name == "enemy" || entity->name == "boss") && entity->getComponent<CollisionComponent>())
-                    {
-                        entity->getComponent<CollisionComponent>()->health -= 100;
-                        hurt_enemy(world, entity);
-                    }
-                }
-            }
-            else // get a shield
-            {
-                changePostprocessing(2); // change post processing to chromatic effect
-                shieldCounter = 0;
-                shield->localTransform.scale = glm::vec3(2, 2, 2);
-                shieldEnabled = true;
-            }
-        }
-        // responsible for collision with heart logic
-        void heart(World *world, Entity *heart_collision)
-        {
-            changePostprocessing(3);
-            heart_collision->localTransform.scale = glm::vec3(0, 0, 0);
-            heart_collision->deleteComponent<CollisionComponent>();
-            world->markForRemoval(heart_collision);
-            heart_sound.play();
-            lives++;
-            if (lives > 3)
-            {
-                lives = 3;
-                score += 100;
-            }
-            else
-            {
-                for (auto entity1 : world->getEntities())
-                {
-                    // Look for the lives
-                    if (lives == 3 && entity1->name == "lives1")
-                    {
-                        entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
-                        break;
-                    }
-                    if (lives == 2 && entity1->name == "lives2")
-                    {
-                        entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
-                        break;
-                    }
-                }
-            }
-        }
-        void generate_chicken_leg(World *world, glm::vec3 position)
-        {
-            // create a new entity for the chicken leg
-            Entity *childEntity = world->add();
-            childEntity->name = "chicken_leg";
-            // same position as the chicken was
-            childEntity->localTransform.position = position;
-            childEntity->localTransform.scale = glm::vec3(0.2, 0.2, 0.2);
-            childEntity->localTransform.rotation = glm::vec3(0, 0, -90);
-            MeshRendererComponent *childMeshRendererComp = childEntity->addComponent<MeshRendererComponent>();
-            childMeshRendererComp->deserialize(
-                {{"type", "Mesh Renderer"}, {"mesh", "chicken_leg"}, {"material", "chicken_leg"}});
-            CollisionComponent *childCollisionComp = childEntity->addComponent<CollisionComponent>();
-            childCollisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken_leg"}});
-            MovementComponent *childMovementRendererComp = childEntity->addComponent<MovementComponent>();
-            childMovementRendererComp->linearVelocity = glm::vec3(0, 0, 15);
-            childMovementRendererComp->angularVelocity = glm::vec3(0, 10, 0);
-        }
+        // responsible for collision with chicken logic
         void chickenHit(World *world, Entity *enemy_collision)
         {
             // same logic as egg collision
@@ -495,6 +377,7 @@ namespace our
             {
                 shield->localTransform.scale = glm::vec3(0, 0, 0);
                 shieldEnabled = false;
+                shieldOFF_sound.play();
             }
             for (auto entity1 : world->getEntities())
             {
@@ -536,6 +419,92 @@ namespace our
                 outfile.close();
             }
         }
+
+        // responsible for collision with monkey logic
+        void monkey(World *world, Entity *monkey_collision)
+        {
+            monkey_collision->localTransform.scale = glm::vec3(0, 0, 0);
+            monkey_collision->deleteComponent<CollisionComponent>();
+            world->markForRemoval(monkey_collision);
+            // this makes that each time the player collides with a monkey, the player kill all chickens or get a shield
+
+            if (shieldCounter < 1 || shieldEnabled) // kill all chickens
+            {
+                changePostprocessing(4);
+                shieldCounter++;
+                for (auto entity : world->getEntities())
+                {
+                    bomb_sound.play();
+                    if ((entity->name == "enemy" || entity->name == "boss") && entity->getComponent<CollisionComponent>())
+                    {
+                        entity->getComponent<CollisionComponent>()->health -= 100;
+                        hurt_enemy(world, entity);
+                    }
+                }
+            }
+            else // get a shield
+            {
+                changePostprocessing(2); // change post processing to chromatic effect
+                shieldON_sound.play();
+                shieldCounter = 0;
+                shield->localTransform.scale = glm::vec3(2, 2, 2);
+                shieldEnabled = true;
+            }
+        }
+
+        // responsible for collision with heart logic
+        void heart(World *world, Entity *heart_collision)
+        {
+            changePostprocessing(3);
+            heart_collision->localTransform.scale = glm::vec3(0, 0, 0);
+            heart_collision->deleteComponent<CollisionComponent>();
+            world->markForRemoval(heart_collision);
+            heart_sound.play();
+            lives++;
+            if (lives > 3)
+            {
+                lives = 3;
+                score += 100;
+            }
+            else
+            {
+                for (auto entity1 : world->getEntities())
+                {
+                    // Look for the lives
+                    if (lives == 3 && entity1->name == "lives1")
+                    {
+                        entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
+                        break;
+                    }
+                    if (lives == 2 && entity1->name == "lives2")
+                    {
+                        entity1->localTransform.scale = glm::vec3(0.008, 0.008, 0.008);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // generate chicken leg after killing a chicken
+        void generate_chicken_leg(World *world, glm::vec3 position)
+        {
+            // create a new entity for the chicken leg
+            Entity *childEntity = world->add();
+            childEntity->name = "chicken_leg";
+            // same position as the chicken was
+            childEntity->localTransform.position = position;
+            childEntity->localTransform.scale = glm::vec3(0.2, 0.2, 0.2);
+            childEntity->localTransform.rotation = glm::vec3(0, 0, -90);
+            MeshRendererComponent *childMeshRendererComp = childEntity->addComponent<MeshRendererComponent>();
+            childMeshRendererComp->deserialize(
+                {{"type", "Mesh Renderer"}, {"mesh", "chicken_leg"}, {"material", "chicken_leg"}});
+            CollisionComponent *childCollisionComp = childEntity->addComponent<CollisionComponent>();
+            childCollisionComp->deserialize({{"type", "Collision"}, {"mesh", "chicken_leg"}});
+            MovementComponent *childMovementRendererComp = childEntity->addComponent<MovementComponent>();
+            childMovementRendererComp->linearVelocity = glm::vec3(0, 0, 15);
+            childMovementRendererComp->angularVelocity = glm::vec3(0, 10, 0);
+        }
+
         void imgui()
         {
             ImGuiWindowFlags window_flags = 0;

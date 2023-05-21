@@ -4,12 +4,10 @@
 #include <asset-loader.hpp>
 #include <ecs/world.hpp>
 #include <imgui-utils/utils.hpp>
-#include <systems/chicken-renderer.hpp>
+#include <systems/entity-renderer.hpp>
 #include <systems/forward-renderer.hpp>
 #include <systems/free-camera-controller.hpp>
-#include <systems/hearts-renderer.hpp>
 #include <systems/light.hpp>
-#include <systems/monkeys-renderer.hpp>
 #include <systems/movement.hpp>
 #include <systems/player.hpp>
 
@@ -22,12 +20,10 @@ class Playstate : public our::State
 
     our::World world;
     our::ForwardRenderer renderer;
-    our::ChickenRenderer chickenRenderer;
-    our::MonkeyRenderer monkeyRenderer;
-    our::HeartRenderer heartRenderer;
-    our::FreeCameraControllerSystem cameraController;
+    our::EntityRenderer entityRenderer;               // this is the entity renderer that renders all random objects in space
+    our::FreeCameraControllerSystem cameraController; // this is the camera controller that controls the camera and keyboard inputs
     our::MovementSystem movementSystem;
-    our::PlayerSystem playerSystem;
+    our::PlayerSystem playerSystem; // this is the player system that controls the player logic (tracks score and health)
     our::LightSystem lightSystem;
     int counter = 0;
     int heartsCounter = 0;
@@ -56,7 +52,7 @@ class Playstate : public our::State
         // We initialize the camera controller system since it needs a pointer to the app
         cameraController.enter(getApp());
         playerSystem.enter(&world, getApp(), &renderer);
-        chickenRenderer.intialization();
+        entityRenderer.intialization(&world);
     }
 
     void onDraw(double deltaTime) override
@@ -67,29 +63,29 @@ class Playstate : public our::State
         // Here, we just run a bunch of systems to control the world logic
         movementSystem.update(&world, (float)deltaTime);
         cameraController.update(&world, (float)deltaTime);
-        int bosses = playerSystem.update(&world, (float)deltaTime, chickenRenderer.boss_exists(&world));
+        int bosses = playerSystem.update(&world, (float)deltaTime, entityRenderer.boss_exists());
         lightSystem.update(&world);
 
         // detele any entity that is out of the screen to save memory
-        chickenRenderer.clearOutOfBoundEntities(&world);
+        entityRenderer.clearOutOfBoundEntities();
         // monkeyRenderer.delete_monkey_light(&world); // this has a problem because the light is child to the monkey
 
         // generate hearts every 1000 frames
         if (heartsCounter >= HEARTS_GEN_SPEED)
         {
-            heartRenderer.rendering(&world);
+            entityRenderer.renderHearts();
             heartsCounter = 0;
         }
         // generate monkeys every 800 frames
         if (monkeysCounter >= MONKEY_GEN_SPEED)
         {
-            monkeyRenderer.rendering(&world);
+            entityRenderer.renderMonkeys();
             monkeysCounter = 0;
         }
         // generate chicken every 30 frames and if there is no boss
         if (counter >= CHICKENS_GEN_SPEED || bosses != 0)
         {
-            chickenRenderer.rendering(&world, bosses);
+            entityRenderer.renderChicken(bosses);
             counter = 0;
         }
 
