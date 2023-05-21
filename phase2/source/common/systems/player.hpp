@@ -22,7 +22,9 @@
 #define TIME_LEVEL_3 90
 #define TIME_LEVEL_4 120
 #define TIME_LEVEL_5 160
-#define postProcessingDuration 20 // the duration of post processing is 20 frames
+// the duration of post processing in frames
+// after this duration, the post processing will return to the default
+#define postProcessingDuration 20
 
 namespace our
 {
@@ -148,6 +150,7 @@ namespace our
             Entity *chicken_leg = collisionSystem.detectCollision(world, player, "chicken_leg");
             if (chicken_leg)
             {
+                // change post processing effect to blur
                 changePostprocessing(3);
                 chicken_leg->deleteComponent<CollisionComponent>();
                 world->markForRemoval(chicken_leg);
@@ -178,14 +181,18 @@ namespace our
             // applying post processing effect for some duration defined by postProcessingDuration
             if (applyingPostProcess)
             {
+                // if the duration is reached it will terminate the post processing effect
                 if (postProcessingCurrentCounter == postProcessingDuration)
                 {
+                    // change post processing effect to default
                     forwardRenderer->changePostprocessShader(0);
                     applyingPostProcess = false;
+                    // reset the frames counter
                     postProcessingCurrentCounter = 0;
                 }
                 else
                 {
+                    // increment the frames counter
                     postProcessingCurrentCounter++;
                 }
             }
@@ -366,6 +373,7 @@ namespace our
         void chickenHit(World *world, Entity *enemy_collision)
         {
             // same logic as egg collision
+            // change post processing to chaos
             changePostprocessing(5);
             chicken_hit_sound.play();
             enemy_collision->localTransform.scale = glm::vec3(0, 0, 0);
@@ -430,6 +438,7 @@ namespace our
 
             if (shieldCounter < 1 || shieldEnabled) // kill all chickens
             {
+                // change post processing to shake
                 changePostprocessing(4);
                 shieldCounter++;
                 for (auto entity : world->getEntities())
@@ -444,7 +453,8 @@ namespace our
             }
             else // get a shield
             {
-                changePostprocessing(2); // change post processing to chromatic effect
+                // change post processing to chromatic abberation
+                changePostprocessing(2);
                 shieldON_sound.play();
                 shieldCounter = 0;
                 shield->localTransform.scale = glm::vec3(2, 2, 2);
@@ -455,6 +465,7 @@ namespace our
         // responsible for collision with heart logic
         void heart(World *world, Entity *heart_collision)
         {
+            // change post processing to blur
             changePostprocessing(3);
             heart_collision->localTransform.scale = glm::vec3(0, 0, 0);
             heart_collision->deleteComponent<CollisionComponent>();
@@ -525,9 +536,12 @@ namespace our
                 ImGui::End();
             }
         }
+        // changes the post processing shader to the given index
         void changePostprocessing(int shaderIndex)
         {
+            // resets the frames counter
             postProcessingCurrentCounter = 0;
+            // changes the shader
             applyingPostProcess = true;
             forwardRenderer->changePostprocessShader(shaderIndex);
         }

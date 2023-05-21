@@ -37,8 +37,8 @@ namespace our
         // We define them here (instead of being local to the "render" function) as an optimization to prevent reallocating them every frame
         std::vector<RenderCommand> opaqueCommands;
         std::vector<RenderCommand> transparentCommands;
-        std::vector<RenderCommand> lightCommands; 
-        //this vector will be used to store the objects that will be rendered in the light pass"objects affected by light sources"""
+        std::vector<RenderCommand> lightCommands;
+        // this vector will be used to store the objects that will be rendered in the light pass"objects affected by light sources"""
 
         // Objects used for rendering a skybox
         Mesh *skySphere;
@@ -47,7 +47,9 @@ namespace our
         GLuint postprocessFrameBuffer, postProcessVertexArray;
         Texture2D *colorTarget, *depthTarget;
         TexturedMaterial *postprocessMaterial;
-        std::vector<ShaderProgram *> postprocessShadersList; // So that we can load multiple postprocess effects.
+        // Stores post-processing shaders
+        std::vector<ShaderProgram *> postprocessShadersList;
+
     public:
         // Initialize the renderer including the sky and the Postprocessing objects.
         // windowSize is the width & height of the window (in pixels).

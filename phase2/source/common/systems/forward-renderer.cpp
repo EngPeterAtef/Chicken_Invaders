@@ -91,17 +91,19 @@ namespace our
             postprocessSampler->set(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             postprocessSampler->set(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             postprocessSampler->set(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
+            // load the post processing shaders from the configuration (jsonc)
             for (const auto &shader : config["postprocess"])
             {
-
                 // Create the post processing shader
                 ShaderProgram *postprocessShader = new ShaderProgram();
                 postprocessShader->attach("assets/shaders/fullscreen.vert", GL_VERTEX_SHADER);
                 postprocessShader->attach(shader.get<std::string>(), GL_FRAGMENT_SHADER);
                 postprocessShader->link();
+                // Add the post processing shader to the list of post processing shaders
                 postprocessShadersList.push_back(postprocessShader);
             }
+            // If there is at least one post processing shader
+            // we create a post processing material and initialize it with the first shader
             if ((int)postprocessShadersList.size() > 0)
             {
                 // Create a post processing material
@@ -115,6 +117,8 @@ namespace our
             }
         }
     }
+    // Change the post processing shader
+    // index: the index of the shader in the list of post processing shaders
     void ForwardRenderer::changePostprocessShader(int index)
     {
         if (index < postprocessShadersList.size())
@@ -133,6 +137,12 @@ namespace our
             delete skyMaterial;
         }
         // Delete all objects related to post processing
+        if (postprocessShadersList.size() > 0)
+        {
+            for (auto shader : postprocessShadersList)
+                delete shader;
+            postprocessShadersList.clear();
+        }
         if (postprocessMaterial)
         {
             glDeleteFramebuffers(1, &postprocessFrameBuffer);
@@ -140,9 +150,7 @@ namespace our
             delete colorTarget;
             delete depthTarget;
             delete postprocessMaterial->sampler;
-            delete postprocessMaterial->shader;
             delete postprocessMaterial;
-            postprocessShadersList.clear();
         }
     }
 
