@@ -44,11 +44,10 @@
         "green": "assets/textures/green.png",
         "blue": "assets/textures/blue.png",
         "backfire": "assets/textures/fire.png",
-        "chicken": "assets/textures/chicken1/chicken1.jpg",
+        "chicken": "assets/textures/chicken1.jpg",
         "rocket": "assets/textures/rocket.jpg",
         "monkey": "assets/textures/monkey/monkey.png",
         "chicken_leg": "assets/textures/chicken_leg.jpg",
-        // "menu": "assets/textures/menu.jpg",
         "rocky_monkey_albedo": "assets/textures/monkey/rocky_monkey_albedo.jpg",
         "rocky_monkey_ambient_occlusion": "assets/textures/monkey/rocky_monkey_ambient_occlusion.jpg",
         "rocky_monkey_emissive": "assets/textures/monkey/rocky_monkey_emissive.jpg",
@@ -56,7 +55,6 @@
         "rocky_monkey_specular": "assets/textures/monkey/rocky_monkey_specular.jpg",
         "black": "assets/textures/black.jpg",
         "white": "assets/textures/white.png",
-        "egg": "assets/textures/Egg_Textures2K/Egg_Textures2K/Egg_Egg_Roughness.png",
         "grey": "assets/textures/grey.png"
       },
       "meshes": {
