@@ -37,7 +37,7 @@ https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/7d8bbff9-4beb-4
 
 ## Download Link
 
-Download this game from [here]("https://cmpstudio.itch.io/chicken-invaders-3d").
+Download this game from [here](https://cmpstudio.itch.io/chicken-invaders-3d).
 
 
 ## Collaborators
