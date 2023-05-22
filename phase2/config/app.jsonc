@@ -528,7 +528,7 @@
           {
             //spot light inside the rocket
             "position": [0, -1, -8],
-            "rotation": [45, 180, 90], //rotation in the light component represents the direction of the light
+            "rotation": [0, 0, 180], //rotation in the light component represents the direction of the light
             "components": [
               {
                 "type": "LightComponent",
@@ -546,7 +546,7 @@
               {
                 "type": "LightComponent",
                 "kind": 1, //point
-                "color": [100, 100, 100], //white
+                "color": [30, 30, 30], //white
                 "attenuation": [0, 1, 0]
               }
             ]
