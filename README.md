@@ -1,6 +1,6 @@
 # Chicken Invaders
 
-![chicken_invaders](https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/24304d9a-ce80-46c9-a58b-c209b4ee9f52)
+![chicken_invaders](https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/ffc944b0-3b2d-4b0f-82dc-dafff098aad7)
 
 ## About the game
 
