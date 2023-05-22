@@ -32,7 +32,7 @@ To run the code on Windows:
 
 ## Demo Video
 
-https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/6673ed8e-84a0-491a-8165-99c723f45053
+https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/7d8bbff9-4beb-4709-8499-e5b764e8cfc8
 
 
 ## Download Link
