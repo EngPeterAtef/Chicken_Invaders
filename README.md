@@ -1,6 +1,7 @@
 # Chicken Invaders
 
-![images](chicken_invaders.png)
+![chicken_invaders](https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/24304d9a-ce80-46c9-a58b-c209b4ee9f52)
+
 
 ## How to Run the Code
 
