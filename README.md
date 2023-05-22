@@ -6,8 +6,8 @@
 
 - This game is 3D version of the famous game Chicken Invaders. 
 - Your mission is to kill as much chickens as you can, avoid colliding with them, gather the chicken legs to increase you score and compete with your highscore.
-- After certain score, you weapon will be automatically upgraded.
-- Along the way you will find lifes that increase your health, monkeys that either distroy all chickens or gives you a shield that makes you have an extra life. 
+- After certain score, your weapon will be automatically upgraded.
+- Along the way, you will find lifes that increase your health and monkeys that either distroy all chickens or gives you a shield that makes you have an extra life. 
 - Finaly, you will meet the huge chicken boss that throws eggs. You should avoid eggs and kill the boss.
 
 
