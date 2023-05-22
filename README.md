@@ -1,6 +1,14 @@
 # Chicken Invaders
 
-![chicken_invaders](https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/24304d9a-ce80-46c9-a58b-c209b4ee9f52)
+![chicken_invaders](https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/ffc944b0-3b2d-4b0f-82dc-dafff098aad7)
+
+## About the game
+
+- This game is 3D version of the famous game Chicken Invaders. 
+- Your mission is to kill as much chickens as you can, avoid colliding with them, gather the chicken legs to increase you score and compete with your highscore.
+- After certain score, your weapon will be automatically upgraded.
+- Along the way, you will find lifes that increase your health and monkeys that either distroy all chickens or gives you a shield that makes you have an extra life. 
+- Finaly, you will meet the huge chicken boss that throws eggs. You should avoid eggs and kill the boss.
 
 
 ## How to Run the Code
@@ -24,9 +32,44 @@ To run the code on Windows:
 
 ## Demo Video
 
-https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/6673ed8e-84a0-491a-8165-99c723f45053
+https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/7d8bbff9-4beb-4709-8499-e5b764e8cfc8
 
 
 ## Download Link
 
 Download this game from [here]().
+
+
+## Collaborators
+<table>
+<tr>
+    <td align="center">
+        <a href="https://github.com/markyasser">
+            <img src="https://avatars.githubusercontent.com/u/82395903?v=4" width="150;" alt="Mark Yasser"/>
+            <br />
+            <sub><b>Mark Yasser</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/EngPeterAtef">
+            <img src="https://avatars.githubusercontent.com/u/75852529?v=4" width="150;" alt="Peter Atef"/>
+            <br />
+            <sub><b>Peter Atef</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/bemoierian">
+            <img src="https://avatars.githubusercontent.com/u/72103362?v=4" width="150;" alt="Bemoi Erian"/>
+            <br />
+            <sub><b>Bemoi Erian</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/doaa281">
+            <img src="https://avatars.githubusercontent.com/u/65799105?v=4" width="150;" alt="Doaa Ashraf"/>
+            <br />
+            <sub><b>Doaa Ashraf</b></sub>
+        </a>
+    </td>
+  </tr>
+</table>
