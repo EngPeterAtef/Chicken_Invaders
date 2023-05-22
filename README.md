@@ -2,6 +2,14 @@
 
 ![chicken_invaders](https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/24304d9a-ce80-46c9-a58b-c209b4ee9f52)
 
+## About the game
+
+- This game is 3D version of the famous game Chicken Invaders. 
+- Your mission is to kill as much chickens as you can, avoid colliding with them, gather the chicken legs to increase you score and compete with your highscore.
+- After certain score, you weapon will be automatically upgraded.
+- Along the way you will find lifes that increase your health, monkeys that either distroy all chickens or gives you a shield that makes you have an extra life. 
+- Finaly, you will meet the huge chicken boss that throws eggs. You should avoid eggs and kill the boss.
+
 
 ## How to Run the Code
 
