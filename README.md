@@ -1,6 +1,7 @@
 # Chicken Invaders
 
-![images](chicken_invaders.png)
+![chicken_invaders](https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/24304d9a-ce80-46c9-a58b-c209b4ee9f52)
+
 
 ## How to Run the Code
 
@@ -23,7 +24,7 @@ To run the code on Windows:
 
 ## Demo Video
 
-https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/88cf5c8b-d15b-4807-9f8b-27676db3cbb3
+https://github.com/EngPeterAtef/Chicken_Invaders/assets/82395903/6673ed8e-84a0-491a-8165-99c723f45053
 
 
 ## Download Link
